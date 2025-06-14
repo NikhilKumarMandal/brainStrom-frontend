@@ -4,9 +4,12 @@ import { argbToHex, mdcolors } from './utils/colors'
 import SideBar from './super_admin/SideBar'
 import DumpCSV from './super_admin/DumpCSV'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import LoginPage from './login/LoginPage'
 
 export default function App() {
   const theme = useTheme()
+  const location = window.location.pathname
+  const isLogin = location === '/'
 
   return (
     <div
@@ -19,8 +22,9 @@ export default function App() {
         height: '100%',
       }}
     >
-      <SideBar />
+      {!isLogin && <SideBar />}
       <Routes>
+        <Route path='/' element={<LoginPage />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/dump-csv' element= {<DumpCSV />} />
         <Route path='*' element={<Navigate to = '/dashboard' />} />
