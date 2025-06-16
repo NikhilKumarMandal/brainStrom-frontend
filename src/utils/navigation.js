@@ -7,10 +7,14 @@ export default function useNavigation() {
 
   const gotoDashboard = () => navigate('/dashboard')
   const gotoDumpCSV = () => navigate('/dump-csv')
+  const gotoAskQuestion = () => navigate('/ask-question')
+  const gotoHomePage = () => navigate('/home')
+
 
   return {
     gotoDashboard,
-    gotoDumpCSV
+    gotoDumpCSV,
+    gotoAskQuestion,
+    gotoHomePage
   }
-
 }
