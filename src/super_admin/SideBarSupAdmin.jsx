@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material'
 import MenuOption from './MenuOption'
 import useNavigation from '../utils/navigation'
 
-export default function SideBar() {
+export default function SideBarSupAdmin() {
 
   const { gotoDashboard, gotoDumpCSV } = useNavigation()
   const location = window.location.pathname
@@ -25,7 +25,7 @@ export default function SideBar() {
       }}
     >
       <Typography
-        variant='h3'
+        variant='h4'
         fontWeight={'bold'}
         style={{ color: argbToHex(mdcolors.primary) }}
         justifyContent={'center'}
@@ -36,14 +36,14 @@ export default function SideBar() {
 
       <Box sx={{
         display: { xs: 'none', sm: 'block' },
-        py: '40px',
+        py: '20px',
       }} />
 
       <Box
         height={'auto'}
         display={'flex'}
         flexDirection={'column'}
-        gap={'2rem'}
+        gap={'1rem'}
       >
         <MenuOption title='Overview' action={() => { gotoDashboard() }} selected={location === '/dashboard'} />
         <MenuOption title='Growth' action={() => { alert('Growth clicked') }} selected={location === '/growth'} />

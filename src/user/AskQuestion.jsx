@@ -5,7 +5,7 @@ import { AddPhotoAlternate, DeleteRounded, Image } from '@mui/icons-material'
 import { textFieldStyle } from './styles'
 import CourseSelector from './utils/CourseSelector'
 
-export default function ProblemForm() {
+export default function AskQuestion() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [course, setCourse] = useState('')
@@ -39,7 +39,7 @@ export default function ProblemForm() {
         gap: 4,
         flexDirection: { xs: 'column', md: 'row' },
         backgroundColor: argbToHex(mdcolors.surface),
-        boxShadow: `0px 16px 16px ${argbToHex(mdcolors.shadow)}`
+        boxShadow: `0px 16px 16px ${argbToHex(mdcolors.shadow)}`,
       }}
     >
       {/* Left Panel */}
@@ -54,7 +54,7 @@ export default function ProblemForm() {
         }}
       >
         <Typography
-          variant="h2"
+          variant="h3"
           fontWeight="bold"
           sx={{ color: argbToHex(mdcolors.primary) }}
         >
@@ -91,22 +91,22 @@ export default function ProblemForm() {
                 border: `1px solid ${argbToHex(mdcolors.outlineVariant)}`,
                 borderRadius: '1rem',
                 p: 2,
-                height: 128,
-                width: 128,
+                height: 88,
+                width: 88,
                 gap: 1
               }}
             >
-              <AddPhotoAlternate sx={{ fontSize: '2rem', color: argbToHex(mdcolors.primary) }} />
-              <Typography variant="body2" sx={{ color: argbToHex(mdcolors.primary) }}>Upload Image</Typography>
+              <AddPhotoAlternate sx={{ fontSize: '1.5rem', color: argbToHex(mdcolors.primary) }} />
+              <Typography variant="caption" sx={{ color: argbToHex(mdcolors.primary) }}>Upload Image</Typography>
             </IconButton>
           </label>
 
-          {images.slice(0, 8).map((img, idx) => (
+          {images.slice(0, 3).map((img, idx) => (
             <Box
               key={idx}
               sx={{
-                width: 128,
-                height: 128,
+                width: 88,
+                height: 88,
                 position: 'relative',
                 border: `1px solid ${argbToHex(mdcolors.outlineVariant)}`,
                 borderRadius: '0.75rem',
@@ -148,11 +148,11 @@ export default function ProblemForm() {
             </Box>
           ))}
 
-          {images.length > 8 && (
+          {images.length > 3 && (
             <Box
               sx={{
-                width: 128,
-                height: 128,
+                width: 88,
+                height: 88,
                 border: `1px solid ${argbToHex(mdcolors.outlineVariant)}`,
                 borderRadius: '0.75rem',
                 display: 'flex',
@@ -161,8 +161,8 @@ export default function ProblemForm() {
                 backgroundColor: argbToHex(mdcolors.surfaceVariant)
               }}
             >
-              <Typography variant="h4" sx={{ color: argbToHex(mdcolors.onSurfaceVariant) }}>
-                +{images.length - 8}
+              <Typography variant="h5" sx={{ color: argbToHex(mdcolors.onSurfaceVariant) }}>
+                +{images.length - 3}
               </Typography>
             </Box>
           )}

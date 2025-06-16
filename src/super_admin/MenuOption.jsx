@@ -5,12 +5,12 @@ import { argbToHex, mdcolors } from '../utils/colors';
 export default function MenuOption({title, action, selected = false}) {
   return (
     <Typography
-      variant="h4"
+      variant="h5"
       sx={{
         color: argbToHex(mdcolors.secondary),
         display: 'flex',
         cursor: 'pointer',
-        pl: '40px',
+        pl: '20px',
         py: '8px',
         width: '80%',
         transition: 'color 0.3s',
