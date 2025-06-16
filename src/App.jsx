@@ -1,10 +1,12 @@
-import { useTheme } from '@mui/material'
+import { lighten, useTheme } from '@mui/material'
 import Dashboard from './super_admin/Dashboard'
 import { argbToHex, mdcolors } from './utils/colors'
 import SideBar from './super_admin/SideBar'
 import DumpCSV from './super_admin/DumpCSV'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import LoginPage from './login/LoginPage'
+import ProblemForm from './user/ProblemForm'
+import HomePage from './user/HomePage'
 
 export default function App() {
   const theme = useTheme()
@@ -16,19 +18,21 @@ export default function App() {
       style={{
         display: 'flex',
         flexDirection: 'row',
-        backgroundColor: argbToHex(mdcolors.background),
+        backgroundColor: lighten(argbToHex(mdcolors.background), 0.05),
         width: '100vw',
         minHeight: '100vh',
         height: '100%',
       }}
     >
-      {!isLogin && <SideBar />}
+      {/* {!isLogin && <SideBar />}
       <Routes>
         <Route path='/' element={<LoginPage />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/dump-csv' element= {<DumpCSV />} />
         <Route path='*' element={<Navigate to = '/dashboard' />} />
-      </Routes>
+      </Routes> */}
+      {/* <ProblemForm /> */}
+      <HomePage />
     </div>
   )
 }
