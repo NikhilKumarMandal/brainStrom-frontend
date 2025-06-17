@@ -9,15 +9,51 @@ import {
 } from '@mui/material'
 import { Google } from '@mui/icons-material'
 import { argbToHex, mdcolors } from '../utils/colors'
+import { GoogleLogin } from "@react-oauth/google";
+import { login,self } from '../http/api';
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useAuthStore } from '../store/store';
+import { useNavigate } from 'react-router-dom';
+import { toast } from "sonner";
+
+const loginUser = async (token) => {
+  const { data } = await login(token);
+  return data;
+};
+
+
+const getSelf = async () => {
+  const { data } = await self();
+  return data;
+};
 
 export default function LoginPage() {
   const isMobile = useMediaQuery('(max-width:600px)')
+  const { setUser } = useAuthStore;
 
-  const handleGoogleLogin = () => {
-    alert('Google login clicked')
-    // integrate Firebase/Google OAuth here
-  }
+  const { refetch } = useQuery({
+    queryKey: ["self"],
+    queryFn: getSelf,
+    enabled: false,
+  })
+  
 
+  const handleLoginSuccess = (credentialResponse) => {
+    const googleToken = credentialResponse.credential;
+    if (!googleToken) {
+      return toast.error("Google token not found!");
+    }
+    AuthLogin(googleToken);
+  };
+
+  const { mutate: AuthLogin } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: loginUser,
+    onSuccess: async () => {
+      const selfDataPromise = await refetch();
+      setUser(selfDataPromise?.data?.data);
+    },
+  });
   return (
     <Paper
       elevation={4}
@@ -50,26 +86,16 @@ export default function LoginPage() {
           Login to your account to continue
         </Typography>
 
-        <Button
-          variant='outlined'
-          onClick={handleGoogleLogin}
-          startIcon={<Google />}
-          sx={{
-            borderColor: argbToHex(mdcolors.primary),
-            color: argbToHex(mdcolors.primary),
-            textTransform: 'none',
-            width: '70%',
-            alignSelf: 'center',
-            borderRadius: '2rem',
-            fontWeight: 500,
-            '&:hover': {
-              backgroundColor: argbToHex(mdcolors.secondaryContainer),
-              borderColor: argbToHex(mdcolors.primary),
-            }
-          }}
-        >
-          Sign in with Google
-        </Button>
+        <div className="space-y-6 flex justify-center">
+            <GoogleLogin
+              onSuccess={handleLoginSuccess}
+              onError={() => toast.error("Google Login failed!")}
+              theme="filled_black"
+              size="large"
+              text="continue_with"
+              width="300"
+            />
+          </div>
       </Box>
 
       <Typography
