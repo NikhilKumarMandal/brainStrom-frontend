@@ -3,9 +3,14 @@ import React, { useState } from 'react'
 import { argbToHex, mdcolors } from '../../utils/colors'
 import getRandomImage from '../utils/getRandomImage'
 import logo from '../../assets/logo.png'
+import { logout } from '../../http/api'
+import { useMutation } from "@tanstack/react-query";
+import { useAuthStore } from '../../store/store'
+
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null)
+  const {  logout: logoutUserFromStore } = useAuthStore()
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -14,6 +19,15 @@ export default function Header() {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const { mutate: logoutMutate } = useMutation({
+    mutationKey: ["logout"], 
+    mutationFn: logout,
+    onSuccess: async () => {
+      logoutUserFromStore();
+      return;
+    }
+  })
 
   const handleLogout = () => {
     alert('Logging out...') // Replace with your logout logic
@@ -64,7 +78,7 @@ export default function Header() {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={logoutMutate}>Logout</MenuItem>
       </Menu>
     </Box>
   )

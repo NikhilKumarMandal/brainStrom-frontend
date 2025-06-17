@@ -21,4 +21,4 @@ export const createTicket = ({
 }
 )
 
-export const ticket = () => api.get("/ticket/getAllTicket");
+export const getAllTicket = () => api.get("/ticket/getAllTicket");

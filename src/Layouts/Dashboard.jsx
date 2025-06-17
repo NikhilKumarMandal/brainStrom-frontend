@@ -4,7 +4,7 @@ import SideBarUser from "../user/components/SideBarUser";
 import { lighten, useTheme } from '@mui/material';
 import { argbToHex, mdcolors } from '../utils/colors';
 
-function Dhashboard() {
+function Dashboard() {
   const { user } = useAuthStore();
 
   if (user === null) {
@@ -30,4 +30,4 @@ function Dhashboard() {
   );
 }
 
-export default Dhashboard;
+export default Dashboard;
