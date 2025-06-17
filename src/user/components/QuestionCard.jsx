@@ -1,10 +1,9 @@
-import { Box, Chip, Stack, Typography } from '@mui/material'
+import { Box, Chip, Typography } from '@mui/material'
 import React from 'react'
 import { argbToHex, mdcolors } from '../../utils/colors'
 
-export default function QuestionCard({
-  title, description, tags
-}) {
+export default function QuestionCard({ title, description, courses }) {
+
   return (
     <div>
       <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
@@ -16,30 +15,24 @@ export default function QuestionCard({
         &nbsp;&nbsp;&nbsp;&nbsp; {description}
       </Typography>
 
-      <Box>
-        <Typography fontWeight="bold" gutterBottom>Tags:</Typography>
-        <Stack direction="row" spacing={1} flexWrap="wrap">
-          {tags.map((tag) => (
-            <Chip
-              key={tag}
-              label={tag}
-              onClick={(e) => {
-                e.stopPropagation()
-                alert(tag)
-              }}
-              size="small"
-              sx={{
-                border: `1px solid ${argbToHex(mdcolors.outlineVariant)}`,
-                color: argbToHex(mdcolors.onSurface),
-                '&:hover': {
-                  transform: 'scale(1.1)',
-                  cursor: 'pointer',
-                },
-              }}
-            />
-          ))}
-        </Stack>
-      </Box>
+      <Box height={10}/>
+
+      <Chip
+        label={courses}
+        onClick={(e) => {
+          e.stopPropagation()
+          alert('course')
+        }}
+        size="small"
+        sx={{
+          border: `1px solid ${argbToHex(mdcolors.outlineVariant)}`,
+          color: argbToHex(mdcolors.onSurface),
+          '&:hover': {
+            transform: 'scale(1.1)',
+            cursor: 'pointer',
+          },
+        }}
+      />
     </div>
   )
 }

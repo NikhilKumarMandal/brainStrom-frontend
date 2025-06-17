@@ -8,17 +8,8 @@ export const self = () => api.get("/auth/self");
 export const logout = () => api.post("/auth/logout");
 
 // ticket service
-
-export const createTicket = ({
-    title,
-    description,
-    courses
-}
-) => api.post("/ticket/createTicket",{
-    title,
-    description,
-    courses
-}
-)
+export const createTicket = (formData) => api.post("/ticket/createTicket", formData);
 
 export const getAllTicket = () => api.get("/ticket/getAllTicket");
+
+export const getTicketById = (id) => api.get(`/ticket/getTicket/${id}`);
