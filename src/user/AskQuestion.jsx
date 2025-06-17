@@ -35,7 +35,7 @@ export default function AskQuestion() {
         p: 4,
         borderRadius: '2rem',
         display: 'flex',
-        width: '100%',
+        width: '70%',
         gap: 4,
         flexDirection: { xs: 'column', md: 'row' },
         backgroundColor: argbToHex(mdcolors.surface),
