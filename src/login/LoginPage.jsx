@@ -30,7 +30,7 @@ const getSelf = async () => {
 export default function LoginPage() {
   const isMobile = useMediaQuery('(max-width:600px)')
   const { setUser } = useAuthStore;
-
+  const navigate = useNavigate()
   const { refetch } = useQuery({
     queryKey: ["self"],
     queryFn: getSelf,
@@ -52,6 +52,7 @@ export default function LoginPage() {
     onSuccess: async () => {
       const selfDataPromise = await refetch();
       setUser(selfDataPromise?.data?.data);
+      navigate("/auth/home")
     },
   });
   return (
