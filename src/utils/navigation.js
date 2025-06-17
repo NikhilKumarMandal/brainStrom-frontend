@@ -9,12 +9,13 @@ export default function useNavigation() {
   const gotoDumpCSV = () => navigate('/dump-csv')
   const gotoAskQuestion = () => navigate('/ask-questions')
   const gotoHomePage = () => navigate('/home')
-
+  const gotoProblem = (id) => navigate(`/problem/${id}`)
 
   return {
     gotoDashboard,
     gotoDumpCSV,
     gotoAskQuestion,
-    gotoHomePage
+    gotoHomePage,
+    gotoProblem
   }
 }

@@ -4,6 +4,7 @@ import { Box, Chip, Typography } from '@mui/material'
 import { argbToHex, mdcolors } from '../../utils/colors';
 import { getAllTicket } from '../../http/api';
 import { useQuery } from '@tanstack/react-query';
+import useNavigation from '../../utils/navigation';
 
 
 const getAllTickets = async () => {
@@ -46,9 +47,11 @@ export default function QuestionList() {
 }
 
 function EachQuestion({ q, i, questionsLength }) {
+  const { gotoProblem } = useNavigation()
+  
   return (
     <Box
-      onClick={() => alert(q.title)}
+      onClick={() => gotoProblem(q.id)}
       sx={{
         borderBottom: i < questionsLength - 1 ? `1px solid ${argbToHex(mdcolors.outlineVariant)}` : 'none',
         py: 2,
