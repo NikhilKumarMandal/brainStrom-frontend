@@ -4,7 +4,8 @@ import NoAuth from "./Layouts/NoAuth";
 import Dashboard from "./Layouts/Dashboard";
 import LoginPage from "./login/LoginPage";
 import HomePage from "./user/HomePage";
-import AskQuestion from "./user/AskQuestion"
+import AskQuestion from "./user/AskQuestion";
+import ProblemPage from "./pages/ProblemPage";
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
             {
               path: "ask-questions",
               element: <AskQuestion />,
+            },
+            {
+              path: "problem/:id",
+              element: <ProblemPage />,
             },
             
           ],
