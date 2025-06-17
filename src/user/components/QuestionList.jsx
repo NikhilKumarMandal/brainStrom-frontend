@@ -1,10 +1,26 @@
 import React from 'react'
 import { mockQuestions } from '../utils/mockData'
 import { Box, Chip, Typography } from '@mui/material'
-import { argbToHex, mdcolors } from '../../utils/colors'
+import { argbToHex, mdcolors } from '../../utils/colors';
+import { getAllTicket } from '../../http/api';
+import { useQuery } from '@tanstack/react-query';
+
+
+const getAllTickets = async () => {
+  const { data } = await getAllTicket();
+  return data;
+}
 
 export default function QuestionList() {
   const questions = mockQuestions
+
+  const { data: allTickets, } = useQuery({
+    queryKey: ["tickets"],
+    queryFn: getAllTickets,
+  });
+
+  console.log(allTickets);
+  
   return (
     <Box
       sx={{
