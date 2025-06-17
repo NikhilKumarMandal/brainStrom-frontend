@@ -7,7 +7,7 @@ import useNavigation from '../../utils/navigation'
 
 export default function SubHeader({ query, setQuery }) {
 
-  const {gotoAskQuestion} = useNavigation()
+  const { gotoAskQuestion } = useNavigation()
 
   return (
     <Box
@@ -20,21 +20,13 @@ export default function SubHeader({ query, setQuery }) {
         alignSelf: 'center',
       }}
     >
-      <TextField
-        label="Search"
-        onChange={(e) => setQuery(e.target.value)}
-        sx={{
-          width: '60%',
-          ...textFieldStyle
-        }} />
-
       <Button variant='contained'
-      onClick={gotoAskQuestion}
+        onClick={gotoAskQuestion}
         sx={{
           backgroundColor: argbToHex(mdcolors.primaryContainer),
           borderRadius: '1rem',
           padding: '0.75rem 2rem',
-          gap: '0.5rem'
+          gap: '0.5rem',
         }}
       >
         <Typography variant='body1' textTransform={'none'}>Ask Question</Typography>
