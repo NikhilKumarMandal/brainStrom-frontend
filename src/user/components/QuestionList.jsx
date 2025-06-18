@@ -47,12 +47,12 @@ export default function QuestionList() {
 }
 
 function EachQuestion({ q, i, questionsLength }) {
-  const { gotoProblem } = useNavigation()
+  const { gotoProblemPage } = useNavigation()
   const isOpen = q.status === 'OPEN'
 
   return (
     <Box
-      onClick={() => gotoProblem(q.id)}
+      onClick={() => gotoProblemPage(q.id)}
       sx={{
         borderBottom: i < questionsLength - 1 ? `1px solid ${argbToHex(mdcolors.outlineVariant)}` : 'none',
         py: 2,

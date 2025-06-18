@@ -1,6 +1,7 @@
 import { Box, Chip, Typography } from '@mui/material'
 import React from 'react'
 import { argbToHex, mdcolors } from '../../utils/colors'
+import RichTextEditor from './RichTextEditor'
 
 export default function QuestionCard({ title, description, courses }) {
 
@@ -11,11 +12,11 @@ export default function QuestionCard({ title, description, courses }) {
       </Typography>
 
       <Typography variant='body1' fontFamily="monospace">
-        <strong>Description:</strong> <br />
-        &nbsp;&nbsp;&nbsp;&nbsp; {description}
+      &nbsp;<strong>Description:</strong>
       </Typography>
+      <RichTextEditor content={description} readOnly />
 
-      <Box height={10}/>
+      {/* <Box height={10}/> */}
 
       <Chip
         label={courses}

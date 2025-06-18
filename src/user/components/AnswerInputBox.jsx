@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, TextField, Button } from '@mui/material'
 import { mdcolors, argbToHex } from '../../utils/colors'
+import RichTextEditor from './RichTextEditor'
 
-export default function AnswerInputBox({ onSubmit }) {
+
+export default function AnswerInputBox({ id }) {
+
+  const [answer, setAnswer] = useState('')
+  
+  const onSubmit = () => {
+    console.log(answer)
+  }
+
   return (
     <Box>
-      <TextField
+
+      <RichTextEditor content={answer} onChange={setAnswer} />
+
+      {/* <TextField
         multiline
         rows={6}
         fullWidth
@@ -27,7 +39,7 @@ export default function AnswerInputBox({ onSubmit }) {
             color: argbToHex(mdcolors.onSurface),
           },
         }}
-      />
+      /> */}
 
       <Button
         variant="contained"

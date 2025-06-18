@@ -1,6 +1,9 @@
 import React from 'react'
 import { Box, IconButton } from '@mui/material'
-import { FormatBold, FormatItalic, FormatUnderlined, Code, FormatListBulleted, FormatListNumbered, } from '@mui/icons-material'
+import {
+  FormatBold, FormatItalic, FormatUnderlined, Code,
+  FormatListBulleted, FormatListNumbered,
+} from '@mui/icons-material'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -8,20 +11,21 @@ import Placeholder from '@tiptap/extension-placeholder'
 import CodeBlock from '@tiptap/extension-code-block'
 import { argbToHex, mdcolors } from '../../utils/colors'
 
-export default function RichTextEditor({ content = '', onChange }) {
+export default function RichTextEditor({ content = '', onChange, readOnly = false }) {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ codeBlock: false }),
+      StarterKit.configure({ codeBlock: false, heading: false }),
       CodeBlock.configure({ HTMLAttributes: { class: 'custom-code-block' } }),
       Underline,
-      Placeholder.configure({
+      !readOnly && Placeholder.configure({
         placeholder: 'Explain yourself...',
         emptyEditorClass: 'is-editor-empty',
       }),
-    ],
+    ].filter(Boolean),
     content,
-    onUpdate({ editor }) {
-      if (onChange) onChange(editor.getHTML())
+    editable: !readOnly,
+    onUpdate: ({ editor }) => {
+      if (!readOnly && onChange) onChange(editor.getHTML())
     },
   })
 
@@ -30,49 +34,52 @@ export default function RichTextEditor({ content = '', onChange }) {
   return (
     <Box
       onClick={(e) => {
-        if (e.target.closest('.editor-toolbar')) return
-        editor.commands.focus()
+        if (!readOnly && !e.target.closest('.editor-toolbar')) {
+          editor.commands.focus()
+        }
       }}
       sx={{
-        height: '90%',
+        height: readOnly ? 'auto' : '90%',
         display: 'flex',
         flexDirection: 'column',
-        border: `1px solid ${argbToHex(mdcolors.outlineVariant)}`,
+        border: !readOnly && `1px solid ${argbToHex(mdcolors.outlineVariant)}`,
         borderRadius: '1rem',
-        backgroundColor: argbToHex(mdcolors.surface),
+        backgroundColor: !readOnly && argbToHex(mdcolors.surface),
       }}
     >
-      {/* Toolbar */}
-      <Box
-        className="editor-toolbar"
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-evenly',
-          borderBottom: `1px solid ${argbToHex(mdcolors.outlineVariant)}`,
-          p: 1,
-        }}
-      >
-        <IconButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} sx={{ color: isActiveColor(editor.isActive('codeBlock')) }}>
-          <Code />
-        </IconButton>
-        <IconButton onClick={() => editor.chain().focus().toggleBold().run()} sx={{ color: isActiveColor(editor.isActive('bold')) }}>
-          <FormatBold />
-        </IconButton>
-        <IconButton onClick={() => editor.chain().focus().toggleItalic().run()} sx={{ color: isActiveColor(editor.isActive('italic')) }}>
-          <FormatItalic />
-        </IconButton>
-        <IconButton onClick={() => editor.chain().focus().toggleUnderline().run()} sx={{ color: isActiveColor(editor.isActive('underline')) }}>
-          <FormatUnderlined />
-        </IconButton>
-        <IconButton onClick={() => editor.chain().focus().toggleBulletList().run()} sx={{ color: isActiveColor(editor.isActive('bulletList')) }}>
-          <FormatListBulleted />
-        </IconButton>
-        <IconButton onClick={() => editor.chain().focus().toggleOrderedList().run()} sx={{ color: isActiveColor(editor.isActive('orderedList')) }}>
-          <FormatListNumbered />
-        </IconButton>
-      </Box>
+      {/* Toolbar (Only if editable) */}
+      {!readOnly && (
+        <Box
+          className="editor-toolbar"
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-evenly',
+            borderBottom: `1px solid ${argbToHex(mdcolors.outlineVariant)}`,
+            p: 1,
+          }}
+        >
+          <IconButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} sx={{ color: isActiveColor(editor.isActive('codeBlock')) }}>
+            <Code />
+          </IconButton>
+          <IconButton onClick={() => editor.chain().focus().toggleBold().run()} sx={{ color: isActiveColor(editor.isActive('bold')) }}>
+            <FormatBold />
+          </IconButton>
+          <IconButton onClick={() => editor.chain().focus().toggleItalic().run()} sx={{ color: isActiveColor(editor.isActive('italic')) }}>
+            <FormatItalic />
+          </IconButton>
+          <IconButton onClick={() => editor.chain().focus().toggleUnderline().run()} sx={{ color: isActiveColor(editor.isActive('underline')) }}>
+            <FormatUnderlined />
+          </IconButton>
+          <IconButton onClick={() => editor.chain().focus().toggleBulletList().run()} sx={{ color: isActiveColor(editor.isActive('bulletList')) }}>
+            <FormatListBulleted />
+          </IconButton>
+          <IconButton onClick={() => editor.chain().focus().toggleOrderedList().run()} sx={{ color: isActiveColor(editor.isActive('orderedList')) }}>
+            <FormatListNumbered />
+          </IconButton>
+        </Box>
+      )}
 
-      {/* Editor */}
+      {/* Editor Content */}
       <Box
         sx={{
           flex: 1,

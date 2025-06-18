@@ -7,7 +7,7 @@ import useNavigation from '../../utils/navigation'
 export default function SideBarUser() {
   const location = window.location.pathname
 
-  const { gotoHomePage } = useNavigation()
+  const { gotoHomePage, gotoAskQuestion } = useNavigation()
 
   return (
     <div
@@ -46,6 +46,7 @@ export default function SideBarUser() {
         gap={'1rem'}
       >
         <MenuOption title='Homepage' action={() => { gotoHomePage() }} selected={location === '/home'} />
+        <MenuOption title='Ask a question' action={() => { gotoAskQuestion() }} selected={location === '/ask-questions'} />
       </Box>
 
     </div>

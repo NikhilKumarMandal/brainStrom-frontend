@@ -12,6 +12,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 /* Removes vertical spacing on new paragraphs (Enter) */
 .custom-editor p {
   margin: 0;
@@ -23,6 +24,8 @@
   line-height: 1.2;
   display: inline;
 }
+
+/* Allows to show placeholder when text field is empty */
 .is-editor-empty::before {
   content: attr(data-placeholder);
   color: #888;
@@ -31,6 +34,7 @@
   pointer-events: none;
 }
 
+/* Shows code box */
 .custom-code-block {
   background-color: #0e0e0e;
   color: #d0d0d0;
@@ -40,7 +44,6 @@
   white-space: pre-wrap;
   line-height: 1.5;
 }
-
 
 a {
   font-weight: 500;

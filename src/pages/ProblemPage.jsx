@@ -9,7 +9,7 @@ import AnswerCard from '../user/components/AnswerCard'
 import { useQuery } from '@tanstack/react-query'
 import { getTicketById } from '../http/api'
 
-export default function dataPage() {
+export default function ProblemPage() {
   const { id } = useParams()
 
   const { data: ticket, isLoading, isError } = useQuery({
@@ -46,7 +46,7 @@ export default function dataPage() {
 
       <Divider sx={{ my: 3, borderColor: argbToHex(mdcolors.outlineVariant) }} />
 
-      <AnswerInputBox onSubmit={() => { }} />
+      <AnswerInputBox id={id} />
 
       {/* <Stack spacing={2}>
         {answersData.map(answer => (
