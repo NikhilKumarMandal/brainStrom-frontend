@@ -2,8 +2,9 @@ import { ArrowForwardIosRounded, ExpandMore, ChevronRight, } from '@mui/icons-ma
 import { Box, Button, Menu, MenuItem, Typography, } from '@mui/material'
 import React, { useState } from 'react'
 import { argbToHex, mdcolors } from '../../utils/colors'
+import { mockCourses } from '../utils/mockData'
 
-export default function FilterOptions() {
+export default function FilterOptions({ courses = mockCourses }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [submenuAnchorEl, setSubmenuAnchorEl] = useState(null)
   const [activeSubmenu, setActiveSubmenu] = useState(null)

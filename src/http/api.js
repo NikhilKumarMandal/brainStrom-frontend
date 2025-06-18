@@ -14,4 +14,19 @@ export const getAllTicket = () => api.get("/ticket/getAllTicket");
 
 export const getTicketById = (id) => api.get(`/ticket/getTicket/${id}`);
 
-export const voteDiscussion = (id, voteType) => api.post(`/ticket/vote/${id}`, { voteType });
+export const createDiscussion = (formData) => api.post(`/discussion/createDiscussion`, formData);
+/*
+  formData = {
+    ticketId: ticketId,
+    content: content
+  }
+*/
+
+// /getAllDiscussion/:ticketId
+
+export const getAllDiscussion = (id) => api.get(`/discussion/getAllDiscussion/${id}`);
+
+export const getTopDiscussion = (id) => api.get(`/discussion/getTopDiscussion/${id}`);
+
+export const vote = (id, type) => api.post(`/vote/${id}`, { type }) // voteType = "UPVOTE", "DOWNVOTE"
+

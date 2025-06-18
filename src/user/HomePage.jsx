@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import Header from './components/Header'
-import SubHeader from './components/SubHeader'
 import QuestionList from './components/QuestionList'
 import FilterOptions from './components/FilterOptions'
 
 
 export default function HomePage() {
-  const [query, setQuery] = useState('')
   const [filter, setFilter] = useState('')
   const [sortBy, setSortBy] = useState('')
 

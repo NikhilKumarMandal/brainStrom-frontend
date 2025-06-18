@@ -18,7 +18,8 @@ export default function QuestionList() {
     queryFn: getAllTickets,
   });
 
-  console.log(allTickets);
+  // console.log(allTickets);
+  
   if (!allTickets) return <Typography>Loading...</Typography>
   const data = allTickets.data
 
