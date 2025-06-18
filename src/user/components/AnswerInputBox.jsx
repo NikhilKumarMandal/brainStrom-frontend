@@ -7,39 +7,15 @@ import RichTextEditor from './RichTextEditor'
 export default function AnswerInputBox({ id }) {
 
   const [answer, setAnswer] = useState('')
-  
+
   const onSubmit = () => {
     console.log(answer)
   }
 
   return (
-    <Box>
+    <Box pb={8} >
 
       <RichTextEditor content={answer} onChange={setAnswer} />
-
-      {/* <TextField
-        multiline
-        rows={6}
-        fullWidth
-        placeholder="Type your answer here..."
-        variant="outlined"
-        sx={{
-          color: argbToHex(mdcolors.onSurface),
-          bgcolor: argbToHex(mdcolors.surface),
-          borderRadius: 2,
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: argbToHex(mdcolors.outline),
-            },
-            '&:hover fieldset': {
-              borderColor: argbToHex(mdcolors.primary),
-            },
-          },
-          '& .MuiInputBase-input': {
-            color: argbToHex(mdcolors.onSurface),
-          },
-        }}
-      /> */}
 
       <Button
         variant="contained"

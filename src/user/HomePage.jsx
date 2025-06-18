@@ -9,15 +9,7 @@ export default function HomePage() {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState('')
   const [sortBy, setSortBy] = useState('')
-  const [selected, setSelected] = useState('both')
-  const options = [
-    { label: 'Both', value: 'both' },
-    { label: 'Answered', value: 'answered' },
-    { label: 'Unanswered', value: 'unanswered' },
-  ]
-  const handleChange = (_, newValue) => {
-    if (newValue !== null) setSelected(newValue)
-  }
+
   return (
     <div
       style={{
@@ -30,8 +22,7 @@ export default function HomePage() {
       }}
     >
       <Header />
-      <SubHeader query={query} setQuery={setQuery} />
-      <FilterOptions selected={selected} setSelected={setSelected} options={options} handleChange={handleChange} />
+      <FilterOptions />
       <QuestionList />
     </div>
   )
