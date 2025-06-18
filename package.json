@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@editorjs/code": "^2.9.3",
+    "@editorjs/editorjs": "^2.30.8",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@material/material-color-utilities": "^0.3.0",
@@ -17,6 +19,11 @@
     "@mui/material": "^7.1.1",
     "@react-oauth/google": "^0.12.2",
     "@tanstack/react-query": "^5.80.7",
+    "@tiptap/extension-placeholder": "^2.14.0",
+    "@tiptap/extension-underline": "^2.14.0",
+    "@tiptap/pm": "^2.14.0",
+    "@tiptap/react": "^2.14.0",
+    "@tiptap/starter-kit": "^2.14.0",
     "axios": "^1.10.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

@@ -13,3 +13,5 @@ export const createTicket = (formData) => api.post("/ticket/createTicket", formD
 export const getAllTicket = () => api.get("/ticket/getAllTicket");
 
 export const getTicketById = (id) => api.get(`/ticket/getTicket/${id}`);
+
+export const voteDiscussion = (id, voteType) => api.post(`/ticket/vote/${id}`, { voteType });

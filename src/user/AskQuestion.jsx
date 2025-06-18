@@ -7,6 +7,7 @@ import { argbToHex, mdcolors } from '../utils/colors'
 import { textFieldStyle } from './styles'
 import CourseSelector from './utils/CourseSelector'
 import useNavigation from '../utils/navigation'
+import RichTextEditor from './components/RichTextEditor'
 
 export default function AskQuestion() {
   const [title, setTitle] = useState('')
@@ -151,28 +152,8 @@ export default function AskQuestion() {
           Description *
         </Typography>
 
-        <TextField
-          multiline
-          fullWidth
-          required
-          placeholder="Type your question details here..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          sx={{
-            ...textFieldStyle,
-            flex: 1,
-            overflow: 'auto',
-            '& .MuiOutlinedInput-root': {
-              ...textFieldStyle['& .MuiOutlinedInput-root'],
-              height: '100%',
-              alignItems: 'flex-start',
-              '& textarea': {
-                overflow: 'auto',
-                height: '100%'
-              }
-            }
-          }}
-        />
+        <RichTextEditor content={description} onChange={setDescription} />
+
       </Box>
     </Paper>
   )
