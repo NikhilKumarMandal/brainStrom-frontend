@@ -1,26 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
-import { mockQuestions, mockAnswers } from '../user/utils/mockData'
 import { Box, Typography, Stack, Divider } from '@mui/material'
 import { mdcolors, argbToHex } from '../utils/colors'
 import QuestionCard from '../user/components/QuestionCard'
 import QuestionMetaData from '../user/components/QuestionMetaData'
 import AnswerInputBox from '../user/components/AnswerInputBox'
 import AnswerCard from '../user/components/AnswerCard'
+import { useQuery } from '@tanstack/react-query'
+import { getTicketById } from '../http/api'
 
 export default function ProblemPage() {
   const { id } = useParams()
-  const problem = mockQuestions.find(q => q.id === Number(id))
-  const answersData = mockAnswers.find(a => a.questionId === Number(id))?.answers || []
-  const [replyingTo, setReplyingTo] = useState(null)
-  const isAuthorOrAdmin = problem.author === 'yourUsername' || true // change as needed
-  const [isOpen, setIsOpen] = useState(true)
 
-  if (!problem) {
-    return <Typography variant="h6" color="error" m={4}>Problem not found</Typography>
-  }
-
-  const postedAt = new Date(problem.postTime).toLocaleString()
+  const { data: ticket, isLoading, isError } = useQuery({
+    queryKey: ['ticket', id],
+    queryFn: () => getTicketById(id),
+    enabled: !!id
+  })
+  
+  if (isLoading) return <Typography variant="h6" color="error" m={4}>Loading...</Typography>
+  if (isError) return <Typography variant="h6" color="error" m={4}>Error</Typography>
+  if (!ticket) return <Typography variant="h6" color="error" m={4}>data not found</Typography>
+  
+  const data = ticket?.data.data
+  console.log(data);
 
   return (
     <Box
@@ -37,14 +40,15 @@ export default function ProblemPage() {
       }}
     >
 
-      <QuestionCard title={problem.title} description={problem.description} tags={problem.tags} />
-      <QuestionMetaData author={problem.author} answers={problem.answers} views={problem.views} postedAt={problem.postedAt} isAuthorOrAdmin={isAuthorOrAdmin} setIsOpen={setIsOpen} isOpen={isOpen} />
+      <QuestionCard title={data.title} description={data.description} courses={data.courses}/>
+      
+      <QuestionMetaData author={data.author} answers={data._count.discussions} createdAt={data.createdAt} isOpen={data.isOpen} />
 
       <Divider sx={{ my: 3, borderColor: argbToHex(mdcolors.outlineVariant) }} />
 
-      <AnswerInputBox onSubmit={() => { }} />
+      <AnswerInputBox id={id} />
 
-      <Stack spacing={2}>
+      {/* <Stack spacing={2}>
         {answersData.map(answer => (
           <AnswerCard
             key={answer.id}
@@ -53,7 +57,7 @@ export default function ProblemPage() {
             setReplyingTo={setReplyingTo}
           />
         ))}
-      </Stack>
+      </Stack> */}
 
       <Box />
       <Box />
