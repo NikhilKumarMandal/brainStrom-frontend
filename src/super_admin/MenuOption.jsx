@@ -18,6 +18,7 @@ export default function MenuOption({title, action, selected = false}) {
         backgroundColor: selected && argbToHex(mdcolors.primaryContainer),
         '&:hover': {
           backgroundColor: argbToHex(mdcolors.secondaryContainer),
+          transform: 'scale(1.05)',
         },
       }}
       onClick={action}

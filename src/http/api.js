@@ -22,11 +22,12 @@ export const createDiscussion = (formData) => api.post(`/discussion/createDiscus
   }
 */
 
-// /getAllDiscussion/:ticketId
-
 export const getAllDiscussion = (id) => api.get(`/discussion/getAllDiscussion/${id}`);
+// /getAllDiscussion/:ticketId
 
 export const getTopDiscussion = (id) => api.get(`/discussion/getTopDiscussion/${id}`);
 
-export const vote = (id, type) => api.post(`/vote/${id}`, { type }) // voteType = "UPVOTE", "DOWNVOTE"
+// vote service
+export const vote = (id, type) => api.post(`/vote/${id}`, { type }) 
+// type = "UPVOTE", "DOWNVOTE"
 

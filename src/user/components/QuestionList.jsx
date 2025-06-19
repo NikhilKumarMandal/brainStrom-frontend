@@ -1,6 +1,6 @@
 import React from 'react'
 import { mockQuestions } from '../utils/mockData'
-import { Box, Chip, Stack, Typography } from '@mui/material'
+import { Box, Chip, Divider, Stack, Typography } from '@mui/material'
 import { argbToHex, mdcolors } from '../../utils/colors';
 import { getAllTicket } from '../../http/api';
 import { useQuery } from '@tanstack/react-query';
@@ -19,7 +19,7 @@ export default function QuestionList() {
   });
 
   // console.log(allTickets);
-  
+
   if (!allTickets) return <Typography>Loading...</Typography>
   const data = allTickets.data
 
@@ -41,7 +41,10 @@ export default function QuestionList() {
       }}
     >
       {data.map((q, i) => (
-        <EachQuestion key={i} q={q} i={i} questionsLength={q.length} />
+        <Box>
+          <EachQuestion key={i} q={q} i={i} questionsLength={q.length} />
+          <Divider sx={{borderColor: argbToHex(mdcolors.outlineVariant) }} />
+        </Box>
       ))}
     </Box>
   )
@@ -75,7 +78,7 @@ function EachQuestion({ q, i, questionsLength }) {
       {/* Right Side: Chips */}
       <Stack direction="column" spacing={1} alignItems="flex-end">
         <Chip
-          label={isOpen? 'Open' : 'Closed'}
+          label={isOpen ? 'Open' : 'Closed'}
           variant="outlined"
           sx={{
             borderColor: isOpen ? 'green' : 'red',
@@ -102,6 +105,5 @@ function EachQuestion({ q, i, questionsLength }) {
         />
       </Stack>
     </Box>
-
   )
 }
