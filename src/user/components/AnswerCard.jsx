@@ -1,21 +1,21 @@
-import React, { useState } from 'react'
-import { Box, Typography, Paper, Button } from '@mui/material'
+import React from 'react'
+import { Box, Typography, Paper } from '@mui/material'
 import { ThumbUp, ThumbUpOutlined, ThumbDown, ThumbDownOutlined } from '@mui/icons-material'
 import { mdcolors, argbToHex } from '../../utils/colors'
-import AnswerInputBox from './AnswerInputBox'
 import formatDate from '../../utils/formatePostTime'
 import RichTextEditor from './RichTextEditor'
 import { vote } from '../../http/api'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '../../store/store'
 
-export default function AnswerCard({ answer, replyingTo, setReplyingTo }) {
-  const [replyText, setReplyText] = useState('')
-  const isReplying = replyingTo === answer.id
+export default function AnswerCard({ answer, isTop = false }) {
+
   const queryClient = useQueryClient()
   const { user } = useAuthStore()
 
-  const userVoteObj = answer.votes.find(v => v.userId === user.id)
+  console.log(answer);
+
+  const userVoteObj = answer.votes?.find(v => v.userId === user.id)
   const userVote = userVoteObj?.type
 
   const { mutate: castVote, isPending: voting } = useMutation({
@@ -28,18 +28,12 @@ export default function AnswerCard({ answer, replyingTo, setReplyingTo }) {
     if (!voting) castVote({ id: answer.id, type })
   }
 
-  const handleReplySubmit = () => {
-    if (!replyText.trim()) return
-    setReplyText('')
-    setReplyingTo(null)
-  }
-
   return (
     <Paper
       elevation={2}
       sx={{
         p: 2,
-        backgroundColor: argbToHex(mdcolors.surface),
+        backgroundColor: isTop ? argbToHex(mdcolors.primaryContainer) : argbToHex(mdcolors.surface),
         color: argbToHex(mdcolors.onSurface),
         borderRadius: 2,
       }}
@@ -55,7 +49,7 @@ export default function AnswerCard({ answer, replyingTo, setReplyingTo }) {
         alignItems="center"
       >
         <Typography variant="caption" color={argbToHex(mdcolors.outline)}>
-          By {answer.user.name} · {formatDate(answer.createdAt).toLocaleString()}
+          By {answer.user?.name} · {formatDate(answer.createdAt).toLocaleString()}
         </Typography>
 
         <Box display="flex" alignItems="center" gap={2}>
@@ -80,27 +74,8 @@ export default function AnswerCard({ answer, replyingTo, setReplyingTo }) {
             {userVote === 'DOWNVOTE' ? <ThumbDown fontSize="small" /> : <ThumbDownOutlined fontSize="small" />}
             <Typography variant="caption">{answer.downvotes}</Typography>
           </Box>
-
-          <Button
-            size="small"
-            variant="text"
-            onClick={() => setReplyingTo(isReplying ? null : answer.id)}
-            sx={{
-              color: argbToHex(mdcolors.primary),
-              textTransform: 'none',
-              fontSize: '0.75rem',
-            }}
-          >
-            Reply
-          </Button>
         </Box>
       </Box>
-
-      {isReplying && (
-        <Box mt={2}>
-          <AnswerInputBox value={replyText} setValue={setReplyText} onSubmit={handleReplySubmit} />
-        </Box>
-      )}
     </Paper>
   )
 }

@@ -10,7 +10,7 @@ import { useAuthStore } from '../../store/store'
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null)
-  const {  logout: logoutUserFromStore } = useAuthStore()
+  const { logout: logoutUserFromStore } = useAuthStore()
 
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -21,7 +21,7 @@ export default function Header() {
   }
 
   const { mutate: logoutMutate } = useMutation({
-    mutationKey: ["logout"], 
+    mutationKey: ["logout"],
     mutationFn: logout,
     onSuccess: async () => {
       logoutUserFromStore();
