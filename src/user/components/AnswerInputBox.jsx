@@ -1,49 +1,37 @@
 import React, { useState } from 'react'
-import { Box, TextField, Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { mdcolors, argbToHex } from '../../utils/colors'
 import RichTextEditor from './RichTextEditor'
-
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createDiscussion } from '../../http/api'
 
 export default function AnswerInputBox({ id }) {
-
   const [answer, setAnswer] = useState('')
-  
+  const queryClient = useQueryClient()
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (formData) => createDiscussion(formData),
+    onSuccess: () => {
+      setAnswer('')
+      queryClient.invalidateQueries(['discussions', id])
+    },
+    onError: () => {
+      alert('Failed to submit answer')
+    }
+  })
+
   const onSubmit = () => {
-    console.log(answer)
+    if (!answer.trim()) return alert('Answer is empty')
+    mutate({ ticketId: id, content: answer })
   }
 
   return (
     <Box>
-
       <RichTextEditor content={answer} onChange={setAnswer} />
-
-      {/* <TextField
-        multiline
-        rows={6}
-        fullWidth
-        placeholder="Type your answer here..."
-        variant="outlined"
-        sx={{
-          color: argbToHex(mdcolors.onSurface),
-          bgcolor: argbToHex(mdcolors.surface),
-          borderRadius: 2,
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: argbToHex(mdcolors.outline),
-            },
-            '&:hover fieldset': {
-              borderColor: argbToHex(mdcolors.primary),
-            },
-          },
-          '& .MuiInputBase-input': {
-            color: argbToHex(mdcolors.onSurface),
-          },
-        }}
-      /> */}
-
       <Button
         variant="contained"
         onClick={onSubmit}
+        disabled={isPending}
         sx={{
           alignSelf: 'flex-end',
           bgcolor: argbToHex(mdcolors.primaryContainer),
@@ -57,7 +45,7 @@ export default function AnswerInputBox({ id }) {
           },
         }}
       >
-        Submit
+        {isPending ? 'Submitting...' : 'Submit'}
       </Button>
     </Box>
   )
