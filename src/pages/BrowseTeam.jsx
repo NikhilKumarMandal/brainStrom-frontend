@@ -3,11 +3,11 @@ import TeamCard from '../components/TeamCard';
 import { mockTeams } from '../user/utils/mockData';
 
 const BrowseTeams = () => {
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('')
   const allTeams = mockTeams
   const filteredTeams = category
     ? allTeams.filter(team => team.category === category)
-    : allTeams;
+    : allTeams
 
   return (
     <div className="min-h-screen w-full overflow-y-auto bg-gray-900 text-white p-6 box-border">

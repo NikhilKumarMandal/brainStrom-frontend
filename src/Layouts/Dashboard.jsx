@@ -24,7 +24,7 @@ function Dashboard() {
       overflow: 'hidden',
     }}
     >
-      <SideBarUser/>
+      {/* <SideBarUser/> */}
       <Outlet />
     </div>
   );
