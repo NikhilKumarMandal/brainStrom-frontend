@@ -3,11 +3,13 @@ import Root from "./Layouts/Root";
 import NoAuth from "./Layouts/NoAuth";
 import Dashboard from "./Layouts/Dashboard";
 import LoginPage from "./login/LoginPage";
-import HomePage from "./user/HomePage";
-import AskQuestion from "./user/AskQuestion";
 import ProblemPage from "./pages/ProblemPage";
 import BrowseTeams from "./pages/BrowseTeam";
 import TeamDetails from "./pages/TeamDetails";
+import HomePage from "./pages/Homepage";
+import AskQuestion from "./pages/AskQuestion";
+import DumpCSV from "./pages/DumpCSV";
+import SupAdminDashboard from "./pages/Dashboard";
 
 export const router = createBrowserRouter([
     {
@@ -37,6 +39,14 @@ export const router = createBrowserRouter([
             {
               path: "team-details",
               element: <TeamDetails />,
+            },
+            {
+              path: "dump-csv",
+              element: <DumpCSV />,
+            },
+            {
+              path: "dashboard",
+              element: <SupAdminDashboard />,
             },
           ],
         },
