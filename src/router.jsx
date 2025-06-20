@@ -6,6 +6,8 @@ import LoginPage from "./login/LoginPage";
 import HomePage from "./user/HomePage";
 import AskQuestion from "./user/AskQuestion";
 import ProblemPage from "./pages/ProblemPage";
+import BrowseTeams from "./pages/BrowseTeam";
+import TeamDetails from "./pages/TeamDetails";
 
 export const router = createBrowserRouter([
     {
@@ -28,7 +30,14 @@ export const router = createBrowserRouter([
               path: "problem/:id",
               element: <ProblemPage />,
             },
-            
+            {
+              path: "browse-teams",
+              element: <BrowseTeams />,
+            },
+            {
+              path: "team-details",
+              element: <TeamDetails />,
+            },
           ],
         },
         {
