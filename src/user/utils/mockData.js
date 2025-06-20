@@ -143,9 +143,94 @@ const mockAnswers = [
   }
 ]
 
+const mockTeams = [
+  {
+    name: "OpenAI Research",
+    members: 42,
+    visibility: "Public",
+    status: "join",
+    description: "Exploring frontier AI capabilities.",
+    tags: ["AI", "ML", "Research"],
+    category: "tech"
+  },
+  {
+    name: "Figma Designers",
+    members: 23,
+    visibility: "Private",
+    status: "requested",
+    description: "Design team collaborating on UI/UX.",
+    tags: ["Design", "UI", "Prototyping"],
+    category: "design"
+  },
+  {
+    name: "React Contributors",
+    members: 15,
+    visibility: "Public",
+    status: "join",
+    description: "Open source contributors to React.js.",
+    tags: ["React", "Open Source"],
+    category: "tech"
+  },
+  {
+    name: "DevOps Masters",
+    members: 9,
+    visibility: "Private",
+    status: "join",
+    description: "Infrastructure, CI/CD & deployment experts.",
+    tags: ["DevOps", "CI/CD"],
+    category: "tech"
+  },
+  {
+    name: "CyberSec Guild",
+    members: 11,
+    visibility: "Private",
+    status: "join",
+    description: "Ethical hackers and security researchers.",
+    tags: ["Cybersecurity", "Ethical Hacking"],
+    category: "tech"
+  },
+  {
+    name: "Data Science Central",
+    members: 18,
+    visibility: "Public",
+    status: "already",
+    description: "Applied data science for business insights.",
+    tags: ["Data", "Analytics"],
+    category: "tech"
+  },
+  {
+    name: "Next.js Builders",
+    members: 13,
+    visibility: "Public",
+    status: "join",
+    description: "Web developers focused on Next.js projects.",
+    tags: ["Next.js", "Web"],
+    category: "tech"
+  },
+  {
+    name: "Game Dev League",
+    members: 27,
+    visibility: "Private",
+    status: "join",
+    description: "Unity and Unreal developers & designers.",
+    tags: ["Games", "Unity", "Unreal"],
+    category: "design"
+  }
+];
+
+const mockButtonLables = (status) => {
+  switch (status) {
+    case 'join': return 'Request to Join';
+    case 'requested': return 'Requested';
+    case 'already': return 'Already in team';
+    default: return 'Join';
+  }
+};
 
 export {
   mockCourses,
   mockQuestions,
-  mockAnswers
+  mockAnswers,
+  mockTeams,
+  mockButtonLables
 }
