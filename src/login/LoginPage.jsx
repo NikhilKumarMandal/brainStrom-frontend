@@ -1,120 +1,71 @@
 import React from 'react'
-import { Box, Typography, Paper, useMediaQuery } from '@mui/material'
-import { argbToHex, mdcolors } from '../utils/colors'
-import { GoogleLogin } from "@react-oauth/google";
-import { login, self } from '../http/api';
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useAuthStore } from '../store/store';
-import { useNavigate } from 'react-router-dom';
-import { toast } from "sonner";
+import { GoogleLogin } from "@react-oauth/google"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { login, self } from '../http/api'
+import { useAuthStore } from '../store/store'
+import { useNavigate } from 'react-router-dom'
+import { toast } from "sonner"
 
 const loginUser = async (token) => {
-  const { data } = await login(token);
-  return data;
-};
-
+  const { data } = await login(token)
+  return data
+}
 
 const getSelf = async () => {
-  const { data } = await self();
-  return data;
-};
+  const { data } = await self()
+  return data
+}
 
 export default function LoginPage() {
-  const isMobile = useMediaQuery('(max-width:600px)')
-  const { setUser } = useAuthStore;
+  const { setUser } = useAuthStore()
   const navigate = useNavigate()
+
   const { refetch } = useQuery({
     queryKey: ["self"],
     queryFn: getSelf,
     enabled: false,
   })
 
-
-  const handleLoginSuccess = (credentialResponse) => {
-    const googleToken = credentialResponse.credential;
-    if (!googleToken) {
-      return toast.error("Google token not found!");
-    }
-    AuthLogin(googleToken);
-  };
+  const handleLoginSuccess = async (credentialResponse) => {
+    const googleToken = credentialResponse.credential
+    if (!googleToken) return toast.error("Google token not found!")
+    AuthLogin(googleToken)
+  }
 
   const { mutate: AuthLogin } = useMutation({
     mutationKey: ["login"],
     mutationFn: loginUser,
     onSuccess: async () => {
-      const selfDataPromise = await refetch();
-      setUser(selfDataPromise?.data?.data);
+      const selfData = await refetch()
+      setUser(selfData?.data?.data)
       navigate("/auth/home")
     },
-  });
-  
+    onError: () => toast.error("Login failed"),
+  })
+
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Paper
-        elevation={4}
-        sx={{
-          width: isMobile ? '90%' : '600px',
-          height: isMobile ? '80%' : '500px',
-          padding: 2,
-          borderRadius: '2rem',
-          backgroundColor: argbToHex(mdcolors.surface),
-          boxShadow: `0px 4px 20px ${argbToHex(mdcolors.shadow)}`,
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 2 }}>
-          <Typography
-            variant='h3'
-            fontWeight='bold'
-            sx={{
-              textAlign: 'center',
-              color: argbToHex(mdcolors.primary),
-              pb: 1
-            }}
-          >
-            Welcome Back
-          </Typography>
+    <div className="w-screen h-screen flex items-center justify-center bg-gray-950">
+      <div className="w-[90%] sm:w-[600px] h-[80%] sm:h-[500px] rounded-3xl bg-gray-900 shadow-lg p-6 flex flex-col">
+        <div className="flex-1 flex flex-col justify-center gap-6 text-center">
+          <h1 className="text-4xl font-bold text-amber-400">Welcome Back</h1>
+          <p className="text-gray-400 text-lg">Login to your account to continue</p>
 
-          <Typography variant='body1' sx={{ textAlign: 'center', color: argbToHex(mdcolors.onSurfaceVariant), pb: 4 }}>
-            Login to your account to continue
-          </Typography>
-
-          <div
-            style={{
-              alignSelf: 'center',
-            }}
-          >
+          <div className="self-center">
             <GoogleLogin
               onSuccess={handleLoginSuccess}
               onError={() => toast.error("Google Login failed!")}
               theme="filled_black"
               size="large"
               text="continue_with"
-              width="300"
+              width="250"
             />
           </div>
-        </Box>
+        </div>
 
-        <Typography
-          variant='caption'
-          sx={{
-            color: argbToHex(mdcolors.outlineVariant),
-            textAlign: 'center',
-          }}
-        >
+        <p className="text-xs text-center text-gray-600 mt-6">
           By signing in, you agree to our Terms and Privacy Policy
-        </Typography>
-      </Paper>
-    </Box>
-
+        </p>
+      </div>
+    </div>
   )
 }

@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import { Box, Button } from '@mui/material'
-import { mdcolors, argbToHex } from '../../utils/colors'
-import RichTextEditor from './RichTextEditor'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createDiscussion } from '../../http/api'
+import { createDiscussion } from '../http/api'
+import RichTextEditor from './RichTextEditor'
 
 export default function AnswerInputBox({ id }) {
   const [answer, setAnswer] = useState('')
@@ -17,7 +15,7 @@ export default function AnswerInputBox({ id }) {
     },
     onError: () => {
       alert('Failed to submit answer')
-    }
+    },
   })
 
   const onSubmit = () => {
@@ -26,27 +24,15 @@ export default function AnswerInputBox({ id }) {
   }
 
   return (
-    <Box>
+    <div className="flex flex-col gap-2 p-6">
       <RichTextEditor content={answer} onChange={setAnswer} />
-      <Button
-        variant="contained"
+      <button
         onClick={onSubmit}
         disabled={isPending}
-        sx={{
-          alignSelf: 'flex-end',
-          bgcolor: argbToHex(mdcolors.primaryContainer),
-          borderRadius: '1.5rem',
-          textTransform: 'none',
-          px: 4,
-          mt: 1,
-          ':hover': {
-            bgcolor: argbToHex(mdcolors.primaryContainer),
-            borderColor: argbToHex(mdcolors.primary),
-          },
-        }}
+        className="self-end bg-amber-900 text-white rounded-full px-6 py-2 mt-2 hover:bg-amber-800 hover:border-none transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isPending ? 'Submitting...' : 'Submit'}
-      </Button>
-    </Box>
+      </button>
+    </div>
   )
 }

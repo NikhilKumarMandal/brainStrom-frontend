@@ -1,14 +1,12 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { Box, Stack, Divider, CircularProgress } from '@mui/material'
-import { WarningAmberRounded } from '@mui/icons-material'
 import { useQuery } from '@tanstack/react-query'
-import { mdcolors, argbToHex } from '../utils/colors'
 import { getTicketById, getTopDiscussion } from '../http/api'
-import QuestionCard from '../user/components/QuestionCard'
-import QuestionMetaData from '../user/components/QuestionMetaData'
-import AnswerInputBox from '../user/components/AnswerInputBox'
-import AnswerCard from '../user/components/AnswerCard'
+import { IoWarningOutline } from 'react-icons/io5'
+import QuestionCard from '../components/QuestionCard'
+import QuestionMetaData from '../components/QuestionMetaData'
+import AnswerInputBox from '../components/AnswerInputBox'
+import AnswerCard from '../components/AnswerCard'
 
 export default function ProblemPage() {
   const { id } = useParams()
@@ -16,53 +14,55 @@ export default function ProblemPage() {
   const { data: ticket, isLoading: ticketLoading, isError: ticketError } = useQuery({
     queryKey: ['ticket', id],
     queryFn: () => getTicketById(id),
-    enabled: !!id
+    enabled: !!id,
   })
 
   const { data: topDiscussion, isLoading: discussionLoading, isError: discussionError } = useQuery({
     queryKey: ['topDiscussion', id],
     queryFn: () => getTopDiscussion(id),
-    enabled: !!id
+    enabled: !!id,
   })
-  
-  if (ticketLoading || discussionLoading)
-    return <Box variant="h6" sx={{ m: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1}}>
-      <CircularProgress size={60} /> Loading... </Box>
 
-  if (ticketError || discussionError)
-    return <Box variant="h6" sx={{ color: argbToHex(mdcolors.error), m: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, fontSize: '1.5rem' }} >
-      <WarningAmberRounded sx={{ fontSize: '4rem' }} /> Something went wrong </Box>
+  if (ticketLoading || discussionLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center text-gray-400 mt-10 gap-3">
+        <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+        <p className="text-lg">Loading...</p>
+      </div>
+    )
+  }
+
+  if (ticketError || discussionError) {
+    return (
+      <div className="flex flex-col items-center justify-center text-red-400 mt-10 gap-3 text-xl">
+        <IoWarningOutline className="text-6xl" />
+        <p>Something went wrong</p>
+      </div>
+    )
+  }
 
   const data = ticket?.data?.data
   const answersData = topDiscussion?.data?.data || []
 
   return (
-    <Box
-      sx={{
-        width: '75%',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'auto',
-        scrollbarWidth: 'thin',
-        gap: '1rem',
-        py: 4,
-        px: 4,
-        color: argbToHex(mdcolors.onBackground),
-      }}
-    >
+    <div className="w-full flex flex-col gap-6 py-8 px-6 overflow-auto text-gray-300 bg-gray-900">
       <QuestionCard title={data.title} description={data.description} courses={data.courses} />
-      <QuestionMetaData author={data.author} answers={data._count.discussions} createdAt={data.createdAt} isOpen={data.isOpen} />
+      <QuestionMetaData
+        author={data.author}
+        answers={data._count.discussions}
+        createdAt={data.createdAt}
+        isOpen={data.isOpen}
+      />
 
       <AnswerInputBox id={id} />
-      <Divider sx={{ my: 4, borderColor: argbToHex(mdcolors.outlineVariant) }} />
-      <Stack spacing={2}>
-        {answersData.map(answer => (
-          <AnswerCard
-            key={answer.id}
-            answer={answer}
-          />
+
+      <div className="mb-6 mx-6 border-t border-gray-700" />
+
+      <div className="flex flex-col gap-4">
+        {answersData.map((answer) => (
+          <AnswerCard key={answer.id} answer={answer} />
         ))}
-      </Stack>
-    </Box>
+      </div>
+    </div>
   )
 }

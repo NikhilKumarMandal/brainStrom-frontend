@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import TeamCard from '../components/TeamCard';
-import { mockTeams } from '../user/utils/mockData';
+import { mockTeams } from '../utils/mockData';
 
 const BrowseTeams = () => {
   const [category, setCategory] = useState('')
