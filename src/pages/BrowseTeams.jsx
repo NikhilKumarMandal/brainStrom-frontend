@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TeamCard from '../components/TeamCard';
 import { mockTeams } from '../utils/mockData';
+import { useQuery } from '@tanstack/react-query';
+import { getAllTeam } from '../http/api';
+
+
+const getTeams = async () => {
+  const { data } = await getAllTeam().then((res) => res.data);
+  return data;
+}
 
 const BrowseTeams = () => {
   const [category, setCategory] = useState('')
@@ -8,6 +16,15 @@ const BrowseTeams = () => {
   const filteredTeams = category
     ? allTeams.filter(team => team.category === category)
     : allTeams
+  
+  
+  const { data:allTeamData} = useQuery({
+    queryKey: ["team"],
+    queryFn: getTeams,
+  })
+
+  console.log(allTeamData);
+  
 
   return (
     <div className="min-h-screen w-full overflow-y-auto bg-gray-900 text-white p-6 box-border">
@@ -30,7 +47,7 @@ const BrowseTeams = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filteredTeams.map((team, index) => (
+        {allTeamData?.map((team, index) => (
           <TeamCard key={index} team={team} />
         ))}
       </div>

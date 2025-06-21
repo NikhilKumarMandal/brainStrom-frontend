@@ -31,3 +31,7 @@ export const getTopDiscussion = (id) => api.get(`/discussion/getTopDiscussion/${
 export const vote = (id, type) => api.post(`/vote/${id}`, { type }) 
 // type = "UPVOTE", "DOWNVOTE"
 
+
+// Team service
+
+export const getAllTeam = () => api.get("/team/getAllTeam");
