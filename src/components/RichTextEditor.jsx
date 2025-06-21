@@ -8,13 +8,16 @@ import { FaCode } from 'react-icons/fa6'
 import { FaBold, FaItalic } from 'react-icons/fa'
 import { ImUnderline } from 'react-icons/im'
 
-export default function RichTextEditor({ content = '', onChange, readOnly = false }) {
+export default function RichTextEditor({ content = '', onChange, readOnly = false, height = '90%' }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false, heading: false }),
-      CodeBlock.configure({ HTMLAttributes: { class: 'custom-code-block' } }),
+      CodeBlock.configure({
+        HTMLAttributes: { class: 'custom-code-block' },
+      }),
       Underline,
-      !readOnly && Placeholder.configure({
+      !readOnly &&
+      Placeholder.configure({
         placeholder: 'Explain yourself...',
         emptyEditorClass: 'is-editor-empty',
       }),
@@ -31,6 +34,21 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
   const iconColor = (isActive) =>
     isActive ? 'text-amber-500' : 'text-gray-400 hover:text-gray-200'
 
+  const toggleCommand = (type) => {
+    switch (type) {
+      case 'codeBlock':
+        return editor.chain().focus().toggleCodeBlock().run()
+      case 'bold':
+        return editor.chain().focus().toggleBold().run()
+      case 'italic':
+        return editor.chain().focus().toggleItalic().run()
+      case 'underline':
+        return editor.chain().focus().toggleUnderline().run()
+      default:
+        return
+    }
+  }
+
   return (
     <div
       onClick={(e) => {
@@ -38,7 +56,7 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
           editor.commands.focus()
         }
       }}
-      className={`flex flex-col rounded-xl ${readOnly ? '' : 'border border-gray-700 bg-gray-900'} ${readOnly ? '' : 'h-[90%]'}`}
+      className={`flex flex-col rounded-xl ${readOnly ? '' : `border border-gray-700 bg-gray-900 h-[${height}]`}`}
     >
       {/* Toolbar */}
       {!readOnly && (
@@ -51,8 +69,9 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
           ].map(([type, Icon], i) => (
             <button
               key={i}
-              onClick={() => editor.chain().focus()[`toggle${capitalize(type)}`]().run()}
+              onClick={() => toggleCommand(type)}
               className="outline-none focus:outline-none bg-transparent p-1"
+              type="button"
             >
               <Icon size={20} className={iconColor(editor.isActive(type))} />
             </button>
@@ -61,17 +80,13 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
       )}
 
       {/* Editor Content */}
-      <div className="flex-1 overflow-y-auto p-4 text-base text-gray-200 leading-relaxed">
+      <div className={`flex-1 overflow-y-auto p-4 text-base text-gray-200 leading-relaxed ${readOnly ? '' : 'min-h-[200px]'} `}>
         <EditorContent
           editor={editor}
           spellCheck={false}
-          className="w-full min-h-full whitespace-pre-wrap break-words outline-none"
+          className="w-full min-h-full h-[90%] whitespace-pre-wrap break-words outline-none"
         />
       </div>
     </div>
   )
-}
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
 }
