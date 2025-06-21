@@ -13,10 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Removes vertical spacing on new paragraphs (Enter) */
-.custom-editor p {
-  margin: 0;
-  line-height: 1.2;
+/* Remove focus outline */
+.custom-editor [contenteditable="true"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Allows soft-wrapped lines to have normal spacing */
@@ -39,7 +39,7 @@
   background-color: #0e0e0e;
   color: #d0d0d0;
   font-family: 'Fira Code', monospace;
-  padding: 1rem;
+  padding: 0.25rem;
   border-radius: 0.5rem;
   white-space: pre-wrap;
 }
