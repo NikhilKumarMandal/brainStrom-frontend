@@ -216,7 +216,7 @@ const mockTeams = [
     tags: ["Games", "Unity", "Unreal"],
     category: "design"
   }
-];
+]
 
 const mockButtonLables = (status) => {
   switch (status) {
@@ -225,12 +225,29 @@ const mockButtonLables = (status) => {
     case 'already': return 'Already in team';
     default: return 'Join';
   }
-};
+}
+
+const mockUsers = [
+  { name: "Alice", skills: ["React", "UI/UX"], isLeader: true },
+  { name: "Bob", skills: ["Node.js", "MongoDB"], isLeader: false },
+  { name: "Charlie", skills: ["GraphQL", "TypeScript"], isLeader: false },
+  { name: "Dave", skills: ["Tailwind CSS", "Next.js"], isLeader: false }
+]
+
+const mockMyTeam = {
+  name: "Alpha Coders",
+  description: "A passionate group of developers building open source tools.",
+  tags: ["React", "Node.js", "GraphQL", "Tailwind CSS"],
+  notice: "Team meeting scheduled on Friday at 5 PM. Be prepared with your weekly updates.",
+  members: mockUsers
+}
 
 export {
   mockCourses,
   mockQuestions,
   mockAnswers,
   mockTeams,
-  mockButtonLables
+  mockButtonLables,
+  mockUsers,
+  mockMyTeam
 }

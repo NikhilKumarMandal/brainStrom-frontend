@@ -4,12 +4,13 @@ import NoAuth from "./Layouts/NoAuth";
 import Dashboard from "./Layouts/Dashboard";
 import LoginPage from "./login/LoginPage";
 import ProblemPage from "./pages/ProblemPage";
-import BrowseTeams from "./pages/BrowseTeam";
+import BrowseTeams from "./pages/BrowseTeams";
 import TeamDetails from "./pages/TeamDetails";
 import HomePage from "./pages/Homepage";
 import AskQuestion from "./pages/AskQuestion";
 import DumpCSV from "./pages/DumpCSV";
 import SupAdminDashboard from "./pages/Dashboard";
+import MyTeam from "./pages/MyTeam";
 
 export const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
             {
               path: "team-details",
               element: <TeamDetails />,
+            },
+            {
+              path: "my-team",
+              element: <MyTeam />,
             },
             {
               path: "dump-csv",
