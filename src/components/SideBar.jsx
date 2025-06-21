@@ -4,13 +4,13 @@ import MenuOption from './MenuOption'
 
 export default function SideBar() {
   const location = window.location.pathname
-  const { gotoHomePage, gotoAskQuestion } = useNavigation()
+  const { gotoHomePage, gotoAskQuestion, gotoBrowseTeams } = useNavigation()
 
   return (
     <div className="h-screen w-[20%] min-w-[200px] bg-gray-900 flex-none flex items-center">
       <div className="bg-gray-800 w-full border border-l-0 border-gray-700 h-[90vh] rounded-r-3xl flex flex-col">
-        <h1 className="text-center text-gray-300 text-2xl font-bold my-8">User</h1>
-
+        <h1 className="text-center text-gray-300 text-2xl font-bold mt-6">User</h1>
+        <hr className="border-gray-700 my-6" />
         <div className="flex flex-col gap-4 pr-4">
           <MenuOption
             title="Homepage"
@@ -21,6 +21,16 @@ export default function SideBar() {
             title="Ask a question"
             action={gotoAskQuestion}
             selected={location === '/ask-questions'}
+          />
+          <MenuOption
+            title={"My Team"}
+            action={() => {alert('My Team') }}
+            selected={location === '/my-team'}
+          />
+          <MenuOption
+            title={"Browse Teams"}
+            action={gotoBrowseTeams}
+            selected={location === '/browse-teams'}
           />
         </div>
       </div>

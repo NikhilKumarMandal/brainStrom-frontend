@@ -28,7 +28,7 @@ export default function TeamCard({ team }) {
         </div>
         <button
           onClick={() => gotoTeamDetails(team.id)}
-          className={"w-full py-2 rounded-md border text-sm transition border-gray-500 text-white hover:bg-gray-700"}
+          className={"w-full py-2 rounded-md border text-sm transition border-amber-700 text-white hover:bg-amber-700 hover:border-amber-500"}
         >
           View Team
         </button>

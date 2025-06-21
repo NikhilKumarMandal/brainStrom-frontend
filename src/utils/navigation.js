@@ -11,6 +11,8 @@ export default function useNavigation() {
   const gotoHomePage = () => navigate('/home')
   const gotoProblemPage = (problemId) => navigate(`/problem/${problemId}`)
   const gotoTeamDetails = (teamId) => navigate('/team-details')
+  const gotoBrowseTeams = () => navigate('/browse-teams')
+  
 
 
   return {
@@ -20,6 +22,8 @@ export default function useNavigation() {
     gotoHomePage,
     gotoProblemPage,
     gotoTeamDetails,
+    gotoBrowseTeams,
     
+
   }
 }
