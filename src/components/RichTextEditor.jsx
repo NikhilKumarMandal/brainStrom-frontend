@@ -56,7 +56,7 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
           editor.commands.focus()
         }
       }}
-      className={`flex flex-col rounded-xl ${readOnly ? '' : `border border-gray-700 bg-gray-900 h-[${height}]`}`}
+      className={`flex flex-col rounded-lg ${readOnly ? '' : `border border-gray-700 bg-gray-900 h-[${height}]`}`}
     >
       {/* Toolbar */}
       {!readOnly && (
@@ -84,7 +84,7 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
         <EditorContent
           editor={editor}
           spellCheck={false}
-          className="w-full min-h-full h-[90%] whitespace-pre-wrap break-words outline-none"
+          className="custom-editor"
         />
       </div>
     </div>
