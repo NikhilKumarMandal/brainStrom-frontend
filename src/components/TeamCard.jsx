@@ -13,7 +13,7 @@ export default function TeamCard({ team }) {
       </div>
       <div>
         <div className="flex flex-wrap gap-1 mb-2">
-          {team.tags.map((tag, i) => (
+          {team?.skills?.map((tag, i) => (
             <span
               key={i}
               className="text-xs bg-gray-700 text-gray-300 px-2 py-0.5 rounded"
@@ -23,8 +23,8 @@ export default function TeamCard({ team }) {
           ))}
         </div>
         <div className="flex items-center justify-between text-sm text-gray-300 mb-4">
-          <span>{team.members} members</span>
-          <span className="bg-gray-700 px-2 py-0.5 rounded text-xs">{team.visibility}</span>
+          <span>{team?._count?.members} members</span>
+          {/* <span className="bg-gray-700 px-2 py-0.5 rounded text-xs">{team.visibility}</span> */}
         </div>
         <button
           onClick={() => gotoTeamDetails(team.id)}
