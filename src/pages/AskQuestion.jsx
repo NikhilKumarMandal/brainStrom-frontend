@@ -59,7 +59,7 @@ export default function AskQuestion() {
   }
 
   return (
-    <div className="w-screen h-screen p-6 bg-gray-900 text-white flex items-center justify-center focus:outline-none">
+    <div className="w-screen h-screen p-6 bg-gray-900 text-white flex items-center justify-center">
       <div className="w-full h-full p-6 flex flex-col md:flex-row gap-6">
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full md:w-1/2">
           <h1 className="text-3xl font-bold text-amber-500">Ask a Question</h1>

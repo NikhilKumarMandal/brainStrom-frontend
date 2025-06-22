@@ -1,5 +1,7 @@
 import React from 'react'
 import RichTextEditor from './RichTextEditor'
+import { Chip } from './Chip'
+// import Chip from './Chip'
 
 export default function QuestionCard({ title, description, courses }) {
   return (
@@ -12,7 +14,8 @@ export default function QuestionCard({ title, description, courses }) {
 
       <RichTextEditor content={description} readOnly />
 
-      <button
+      <Chip tag={courses} />
+      {/* <button
         onClick={(e) => {
           e.stopPropagation()
           alert('course')
@@ -20,7 +23,7 @@ export default function QuestionCard({ title, description, courses }) {
         className="mt-4 inline-block text-sm border border-amber-600 text-gray-300 px-3 py-1 rounded-lg transition-transform hover:scale-105 hover:text-amber-400 hover:border-amber-400 focus:outline-none"
       >
         {courses}
-      </button>
+      </button> */}
     </div>
   )
 }

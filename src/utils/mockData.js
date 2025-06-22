@@ -237,9 +237,19 @@ const mockUsers = [
 const mockMyTeam = {
   name: "Alpha Coders",
   description: "A passionate group of developers building open source tools.",
-  tags: ["React", "Node.js", "GraphQL", "Tailwind CSS"],
-  notice: "Team meeting scheduled on Friday at 5 PM. Be prepared with your weekly updates.",
-  members: mockUsers
+  skills: ["React", "Node.js", "GraphQL", "Tailwind CSS"],
+  notice: "<p>A passionate group of developers building open source tools.</p>",
+  members: mockUsers,
+  auditLogs: [
+    "Alice updated the noticeboard",
+    "Bob joined the team",
+    "Charlie was removed from the team",
+    "Dave updated team description",
+    "Dave updated team description",
+    "Dave updated team description",
+    "Dave updated team description",
+    "Dave updated team description",
+  ]
 }
 
 export {

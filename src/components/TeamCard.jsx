@@ -1,5 +1,6 @@
 import React from 'react';
 import useNavigation from '../utils/navigation';
+import { Chip } from './Chip';
 
 export default function TeamCard({ team }) {
 
@@ -14,12 +15,7 @@ export default function TeamCard({ team }) {
       <div>
         <div className="flex flex-wrap gap-1 mb-2">
           {team?.skills?.map((tag, i) => (
-            <span
-              key={i}
-              className="text-xs bg-gray-700 text-gray-300 px-2 py-0.5 rounded"
-            >
-              {tag}
-            </span>
+            <Chip key={i} tag={tag} />
           ))}
         </div>
         <div className="flex items-center justify-between text-sm text-gray-300 mb-4">
