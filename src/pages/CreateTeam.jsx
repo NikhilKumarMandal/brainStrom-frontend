@@ -1,12 +1,35 @@
+import { useMutation } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
+import { createTeam } from '../http/api'
+import CourseSelector from '../components/CourseSelector'
 
-export default function CreateTeam () {
+export default function CreateTeam() {
   const [teamName, setTeamName] = useState('')
   const [description, setDescription] = useState('')
   const [newSkill, setNewSkill] = useState('')
   const [skills, setSkills] = useState([])
+  const [course, setCourse] = useState('')
+  const [showErrors, setShowErrors] = useState(false)
   const [openLimitModal, setOpenLimitModal] = useState(false)
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (teamData) => {
+      const { data } = await createTeam(teamData) // ensure this sends JSON
+      return data
+    },
+    onSuccess: () => {
+      alert('Team created!')
+      setTeamName('')
+      setDescription('')
+      setSkills([])
+      setNewSkill('')
+      setCourse('')
+    },
+    onError: () => {
+      alert('Failed to create team')
+    },
+  })
 
   const addSkill = () => {
     const trimmed = newSkill.trim()
@@ -25,21 +48,31 @@ export default function CreateTeam () {
     setSkills(skills.filter(skill => skill !== skillToRemove))
   }
 
-  const handleCreate = () => {
-    if (!teamName || !description) return alert("Team name and description are required.")
-    console.log({ name: teamName, description, skills })
-    alert("Team created!")
-    setTeamName('')
-    setDescription('')
-    setSkills([])
-    setNewSkill('')
+  const handleCreate = (e) => {
+    e.preventDefault()
+    setShowErrors(true)
+
+    if (!teamName || !description || !course) {
+      alert('Team name, description, and course are required.')
+      return
+    }
+
+    const teamData = {
+      name: teamName,
+      description,
+      course,
+      skills,
+    }
+
+    console.log('Submitting:', teamData)
+    mutate(teamData)
   }
 
   return (
     <div className="min-h-screen w-full bg-gray-900 text-white p-6 flex flex-col items-center justify-center gap-6 text-center">
       <h1 className="text-3xl font-bold">Create a New Team</h1>
 
-      <div className="w-full max-w-lg flex flex-col gap-4 bg-gray-800 p-6 rounded-lg shadow-lg ">
+      <div className="w-full max-w-lg flex flex-col gap-4 bg-gray-800 p-6 rounded-lg shadow-lg">
         <input
           type="text"
           value={teamName}
@@ -47,6 +80,8 @@ export default function CreateTeam () {
           placeholder="Team Name"
           className="px-4 py-2 bg-gray-700 rounded text-white border border-gray-600 focus:outline-none focus:ring-1 focus:ring-amber-600 hover:border-amber-600"
         />
+
+        <CourseSelector course={course} setCourse={setCourse} showError={showErrors} showHint={false} />
 
         <textarea
           value={description}
@@ -89,16 +124,16 @@ export default function CreateTeam () {
                   <IoIosCloseCircleOutline className="text-xl" />
                 </button>
               </span>
-
             ))}
           </div>
         </div>
 
         <button
           onClick={handleCreate}
-          className="mt-4 px-4 py-2 rounded-md border text-sm transition border-amber-700 text-white hover:bg-amber-800 hover:border-amber-500 focus:outline-none"
+          disabled={isPending}
+          className="mt-4 px-4 py-2 rounded-md border text-sm transition border-amber-700 text-white hover:bg-amber-800 hover:border-amber-500 focus:outline-none disabled:opacity-50"
         >
-          Create Team
+          {isPending ? 'Creating...' : 'Create Team'}
         </button>
       </div>
 

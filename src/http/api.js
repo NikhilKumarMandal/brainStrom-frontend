@@ -21,7 +21,14 @@ export const getAllDiscussion = (id) => api.get(`/discussion/getAllDiscussion/${
 export const getTopDiscussion = (id) => api.get(`/discussion/getTopDiscussion/${id}`);
 
 // vote service
-export const vote = (id, type) => api.post(`/vote/${id}`, { type }) 
+export const vote = (id, type) => api.post(`/vote/${id}`, { type });
 
 // Team service
 export const getAllTeam = () => api.get("/team/getAllTeam");
+
+export const createTeam = (formData) => api.post("/team/", formData);
+
+/* formData = { name, description, skills, course }
+
+
+*/
