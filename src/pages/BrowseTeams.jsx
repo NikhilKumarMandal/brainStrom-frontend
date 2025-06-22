@@ -5,26 +5,26 @@ import { useQuery } from '@tanstack/react-query';
 import { getAllTeam } from '../http/api';
 
 
-const getTeams = async () => {
+async function getTeams() {
   const { data } = await getAllTeam().then((res) => res.data);
-  return data;
+  return data; 
 }
 
-const BrowseTeams = () => {
+export default function BrowseTeams() {
   const [category, setCategory] = useState('')
   const allTeams = mockTeams
   const filteredTeams = category
     ? allTeams.filter(team => team.category === category)
     : allTeams
-  
-  
-  const { data:allTeamData} = useQuery({
+
+
+  const { data: allTeamData } = useQuery({
     queryKey: ["team"],
     queryFn: getTeams,
   })
 
   console.log(allTeamData);
-  
+
 
   return (
     <div className="min-h-screen w-full overflow-y-auto bg-gray-900 text-white p-6 box-border">
@@ -52,7 +52,5 @@ const BrowseTeams = () => {
         ))}
       </div>
     </div>
-  );
-};
-
-export default BrowseTeams;
+  )
+}

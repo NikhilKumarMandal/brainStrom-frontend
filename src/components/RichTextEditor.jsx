@@ -8,7 +8,7 @@ import { FaCode } from 'react-icons/fa6'
 import { FaBold, FaItalic } from 'react-icons/fa'
 import { ImUnderline } from 'react-icons/im'
 
-export default function RichTextEditor({ content = '', onChange, readOnly = false, height = '90%' }) {
+export default function RichTextEditor({ content = '', onChange, readOnly = false, height = '90%', padding = 'p-4' }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false, heading: false }),
@@ -80,7 +80,7 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
       )}
 
       {/* Editor Content */}
-      <div className={`flex-1 overflow-y-auto p-4 text-base text-gray-200 leading-relaxed ${readOnly ? '' : 'min-h-[200px]'} `}>
+      <div className={`flex-1 overflow-y-auto ${padding} text-base text-gray-200 leading-relaxed ${readOnly ? '' : 'min-h-[200px]'} `}>
         <EditorContent
           editor={editor}
           spellCheck={false}

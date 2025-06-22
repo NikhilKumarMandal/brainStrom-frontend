@@ -37,7 +37,7 @@ export default function AnswerCard({ answer }) {
         <div className="flex items-center gap-4">
           <button
             onClick={() => handleVote('UPVOTE')}
-            className={`flex items-center gap-1 cursor-pointer hover:border-none hover:scale-90 focus:outline-none focus:ring-0 ${userVote === 'UPVOTE' ? 'text-amber-400' : ''}`}
+            className={`flex items-center gap-1 cursor-pointer hover:border-none hover:scale-90 focus:outline-none focus:ring-0 ${userVote === 'UPVOTE' ? 'text-green-500' : ''}`}
           >
             {userVote === 'UPVOTE' ? (
               <BiSolidUpvote />
@@ -49,7 +49,7 @@ export default function AnswerCard({ answer }) {
 
           <button
             onClick={() => handleVote('DOWNVOTE')}
-            className={`flex items-center gap-1 cursor-pointer hover:border-none hover:scale-90 focus:outline-none focus:ring-0 ${userVote === 'DOWNVOTE' ? 'text-amber-400' : ''}`}
+            className={`flex items-center gap-1 cursor-pointer hover:border-none hover:scale-90 focus:outline-none focus:ring-0 ${userVote === 'DOWNVOTE' ? 'text-red-500' : ''}`}
           >
             {userVote === 'DOWNVOTE' ? (
               <BiSolidDownvote />

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Chip } from '../components/Chip'
 
 export default function TeamDetails() {
   const [showDialog, setShowDialog] = useState(false)
@@ -40,12 +41,7 @@ export default function TeamDetails() {
 
           <div className="flex flex-wrap gap-2">
             {['Web Dev', 'React', 'Open Source'].map(tag => (
-              <span
-                key={tag}
-                className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-sm"
-              >
-                {tag}
-              </span>
+              <Chip key={tag} tag={tag} />
             ))}
           </div>
 

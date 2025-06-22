@@ -2,22 +2,23 @@ import React from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getAllTicket } from '../http/api'
 import useNavigation from '../utils/navigation'
+import { Chip, StatusChip } from './Chip'
 
 const getAllTickets = async () => {
   const { data } = await getAllTicket()
   return data
 }
 
-const Chip = ({ label, colorClass = '', borderClass = '', onClick }) => (
-  <span
-    onClick={onClick}
-    className={`text-xs px-2 py-0.5 rounded-full text-gray-400 border font-semibold select-none transition-transform ${colorClass} ${borderClass} ${
-      onClick ? 'hover:scale-110 cursor-pointer' : ''
-    }`}
-  >
-    {label}
-  </span>
-)
+// const Chip = ({ label, colorClass = '', borderClass = '', onClick }) => (
+//   <span
+//     onClick={onClick}
+//     className={`text-xs px-2 py-0.5 rounded-full text-gray-400 border font-semibold select-none transition-transform ${colorClass} ${borderClass} ${
+//       onClick ? 'hover:scale-110 cursor-pointer' : ''
+//     }`}
+//   >
+//     {label}
+//   </span>
+// )
 
 export default function QuestionList() {
   const { data: allTickets } = useQuery({
@@ -66,20 +67,12 @@ function EachQuestion({ q, i, questionsLength }) {
 
       {/* Right Side: Chips */}
       <div className="flex flex-col items-end space-y-2">
-        <Chip
+        <StatusChip
           label={isOpen ? 'Open' : 'Closed'}
           colorClass={isOpen ? 'text-green-400' : 'text-red-500'}
           borderClass={isOpen ? 'border-green-400' : 'border-red-500'}
         />
-        <Chip
-          label={q.courses}
-          colorClass="text-gray-300"
-          borderClass="border-gray-600"
-          onClick={(e) => {
-            e.stopPropagation()
-            alert('course')
-          }}
-        />
+        <Chip tag={q.courses} />
       </div>
     </div>
   )
