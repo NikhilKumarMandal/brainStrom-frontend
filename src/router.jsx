@@ -12,6 +12,7 @@ import DumpCSV from "./pages/DumpCSV";
 import SupAdminDashboard from "./pages/Dashboard";
 import MyTeam from "./pages/MyTeam";
 import CreateTeam from "./pages/CreateTeam";
+import UserProfile from "./pages/UserProfile";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +34,14 @@ export const router = createBrowserRouter([
             {
               path: "problem/:id",
               element: <ProblemPage />,
+            },
+            {
+              path: "profile",
+              element: <UserProfile />,
+            },
+            {
+              path: "dump-csv",
+              element: <DumpCSV />,
             },
             {
               path: "browse-teams",

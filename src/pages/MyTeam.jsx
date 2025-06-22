@@ -89,7 +89,9 @@ export default function MyTeam() {
         </span>
       </div>
 
-      <AuditLogCard auditLogs={team.auditLogs} />
+      <div className="absolute right-6 bottom-6 w-1/3 h-[34%]">
+        <AuditLogCard auditLogs={team.auditLogs} className="w-full h-full" />
+      </div>
 
       {openModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
