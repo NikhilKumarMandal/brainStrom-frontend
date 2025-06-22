@@ -241,14 +241,38 @@ const mockMyTeam = {
   notice: "<p>A passionate group of developers building open source tools.</p>",
   members: mockUsers,
   auditLogs: [
-    "Alice updated the noticeboard",
-    "Bob joined the team",
-    "Charlie was removed from the team",
-    "Dave updated team description",
-    "Dave updated team description",
-    "Dave updated team description",
-    "Dave updated team description",
-    "Dave updated team description",
+    {
+      message: "Alice updated the noticeboard",
+      timestamp: "2025-06-22T10:00:00Z"
+    },
+    {
+      message: "Bob joined the team",
+      timestamp: "2025-06-21T17:30:00Z"
+    },
+    {
+      message: "Charlie was removed from the team",
+      timestamp: "2025-06-21T16:45:00Z"
+    },
+    {
+      message: "Dave updated team description",
+      timestamp: "2025-06-20T12:00:00Z"
+    },
+    {
+      message: "Dave updated team description",
+      timestamp: "2025-06-20T12:01:00Z"
+    },
+    {
+      message: "Dave updated team description",
+      timestamp: "2025-06-20T12:02:00Z"
+    },
+    {
+      message: "Dave updated team description",
+      timestamp: "2025-06-20T12:03:00Z"
+    },
+    {
+      message: "Dave updated team description",
+      timestamp: "2025-06-20T12:04:00Z"
+    }
   ]
 }
 
