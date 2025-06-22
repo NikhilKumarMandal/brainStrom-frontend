@@ -68,7 +68,7 @@ export default function AskQuestion() {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
+            placeholder="Title *"
             required
             className="bg-gray-900 border rounded-lg border-gray-600 p-3 w-full focus:outline-none focus:ring-1 focus:ring-amber-600 hover:border-amber-600"
           />
@@ -89,9 +89,9 @@ export default function AskQuestion() {
                 <button
                   type="button"
                   onClick={() => setImages((prev) => prev.filter((_, i) => i !== idx))}
-                  className="absolute top-0 right-0 bg-transparent rounded-full p-0 hover:bg-gray-600"
+                  className="absolute top-0 right-0 bg-black rounded-full p-0 border-none hover:scale-125 transition focus:outline-none"
                 >
-                  <TiDelete className="text-lg" />
+                  <TiDelete className="text-lg text-red-500" />
                 </button>
 
                 <img src={URL.createObjectURL(img)} alt={`preview-${idx}`} className="w-full h-full object-cover" />

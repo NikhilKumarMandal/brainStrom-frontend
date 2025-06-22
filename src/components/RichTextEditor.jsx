@@ -32,7 +32,7 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
   if (!editor) return null
 
   const iconColor = (isActive) =>
-    isActive ? 'text-amber-500' : 'text-gray-400 hover:text-gray-200'
+    isActive ? 'text-amber-500' : 'text-gray-400 hover:text-gray-100'
 
   const toggleCommand = (type) => {
     switch (type) {
@@ -70,7 +70,7 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
             <button
               key={i}
               onClick={() => toggleCommand(type)}
-              className="outline-none focus:outline-none bg-transparent p-1"
+              className="focus:outline-none bg-transparent p-1 hover:border-amber-500 "
               type="button"
             >
               <Icon size={20} className={iconColor(editor.isActive(type))} />

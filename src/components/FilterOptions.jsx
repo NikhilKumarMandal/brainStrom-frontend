@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { mockCourses } from '../utils/mockData'
+import { FaChevronRight, FaChevronDown } from 'react-icons/fa6'
 
 export default function FilterOptions({ courses = mockCourses }) {
   const [showMainMenu, setShowMainMenu] = useState(false)
@@ -55,36 +56,36 @@ export default function FilterOptions({ courses = mockCourses }) {
   return (
     <div className="w-[90%] flex justify-between items-center self-center">
       <h2 className="text-2xl font-bold text-gray-300 flex items-center gap-2">
-        Questions <span className="text-sm">▶</span>
+        Questions <FaChevronRight className="text-lg" />
       </h2>
 
       <button
         onClick={openMainMenu}
-        className="px-4 py-1 text-sm border rounded-full text-amber-400 border-amber-400 hover:bg-amber-900 hover:border-none transition"
+        className="flex items-center gap-2 py-1 text-sm rounded-full text-amber-400 border-amber-400 hover:bg-amber-900 hover:border-amber-400 focus:outline-none transition"
       >
-        Sort By ▼
+        Sort By <FaChevronDown />
       </button>
 
       {/* Main Menu */}
       {showMainMenu && (
         <div
-          className="absolute z-50 bg-gray-800 text-white rounded-md shadow-md min-w-[140px] overflow-hidden"
+          className="absolute z-50 bg-gray-800 text-white rounded-lg shadow-md min-w-[100px] overflow-hidden"
           style={{ top: mainMenuPos.y, left: mainMenuPos.x }}
         >
           <button
             ref={hardnessRef}
             onClick={() => openSubmenu('Hardness', hardnessRef)}
-            className="w-full text-left px-4 py-2 hover:bg-gray-800 flex justify-between rounded-none"
+            className="w-full text-left px-4 py-2 hover:bg-gray-800 flex rounded-none items-center gap-2 border-none focus:outline-none"
           >
-            Hardness <span>›</span>
+            Hardness <FaChevronRight className="text-sm" />
           </button>
           <div className="border-t border-gray-700" />
           <button
             ref={coursesRef}
             onClick={() => openSubmenu('Courses', coursesRef)}
-            className="w-full text-left px-4 py-2 hover:bg-gray-800 flex justify-between rounded-none"
+            className="w-full text-left px-4 py-2 hover:bg-gray-800 flex rounded-none items-center gap-2 border-none focus:outline-none"
           >
-            Courses <span>›</span>
+            Courses <FaChevronRight className="text-sm" />
           </button>
         </div>
       )}
@@ -100,7 +101,7 @@ export default function FilterOptions({ courses = mockCourses }) {
               <React.Fragment key={level}>
                 <button
                   onClick={() => handleSortOptionClick('Hardness', level)}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-800 rounded-none"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-800 rounded-none border-none focus:outline-none"
                 >
                   {level}
                 </button>
@@ -114,7 +115,7 @@ export default function FilterOptions({ courses = mockCourses }) {
                 <React.Fragment key={course}>
                   <button
                     onClick={() => handleSortOptionClick('Course', course)}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-800 rounded-none"
+                    className="w-full text-left px-4 py-2 hover:bg-gray-800 rounded-none border-none focus:outline-none"
                   >
                     {course}
                   </button>
