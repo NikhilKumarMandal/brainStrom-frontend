@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { Chip } from '../components/Chip'
 import { useParams } from 'react-router-dom'
-import { getTeamById, requestJoinTeam } from '../http/api'
+import { getTeamById, getTeamRequests, requestJoinTeam } from '../http/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import useNavigation from '../utils/navigation'
 
 async function getTeamDetails(teamId) {
   const { data } = await getTeamById(teamId).then((res) => res.data).catch((err) => console.log(err))
+  // getTeamRequests(teamId).then(console.log).catch(console.error)
   return data
 }
 
@@ -53,7 +54,7 @@ export default function TeamDetails() {
     setDescription('')
   }
 
-
+  console.log(team)
   if (isLoading)
     return (
       <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
@@ -74,15 +75,15 @@ export default function TeamDetails() {
 
       {/* Centered Card Container */}
       <div className="flex items-center justify-center min-h-screen px-4">
-        <div className="bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-2xl space-y-6">
+        <div className="bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-2xl space-y-4">
           
           <h1 className="text-3xl font-bold text-gray-200">{team?.name}</h1>
-
-          <p className="text-lg text-gray-400">Leader: {team?.leader?.name}</p>
 
           <p className="text-gray-400">
             {team?.description}
           </p>
+
+          <p className="text-sm text-gray-200">Leader: {team?.leader?.name}</p>
 
           <div className="flex flex-wrap gap-2">
             {team?.skills?.map(skill => (
@@ -92,7 +93,7 @@ export default function TeamDetails() {
 
           <button
             onClick={() => setShowDialog(true)}
-            className="w-full py-2 rounded-md border text-sm transition border-gray-500 text-white hover:bg-gray-700"
+            className="w-full py-2 rounded-md border text-sm transition border-amber-500 text-white hover:bg-amber-700 focus:outline-none hover:border-amber-400"
           >
             Request to Join
           </button>

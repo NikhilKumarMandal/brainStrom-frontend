@@ -31,3 +31,12 @@ export const createTeam = (formData) => api.post("/team/", formData);
 export const requestJoinTeam = (teamId, description) => api.post(`/team/request`, { teamId, description });
 
 export const getTeamById = (teamId) => api.get(`/team/${teamId}`);
+
+export const getTeamRequests = (teamId) => api.get(`/team/${teamId}/requests`);
+
+export const respondRequest = (requestId, accept) => api.post(`/team/response`, { requestId, accept });
+// accept = "accepted" : "rejected"
+
+export const disbanGroup = (teamId, reason) => api.delete(`/team/${teamId}/disband`, { reason });
+
+export const kickMember = (teamId, userId, reason) => api.post(`/team/${teamId}/kick/${userId}`, { reason });

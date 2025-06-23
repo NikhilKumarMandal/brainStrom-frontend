@@ -1,35 +1,79 @@
 import React, { useState, useEffect, useRef } from 'react'
 import RichTextEditor from '../components/RichTextEditor'
-import { mockMyTeam } from '../utils/mockData'
 import { Chip } from '../components/Chip'
-import { IoIosNotificationsOutline } from 'react-icons/io'
-import { CgClose } from 'react-icons/cg'
 import AuditLogCard from '../components/AuditLogCard'
 import TeamMemberDetails from '../components/TeamMemberDetails'
 import TeamHeader from '../components/TeamHeader'
-import { EditNoticeModal, MembersModal } from '../components/MyTeamModels'
-// import NoticeBoard from '../components/NoticeBoard'
+import { EditNoticeModal, JoinRequestsModal, MembersModal } from '../components/MyTeamModels'
+import { getTeamById, getTeamRequests, respondRequest } from '../http/api'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useAuthStore } from '../store/store'
+
+async function getTeamDetails(teamId) {
+  const { data } = await getTeamById(teamId)
+  return data.data
+}
 
 export default function MyTeam() {
-  const role = 'leader'
-  const [openModal, setOpenModal] = useState(null) // 'notice' | 'edit' | 'members'
+  const [openModal, setOpenModal] = useState(null)
   const [dropdownOpenIndex, setDropdownOpenIndex] = useState(null)
   const dropdownRef = useRef(null)
+  const { user } = useAuthStore()
 
-  const team = mockMyTeam
+  const teamId = 'f0d90e1c-3207-478e-97cf-4965a70d0101'
 
-  function onNotificationClick() { alert('Notification clicked') }
-  function toggleDropdown(index) { setDropdownOpenIndex(prev => (prev === index ? null : index)) }
-  function handleSeeProfile(member) { alert(`Viewing profile of ${member.name}`) }
-  function handleKick(member) { alert(`Kicked ${member.name}`) }
+  const { data: team, isLoading } = useQuery({
+    queryKey: [teamId],
+    queryFn: () => getTeamDetails(teamId),
+  })
 
-  // Detect click outside dropdown
+  const { data: joinRequests = [], refetch: refetchRequests } = useQuery({
+    queryKey: ['joinRequests', teamId],
+    queryFn: async () => {
+      const res = await getTeamRequests(teamId);
+      return res.data.data; // ✅ this gives you the array
+    },
+    enabled: !!teamId,
+  });
+  
+
+  const respondMutation = useMutation({
+    mutationFn: ({ requestId, accept }) => respondRequest(requestId, accept),
+    onSuccess: () => {
+      refetchRequests()
+    },
+    onError: () => {
+      alert('Failed to respond to request')
+    }
+  })
+
+  const handleAccept = (requestId) => {
+    respondMutation.mutate({ requestId, accept: 'accepted' })
+  }
+
+  const handleReject = (requestId) => {
+    respondMutation.mutate({ requestId, accept: 'rejected' })
+  }
+
+  function onNotificationClick() {
+    setOpenModal('notifications')
+  }
+
+  function toggleDropdown(index) {
+    setDropdownOpenIndex((prev) => (prev === index ? null : index))
+  }
+
+  function handleSeeProfile(member) {
+    alert(`Viewing profile of ${member.name}`)
+  }
+
+  function handleKick(member) {
+    alert(`Kicked ${member.name}`)
+  }
+
   useEffect(() => {
     function handleClickOutside(event) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpenIndex(null)
       }
     }
@@ -43,18 +87,28 @@ export default function MyTeam() {
     }
   }, [dropdownOpenIndex])
 
+  const isLeader = user.id == team?.leaderId
+
+  if (isLoading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
+        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
+        Loading...
+      </div>
+    )
+
   return (
     <div className="min-h-screen w-full bg-gray-900 text-white p-6 flex flex-col gap-6 overflow-y-auto">
 
       {/* NoticeBoard */}
       <div className="w-full min-h-[50%] bg-gray-800 p-6 rounded-lg shadow-2xl flex items-center justify-center">
         <h2 className="text-2xl font-bold absolute top-6">Noticeboard :</h2>
-        <RichTextEditor content={team.notice} readOnly height="90%" />
+        <RichTextEditor content={team?.notice} readOnly height="90%" />
       </div>
 
       <TeamHeader
         name={team.name}
-        role={role}
+        isLeader={isLeader}
         onEditClick={() => setOpenModal('edit')}
         onNotifyClick={onNotificationClick}
       />
@@ -75,7 +129,7 @@ export default function MyTeam() {
         </h2>
 
         <span className="flex flex-wrap gap-4">
-          {team.members.map((m, i) => (
+          {team?.members?.map((m, i) => (
             <TeamMemberDetails
               key={i}
               member={m}
@@ -98,7 +152,9 @@ export default function MyTeam() {
           {openModal === 'edit' && (
             <EditNoticeModal
               content={team.notice}
-              onUpdate={() => { alert('to be handled') }}
+              onUpdate={() => {
+                alert('to be handled')
+              }}
               onClose={() => setOpenModal(null)}
             />
           )}
@@ -106,6 +162,15 @@ export default function MyTeam() {
           {openModal === 'members' && (
             <MembersModal
               members={team.members}
+              onClose={() => setOpenModal(null)}
+            />
+          )}
+
+          {openModal === 'notifications' && (
+            <JoinRequestsModal
+              joinRequests={joinRequests}
+              onAccept={handleAccept}
+              onReject={handleReject}
               onClose={() => setOpenModal(null)}
             />
           )}
