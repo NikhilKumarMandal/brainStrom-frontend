@@ -4,7 +4,7 @@ import { Chip } from '../components/Chip'
 import AuditLogCard from '../components/AuditLogCard'
 import TeamMemberDetails from '../components/TeamMemberDetails'
 import { DisbandConfirm, EditNoticeModal, JoinRequestsModal, MembersModal } from '../components/MyTeamModels'
-import { disbandTeam, getTeamById, getTeamRequests, respondRequest } from '../http/api'
+import { disbandTeam, getTeamById, getTeamRequests, kickMember, respondRequest } from '../http/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useAuthStore } from '../store/store'
 
@@ -104,7 +104,7 @@ export default function MyTeam() {
 
   return (
     <div className="min-h-screen w-full bg-gray-900 text-white p-6 flex flex-col gap-4 overflow-y-auto">
-      
+
       {/* Team Name and Leader Controls */}
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">{team.name}</h1>
@@ -133,7 +133,7 @@ export default function MyTeam() {
         <RichTextEditor content={team?.notice} readOnly height="90%" />
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 w-[50%]">
         {team.skills.map((tag, i) => (
           <Chip key={i} tag={tag} />
         ))}
@@ -147,6 +147,20 @@ export default function MyTeam() {
         >
           Members:
         </h2>
+
+        {/* <button
+          onClick={() =>
+            kickMember(teamId, 'd439322f-5d83-4174-bc00-3c869e0de71b', 'Testing kick functionality')
+              .then(() => alert('Kick API success'))
+              .catch((err) => {
+                console.error('Kick error:', err)
+                alert('Kick failed')
+              })
+          }
+          className="text-sm w-fit px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black rounded-md mt-4"
+        >
+          Test Kick Member
+        </button> */}
 
         <span className="flex flex-wrap gap-4">
           {team?.members?.map((m, i) => (

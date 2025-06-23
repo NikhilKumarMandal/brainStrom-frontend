@@ -9,7 +9,6 @@ export default function useNavigation() {
   const gotoAskQuestion = () => navigate('/ask-questions')
   const gotoHomePage = () => navigate('/home')
   const gotoProblemPage = (problemId) => navigate(`/problem/${problemId}`)
-  const gotoTeamDetails = (teamId) => navigate(`/team-details/${teamId}`)
   const gotoBrowseTeams = () => navigate('/browse-teams')
   const gotoMyTeam = () => navigate('/my-team')
   const gotoUserProfile = (userId) => navigate('/profile')
@@ -20,7 +19,6 @@ export default function useNavigation() {
     gotoAskQuestion,
     gotoHomePage,
     gotoProblemPage,
-    gotoTeamDetails,
     gotoBrowseTeams,
     gotoMyTeam,
     gotoUserProfile

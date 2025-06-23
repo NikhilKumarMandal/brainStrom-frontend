@@ -3,7 +3,6 @@ import TeamCard from '../components/TeamCard';
 import { mockTeams } from '../utils/mockData';
 import { useQuery } from '@tanstack/react-query';
 import { getAllTeam } from '../http/api';
-import { FaChevronDown } from "react-icons/fa6";
 import CourseSelector from '../components/CourseSelector';
 
 async function getTeams() {
@@ -38,18 +37,6 @@ export default function BrowseTeams() {
         />
         <div className="relative inline-block w-[150px]">
           <CourseSelector course={course} setCourse={setCourse} showError={false} showHint={false} />
-          {/* <select
-            onChange={(e) => setCategory(e.target.value)}
-            className="appearance-none w-full px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-700 focus:outline-none"
-          >
-            <option value="">All</option>
-            <option value="tech">Tech</option>
-            <option value="design">Design</option>
-          </select>
-
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
-            <FaChevronDown className="text-md" />
-          </div> */}
         </div>
 
       </div>
