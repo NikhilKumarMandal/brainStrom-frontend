@@ -28,7 +28,6 @@ export const getAllTeam = () => api.get("/team/getAllTeam");
 
 export const createTeam = (formData) => api.post("/team/", formData);
 
-/* formData = { name, description, skills, course }
+export const requestJoinTeam = (teamId, description) => api.post(`/team/request`, { teamId, description });
 
-
-*/
+export const getTeamById = (teamId) => api.get(`/team/${teamId}`);

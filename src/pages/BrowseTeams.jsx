@@ -4,6 +4,7 @@ import { mockTeams } from '../utils/mockData';
 import { useQuery } from '@tanstack/react-query';
 import { getAllTeam } from '../http/api';
 import { FaChevronDown } from "react-icons/fa6";
+import CourseSelector from '../components/CourseSelector';
 
 async function getTeams() {
   const { data } = await getAllTeam().then((res) => res.data);
@@ -12,11 +13,11 @@ async function getTeams() {
 
 export default function BrowseTeams() {
   const allTeams = mockTeams
-  const [category, setCategory] = useState('')
+  const [course, setCourse] = useState('')
   
-  const filteredTeams = category
-    ? allTeams.filter(team => team.category === category)
-    : allTeams
+  // const filteredTeams = category
+  //   ? allTeams.filter(team => team.category === category)
+  //   : allTeams
 
   const { data: allTeamData } = useQuery({
     queryKey: ["team"],
@@ -35,8 +36,9 @@ export default function BrowseTeams() {
           placeholder="Search teams"
           className="flex-1 px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-amber-500"
         />
-        <div className="relative inline-block w-[100px]">
-          <select
+        <div className="relative inline-block w-[150px]">
+          <CourseSelector course={course} setCourse={setCourse} showError={false} showHint={false} />
+          {/* <select
             onChange={(e) => setCategory(e.target.value)}
             className="appearance-none w-full px-4 py-2 rounded-md bg-gray-800 text-white border border-gray-700 focus:outline-none"
           >
@@ -47,7 +49,7 @@ export default function BrowseTeams() {
 
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
             <FaChevronDown className="text-md" />
-          </div>
+          </div> */}
         </div>
 
       </div>

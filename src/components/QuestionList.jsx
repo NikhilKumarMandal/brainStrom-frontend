@@ -9,17 +9,6 @@ const getAllTickets = async () => {
   return data
 }
 
-// const Chip = ({ label, colorClass = '', borderClass = '', onClick }) => (
-//   <span
-//     onClick={onClick}
-//     className={`text-xs px-2 py-0.5 rounded-full text-gray-400 border font-semibold select-none transition-transform ${colorClass} ${borderClass} ${
-//       onClick ? 'hover:scale-110 cursor-pointer' : ''
-//     }`}
-//   >
-//     {label}
-//   </span>
-// )
-
 export default function QuestionList() {
   const { data: allTickets } = useQuery({
     queryKey: ['tickets'],
