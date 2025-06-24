@@ -14,7 +14,6 @@ export default function TeamCard({ team, role = null, onClick = null }) {
   const [description, setDescription] = useState('')
 
   const teamId = team.id
-  const { gotoHomePage } = useNavigation()
 
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ teamId, description }) => {
@@ -24,7 +23,6 @@ export default function TeamCard({ team, role = null, onClick = null }) {
     },
     onSuccess: () => {
       alert('Submitted')
-      gotoHomePage()
     },
     onError: () => {
       alert('Failed to submit ticket')

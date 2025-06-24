@@ -62,7 +62,7 @@ export function MembersModal({ members, onClose }) {
 
 export function JoinRequestsModal({ joinRequests, onHandleRequest, onClose }) {
   console.log('joinRequests', joinRequests);
-  
+
   return (
     <div className="bg-gray-800 px-6 pt-4 pb-12 rounded-lg shadow-lg w-full max-w-md h-3/4 relative">
       <button
@@ -82,13 +82,13 @@ export function JoinRequestsModal({ joinRequests, onHandleRequest, onClose }) {
               <div className="flex gap-2">
                 <button
                   className="bg-green-600 px-3 py-1 rounded-md text-sm hover:bg-green-500"
-                  onClick={() => {onHandleRequest(req.id, "ACCEPTED"); console.log('accepted')}}
+                  onClick={() => { onHandleRequest(req.id, "ACCEPTED"); console.log('accepted') }}
                 >
                   Accept
                 </button>
                 <button
                   className="bg-red-600 px-3 py-1 rounded-md text-sm hover:bg-red-500"
-                  onClick={() => {onHandleRequest(req.id, "REJECTED"); console.log('rejected')}}
+                  onClick={() => { onHandleRequest(req.id, "REJECTED"); console.log('rejected') }}
                 >
                   Reject
                 </button>
@@ -104,7 +104,7 @@ export function JoinRequestsModal({ joinRequests, onHandleRequest, onClose }) {
   )
 }
 
-export function DisbandConfirm({ teamId, setShowDisbandConfirm, disbandReason, setDisbandReason, disbandMutation }) {
+export function DisbandConfirm({ teamId, onCancel, disbandReason, setDisbandReason, disbandMutation }) {
   return (
     <div className="bg-gray-800 px-6 py-6 rounded-lg shadow-xl w-full max-w-md">
       <h3 className="text-xl font-bold text-red-500 mb-4">Are you sure you want to disband the team?</h3>
@@ -120,7 +120,7 @@ export function DisbandConfirm({ teamId, setShowDisbandConfirm, disbandReason, s
       <div className="flex justify-end gap-3">
         <button
           className="text-sm px-4 py-1 bg-gray-700 hover:bg-gray-600 rounded-md"
-          onClick={() => setShowDisbandConfirm(false)}
+          onClick={onCancel}
         >
           Cancel
         </button>
@@ -131,6 +131,36 @@ export function DisbandConfirm({ teamId, setShowDisbandConfirm, disbandReason, s
         >
           {disbandMutation.isPending ? 'Disbanding...' : 'Confirm Disband'}
         </button>
+      </div>
+    </div>
+  )
+}
+
+export function KickMemberModal({ kickReason, setKickReason, onCancel, onConfirm }) {
+  return (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+      <div className="bg-gray-800 rounded-lg p-6 w-full max-w-sm space-y-4 text-white">
+        <h2 className="text-lg font-semibold text-red-400">Reason for kicking member</h2>
+        <textarea
+          value={kickReason}
+          onChange={(e) => setKickReason(e.target.value)}
+          placeholder="Enter reason..."
+          className="w-full h-24 p-2 bg-gray-700 rounded focus:outline-none placeholder-gray-400"
+        />
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={onCancel}
+            className="px-4 py-2 border bg-gray-700 border-gray-600 rounded-lg text-gray-300 hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            className="px-4 py-2 border border-red-500 bg-red-600 hover:bg-red-500 text-white rounded-lg"
+          >
+            Confirm Kick
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -48,7 +48,7 @@ export const router = createBrowserRouter([
               element: <BrowseTeams />,
             },
             {
-              path: "my-teams/:id",
+              path: "my-teams/:teamId",
               element: <MyTeam />,
             },
             {
