@@ -9,24 +9,13 @@ const getAllTickets = async () => {
   return data
 }
 
-// const Chip = ({ label, colorClass = '', borderClass = '', onClick }) => (
-//   <span
-//     onClick={onClick}
-//     className={`text-xs px-2 py-0.5 rounded-full text-gray-400 border font-semibold select-none transition-transform ${colorClass} ${borderClass} ${
-//       onClick ? 'hover:scale-110 cursor-pointer' : ''
-//     }`}
-//   >
-//     {label}
-//   </span>
-// )
-
 export default function QuestionList() {
-  const { data: allTickets } = useQuery({
+  const { data: allTickets, isLoading } = useQuery({
     queryKey: ['tickets'],
     queryFn: getAllTickets,
   })
 
-  if (!allTickets)
+  if (isLoading)
     return (
       <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
         <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin"></div>

@@ -5,7 +5,6 @@ import Dashboard from "./Layouts/Dashboard";
 import LoginPage from "./login/LoginPage";
 import ProblemPage from "./pages/ProblemPage";
 import BrowseTeams from "./pages/BrowseTeams";
-import TeamDetails from "./pages/TeamDetails";
 import HomePage from "./pages/Homepage";
 import AskQuestion from "./pages/AskQuestion";
 import DumpCSV from "./pages/DumpCSV";
@@ -13,6 +12,7 @@ import SupAdminDashboard from "./pages/Dashboard";
 import MyTeam from "./pages/MyTeam";
 import CreateTeam from "./pages/CreateTeam";
 import UserProfile from "./pages/UserProfile";
+import MyTeams from "./pages/MyTeams";
 
 export const router = createBrowserRouter([
     {
@@ -48,12 +48,12 @@ export const router = createBrowserRouter([
               element: <BrowseTeams />,
             },
             {
-              path: "team-details",
-              element: <TeamDetails />,
+              path: "my-teams/:id",
+              element: <MyTeam />,
             },
             {
-              path: "my-team",
-              element: <MyTeam />,
+              path: "my-teams",
+              element: <MyTeams />,
             },
             {
               path: "create-team",

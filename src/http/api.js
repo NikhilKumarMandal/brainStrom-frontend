@@ -15,23 +15,29 @@ export const getAllTicket = () => api.get("/ticket/getAllTicket");
 export const getTicketById = (id) => api.get(`/ticket/getTicket/${id}`);
 
 export const createDiscussion = (formData) => api.post(`/discussion/createDiscussion`, formData);
-/*
-  formData = {
-    ticketId: ticketId,
-    content: content
-  }
-*/
 
 export const getAllDiscussion = (id) => api.get(`/discussion/getAllDiscussion/${id}`);
-// /getAllDiscussion/:ticketId
 
 export const getTopDiscussion = (id) => api.get(`/discussion/getTopDiscussion/${id}`);
 
 // vote service
-export const vote = (id, type) => api.post(`/vote/${id}`, { type }) 
-// type = "UPVOTE", "DOWNVOTE"
-
+export const vote = (id, type) => api.post(`/vote/${id}`, { type });
 
 // Team service
-
 export const getAllTeam = () => api.get("/team/getAllTeam");
+
+export const createTeam = (formData) => api.post("/team/", formData);
+
+export const requestJoinTeam = (teamId, description) => api.post(`/team/request`, { teamId, description });
+
+export const getTeamById = (teamId) => api.get(`/team/${teamId}`);
+
+export const getTeamRequests = (teamId) => api.get(`/team/${teamId}/requests`);
+
+export const respondRequest = (requestId, accept) => api.post(`/team/response`, { requestId, accept });
+
+export const disbandTeam = (teamId, reason) => api.delete(`/team/${teamId}/disband`, { data: { reason }, });
+
+export const kickMember = (teamId, userId, reason) => api.post(`/team/${teamId}/kick/${userId}`, { reason });
+
+export const getMyTeams = () => api.get("/team/getMyTeams");

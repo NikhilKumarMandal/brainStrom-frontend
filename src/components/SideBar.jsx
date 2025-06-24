@@ -4,7 +4,7 @@ import MenuOption from './MenuOption'
 
 export default function SideBar() {
   const location = window.location.pathname
-  const { gotoHomePage, gotoAskQuestion, gotoBrowseTeams, gotoMyTeam } = useNavigation()
+  const { gotoHomePage, gotoAskQuestion, gotoBrowseTeams, gotoMyTeams } = useNavigation()
 
   return (
     <div className="h-screen w-[20%] min-w-[200px] bg-gray-900 flex-none flex items-center">
@@ -24,8 +24,8 @@ export default function SideBar() {
           />
           <MenuOption
             title={"My Team"}
-            action={gotoMyTeam}
-            selected={location === '/my-team'}
+            action={gotoMyTeams}
+            selected={location === '/my-teams'}
           />
           <MenuOption
             title={"Browse Teams"}
