@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AuditLogCard from '../components/AuditLogCard'
 import { Chip } from '../components/Chip'
 import RichTextEditor from '../components/RichTextEditor'
 import { useAuthStore } from '../store/store'
 import getRandomImage from '../utils/getRandomImage'
+import { getUserById } from '../http/api'
 
-export default function ProfilePage() {
-
+export default function ProfilePage({ isMe = false }) {
+  // const [user, setUser] = useState(null)
   const { user } = useAuthStore()
   console.log(user);
+
+  getUserById(user.id).then(console.log).catch(console.error)
 
   return (
     <div className="min-h-screen w-full bg-gray-900 text-white p-6 flex flex-col gap-6 overflow-y-auto">

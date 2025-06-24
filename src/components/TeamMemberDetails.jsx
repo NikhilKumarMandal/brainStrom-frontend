@@ -1,8 +1,13 @@
 import React, { useRef, useEffect } from 'react'
 import getRandomImage from '../utils/getRandomImage'
+import { useAuthStore } from '../store/store'
 
-export default function TeamMemberDetails({ member, isOpen, onClick, onSeeProfile, onKick, closeDropdown, isLeader }) {
+export default function TeamMemberDetails({
+  member, isOpen, onClick, onSeeProfile,
+  onKick, closeDropdown, isLeader, leaderId
+}) {
   const dropdownRef = useRef(null)
+  const {user} = useAuthStore()
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -35,7 +40,7 @@ export default function TeamMemberDetails({ member, isOpen, onClick, onSeeProfil
         <h2
           className={`text-sm font-semibold ${member.role === 'LEADER' ? 'text-green-400' : 'text-gray-300'} group-hover:text-amber-400`}
         >
-          {member.user.name}
+          {user.id === member.user.id ? 'You' : member.user.name}
         </h2>
       </div>
 
@@ -43,7 +48,7 @@ export default function TeamMemberDetails({ member, isOpen, onClick, onSeeProfil
       {isOpen && (
         <div
           ref={dropdownRef}
-          onClick={(e) => e.stopPropagation()} // ⛔ prevent event bubbling
+          onClick={(e) => e.stopPropagation()}
           className="absolute bottom-full mb-2 bg-gray-800 border border-gray-700 rounded-lg shadow-lg w-32 z-10"
         >
           <button
@@ -56,10 +61,9 @@ export default function TeamMemberDetails({ member, isOpen, onClick, onSeeProfil
             See Profile
           </button>
           <div className="border-t border-gray-700"></div>
-          {!isLeader && <button
+          {(isLeader && member.user.id !== leaderId ) && <button
             onClick={(e) => {
               e.stopPropagation()
-              // console.log(member.user.id);
               onKick(member.user.id)
             }}
             className="block w-full text-left px-4 py-2 text-sm text-red-400 border-none hover:bg-red-600 hover:text-gray-200 focus:outline-none"
