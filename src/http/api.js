@@ -11,6 +11,8 @@ export const getUserById = (userId) => api.get(`/auth/${userId}`);
 
 export const updateProfileLinks = (gitHubLink, linkedinLink, xLink, hashnodeLink, otherLink) => api.patch(`/auth/updateProfile`, { gitHubLink, linkedinLink, xLink, hashnodeLink, otherLink });
 
+export const deleteProfileLink = (field) => api.delete('/auth/profileLink', { data: { field } });
+
 // ticket service
 export const createTicket = (formData) => api.post("/ticket/createTicket", formData);
 
