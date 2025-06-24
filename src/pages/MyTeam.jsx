@@ -7,9 +7,12 @@ import { DisbandConfirm, EditNoticeModal, JoinRequestsModal, MembersModal } from
 import { disbandTeam, getTeamById, getTeamRequests, kickMember, respondRequest } from '../http/api'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useAuthStore } from '../store/store'
+import { useParams } from 'react-router-dom'
 
 async function getTeamDetails(teamId) {
   const { data } = await getTeamById(teamId)
+  console.log(data);
+
   return data.data
 }
 
@@ -23,7 +26,9 @@ export default function MyTeam() {
   const dropdownRef = useRef(null)
   const { user } = useAuthStore()
 
-  const teamId = "470936b5-c527-4d69-bef0-edaa6391ecc5"
+  const { id } = useParams()
+  const teamId = id
+  console.log(id);
 
   const { data: team, isLoading } = useQuery({
     queryKey: [teamId],
@@ -60,13 +65,17 @@ export default function MyTeam() {
     }
   });
 
-  const handleAccept = (requestId) => {
-    respondMutation.mutate({ requestId, accept: 'ACCEPTED' })
+  const handleRequest = (requestId, accept) => {
+    respondMutation.mutate({ requestId, accept})
   }
 
-  const handleReject = (requestId) => {
-    respondMutation.mutate({ requestId, accept: 'REJECTED' })
-  }
+  // const handleAccept = (requestId) => {
+  //   respondMutation.mutate({ requestId, accept: 'ACCEPTED' })
+  // }
+
+  // const handleReject = (requestId) => {
+  //   respondMutation.mutate({ requestId, accept: 'REJECTED' })
+  // }
 
   function toggleDropdown(index) {
     setDropdownOpenIndex((prev) => (prev === index ? null : index))
@@ -76,21 +85,27 @@ export default function MyTeam() {
     alert(`Viewing profile of ${member.name}`)
   }
 
-  function handleKick(member) {
-    alert(`Kicked ${member.name}`)
+  function handleKick(userId) {
+    console.log('kicking', userId);
+    kickMember(teamId, userId, 'Testing kick functionality')
+      .then(() => alert('Kick API success'))
+      .catch((err) => {
+        console.error('Kick error:', err)
+        alert('Kick failed')
+      })
   }
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpenIndex(null)
-        setShowLeaderMenu(false)
-      }
-    }
+  // useEffect(() => {
+  //   function handleClickOutside(event) {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setDropdownOpenIndex(null)
+  //       setShowLeaderMenu(false)
+  //     }
+  //   }
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+  //   document.addEventListener('mousedown', handleClickOutside)
+  //   return () => document.removeEventListener('mousedown', handleClickOutside)
+  // }, [])
 
   const isLeader = user.id == team?.leaderId
 
@@ -103,7 +118,7 @@ export default function MyTeam() {
     )
 
   return (
-    <div className="min-h-screen w-full bg-gray-900 text-white p-6 flex flex-col gap-4 overflow-y-auto">
+    <div className="min-h-screen w-full bg-gray-900 text-white px-6 py-4 flex flex-col gap-4 overflow-y-auto">
 
       {/* Team Name and Leader Controls */}
       <div className="flex justify-between items-center">
@@ -129,7 +144,7 @@ export default function MyTeam() {
 
       {/* NoticeBoard */}
       <div className="w-full min-h-[50%] bg-gray-800 p-6 rounded-lg shadow-2xl flex items-center justify-center relative">
-        <h2 className="text-2xl font-bold absolute top-6 left-6">Noticeboard :</h2>
+        <h2 className="text-2xl font-bold absolute top-2 left-6">Noticeboard :</h2>
         <RichTextEditor content={team?.notice} readOnly height="90%" />
       </div>
 
@@ -172,6 +187,7 @@ export default function MyTeam() {
               onSeeProfile={handleSeeProfile}
               onKick={handleKick}
               closeDropdown={() => setDropdownOpenIndex(null)}
+              isLeader={isLeader}
             />
           ))}
         </span>
@@ -201,8 +217,9 @@ export default function MyTeam() {
           {openModal === 'notifications' && (
             <JoinRequestsModal
               joinRequests={joinRequests}
-              onAccept={handleAccept}
-              onReject={handleReject}
+              onHandleRequest={handleRequest}
+              // onAccept={handleAccept}
+              // onReject={handleReject}
               onClose={() => setOpenModal(null)}
             />
           )}

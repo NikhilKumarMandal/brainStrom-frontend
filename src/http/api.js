@@ -35,17 +35,9 @@ export const getTeamById = (teamId) => api.get(`/team/${teamId}`);
 export const getTeamRequests = (teamId) => api.get(`/team/${teamId}/requests`);
 
 export const respondRequest = (requestId, accept) => api.post(`/team/response`, { requestId, accept });
-// accept = "accepted" : "rejected"
 
-// export const disbandTeam = (teamId, reason) => api.delete(`/team/${teamId}/disband`, { reason });
-
-// api.js or wherever you're defining it
-export const disbandTeam = (teamId, reason) =>
-  api.delete(`/team/${teamId}/disband`, {
-    data: { reason },
-  });
-
+export const disbandTeam = (teamId, reason) => api.delete(`/team/${teamId}/disband`, { data: { reason }, });
 
 export const kickMember = (teamId, userId, reason) => api.post(`/team/${teamId}/kick/${userId}`, { reason });
 
-export const getMyTeam = () => api.get("/team/getMyTeams");
+export const getMyTeams = () => api.get("/team/getMyTeams");

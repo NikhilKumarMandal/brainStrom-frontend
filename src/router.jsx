@@ -12,6 +12,7 @@ import SupAdminDashboard from "./pages/Dashboard";
 import MyTeam from "./pages/MyTeam";
 import CreateTeam from "./pages/CreateTeam";
 import UserProfile from "./pages/UserProfile";
+import MyTeams from "./pages/MyTeams";
 
 export const router = createBrowserRouter([
     {
@@ -47,8 +48,12 @@ export const router = createBrowserRouter([
               element: <BrowseTeams />,
             },
             {
-              path: "my-team",
+              path: "my-teams/:id",
               element: <MyTeam />,
+            },
+            {
+              path: "my-teams",
+              element: <MyTeams />,
             },
             {
               path: "create-team",

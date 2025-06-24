@@ -47,14 +47,11 @@ export function MembersModal({ members, onClose }) {
       <ul className="text-gray-300 space-y-3 overflow-y-auto max-h-[80%] pr-1">
         {members.map((m, i) => (
           <li key={i} className="bg-gray-700 p-3 rounded-md">
-            <div className="font-semibold">
-              {m.name}{' '}
-              {m.isLeader && (
-                <span className="text-xs text-yellow-400">Leader</span>
+            <div className="font-semibold justify-between">
+              {m.user.name}{' '}
+              {m.role === 'LEADER' && (
+                <span className="text-xs text-green-400"> ( Leader )</span>
               )}
-            </div>
-            <div className="text-sm text-gray-400">
-              Skills: {m.skills.join(', ')}
             </div>
           </li>
         ))}
@@ -63,7 +60,9 @@ export function MembersModal({ members, onClose }) {
   )
 }
 
-export function JoinRequestsModal({ joinRequests, onAccept, onReject, onClose }) {
+export function JoinRequestsModal({ joinRequests, onHandleRequest, onClose }) {
+  console.log('joinRequests', joinRequests);
+  
   return (
     <div className="bg-gray-800 px-6 pt-4 pb-12 rounded-lg shadow-lg w-full max-w-md h-3/4 relative">
       <button
@@ -79,17 +78,17 @@ export function JoinRequestsModal({ joinRequests, onAccept, onReject, onClose })
         {(joinRequests || []).map((req, idx) => (
           <li key={req.id || idx} className="bg-gray-700 p-3 rounded-md">
             <div className="flex justify-between items-center">
-              <span>{req.userName} requested to join your team</span>
+              <span>{req.user.name} requested to join your team</span>
               <div className="flex gap-2">
                 <button
                   className="bg-green-600 px-3 py-1 rounded-md text-sm hover:bg-green-500"
-                  onClick={() => onAccept(req.id)}
+                  onClick={() => {onHandleRequest(req.id, "ACCEPTED"); console.log('accepted')}}
                 >
                   Accept
                 </button>
                 <button
                   className="bg-red-600 px-3 py-1 rounded-md text-sm hover:bg-red-500"
-                  onClick={() => onReject(req.id)}
+                  onClick={() => {onHandleRequest(req.id, "REJECTED"); console.log('rejected')}}
                 >
                   Reject
                 </button>

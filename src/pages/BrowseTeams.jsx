@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import TeamCard from '../components/TeamCard';
-import { mockTeams } from '../utils/mockData';
 import { useQuery } from '@tanstack/react-query';
 import { getAllTeam } from '../http/api';
 import CourseSelector from '../components/CourseSelector';
+import { useAuthStore } from '../store/store';
 
 async function getTeams() {
   const { data } = await getAllTeam().then((res) => res.data);
@@ -11,19 +11,19 @@ async function getTeams() {
 }
 
 export default function BrowseTeams() {
-  const allTeams = mockTeams
   const [course, setCourse] = useState('')
-  
-  // const filteredTeams = category
-  //   ? allTeams.filter(team => team.category === category)
-  //   : allTeams
-
-  const { data: allTeamData } = useQuery({
+  const { data: allTeamData, isLoading } = useQuery({
     queryKey: ["team"],
     queryFn: getTeams,
   })
 
-  console.log(allTeamData)
+  const user = useAuthStore((state) => state.user)
+
+  if (isLoading) {
+    return <div className="text-white p-6">Loading teams...</div>
+  }
+
+  const filteredTeams = allTeamData?.filter((team) => team.leaderId !== user.id)
 
   return (
     <div className="min-h-screen w-full overflow-y-auto bg-gray-900 text-white p-6 box-border">
@@ -38,14 +38,19 @@ export default function BrowseTeams() {
         <div className="relative inline-block w-[150px]">
           <CourseSelector course={course} setCourse={setCourse} showError={false} showHint={false} />
         </div>
-
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {allTeamData?.map((team, index) => (
-          <TeamCard key={index} team={team} />
-        ))}
-      </div>
+      {
+        filteredTeams?.length === 0 ? (
+          <div className="text-gray-400 p-6 italic">No teams found</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {filteredTeams?.map((team, index) => (
+              <TeamCard key={index} team={team} />
+            ))}
+          </div>
+        )
+      }
     </div>
   )
 }

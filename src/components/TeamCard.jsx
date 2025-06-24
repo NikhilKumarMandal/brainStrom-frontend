@@ -5,7 +5,7 @@ import { useAuthStore } from '../store/store';
 import { useMutation } from '@tanstack/react-query';
 import { requestJoinTeam } from '../http/api';
 
-export default function TeamCard({ team }) {
+export default function TeamCard({ team, role = null, onClick = null }) {
   const [isRequested, setIsRequested] = useState(false);
   const { user } = useAuthStore();
 
@@ -69,15 +69,14 @@ export default function TeamCard({ team }) {
           {team?.skills?.map((tag, i) => <Chip key={i} tag={tag} />)}
         </div>
         <div className="flex items-center justify-between text-sm text-gray-300 mb-4">
-          <span>{team?._count?.members} members</span>
+          <span>{role ? `Role: ${role} ` : `${team?._count?.members} members`}</span>
         </div>
         <button
-          onClick={() => setShowDialog(true)}
-          disabled={isRequested}
-          className={`w-full py-2 rounded-md border text-sm transition border-amber-700 text-white hover:bg-amber-700 hover:border-amber-500 ${isRequested ? 'bg-gray-500 cursor-not-allowed hover:bg-gray-500' : 'focus:outline-none'
-            }`}
+          onClick={() => onClick ? onClick(team) : setShowDialog(true)}
+          disabled={role ? false : isRequested}
+          className={`w-full py-2 rounded-md border text-sm transition border-amber-700 text-white hover:bg-amber-700 hover:border-amber-500 ${role ? 'bg-amber-700' : isRequested ? 'bg-gray-500 cursor-not-allowed hover:bg-gray-500 border-none' : 'focus:outline-none'}`}
         >
-          {isRequested ? 'Requested' : 'View Team'}
+          {role ? 'View Team' : isPending ? 'Requesting...' : isRequested ? 'Requested' : 'Request to Join'}
         </button>
       </div>
 
