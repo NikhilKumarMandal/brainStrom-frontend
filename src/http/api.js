@@ -7,6 +7,8 @@ export const self = () => api.get("/auth/self");
 
 export const logout = () => api.post("/auth/logout");
 
+export const getUserById = (userId) => api.get(`/auth/${userId}`);
+
 // ticket service
 export const createTicket = (formData) => api.post("/ticket/createTicket", formData);
 
@@ -41,3 +43,10 @@ export const disbandTeam = (teamId, reason) => api.delete(`/team/${teamId}/disba
 export const kickMember = (teamId, userId, reason) => api.post(`/team/${teamId}/kick/${userId}`, { reason });
 
 export const getMyTeams = () => api.get("/team/getMyTeams");
+
+// Team Notice
+export const editNotice = (teamId, content) => api.post("/notice/", { teamId, content });
+
+export const getNotice = (teamId) => api.get(`/notice/${teamId}`);
+
+export const deleteNotice = (noticeId) => api.delete(`/notice/${noticeId}/delete`);

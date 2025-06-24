@@ -3,16 +3,22 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { Chip } from '../components/Chip'
 import { useAuthStore } from '../store/store'
-import { disbandTeam, getTeamById, getTeamRequests, kickMember, respondRequest } from '../http/api'
+import { deleteNotice, disbandTeam, editNotice, getNotice, getTeamById, getTeamRequests, kickMember, respondRequest } from '../http/api'
 import { DisbandConfirm, EditNoticeModal, JoinRequestsModal, MembersModal, KickMemberModal } from '../components/MyTeamModels'
 import RichTextEditor from '../components/RichTextEditor'
 import AuditLogCard from '../components/AuditLogCard'
 import TeamMemberDetails from '../components/TeamMemberDetails'
 import useNavigation from '../utils/navigation'
+import formatDate from '../utils/formatePostTime'
 
 async function getTeamDetails(teamId) {
   const { data } = await getTeamById(teamId)
   return data.data
+}
+
+async function getNoticeboard(teamId) {
+  const { data } = await getNotice(teamId)
+  return data.data?.[0] || null
 }
 
 export default function MyTeam() {
@@ -28,21 +34,40 @@ export default function MyTeam() {
   const { teamId } = useParams()
   const { gotoHomePage } = useNavigation()
 
-  const { data: team, isLoading } = useQuery({
+  const { data: team, isLoading: teamLoading } = useQuery({
     queryKey: [teamId],
     queryFn: () => getTeamDetails(teamId)
   })
 
-  // const { data: joinRequests = [], refetch: refetchRequests } = useQuery({
-  //   queryKey: ['joinRequests', teamId],
-  //   queryFn: async () => {
-  //     const res = await getTeamRequests(teamId)
-  //     return res.data.data
-  //   },
-  //   enabled: !!teamId
-  // })
+  const { data: notice, isLoading: noticeLoading } = useQuery({
+    queryKey: [teamId, 'notice'],
+    queryFn: () => getNoticeboard(teamId)
+  })
+
+  console.log(notice);
 
   const isLeader = user.id == team?.leaderId
+
+  const editNoticeMutation = useMutation({
+    mutationFn: ({ teamId, content }) => editNotice(teamId, content),
+    onSuccess: () => {
+      queryClient.invalidateQueries([teamId, 'notice']);
+      setOpenModal(null);
+    },
+    onError: () => alert('Failed to update notice')
+  });
+
+  const deleteNoticeMutation = useMutation({
+    mutationFn: ({ noticeId }) => deleteNotice(noticeId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([teamId, 'notice']);
+      await queryClient.refetchQueries([teamId, 'notice']);
+      setOpenModal(null);
+    },
+
+    onError: () => alert('Failed to delete notice')
+  });
+
 
   const { data: joinRequests = [], refetch: refetchRequests } = useQuery({
     queryKey: ['joinRequests', teamId],
@@ -52,8 +77,6 @@ export default function MyTeam() {
     },
     enabled: !!teamId && isLeader
   });
-
-
 
   const respondMutation = useMutation({
     mutationFn: ({ requestId, accept }) => respondRequest(requestId, accept),
@@ -88,7 +111,6 @@ export default function MyTeam() {
     setOpenModal('kick')
   }
 
-
   function confirmKick() {
     if (!kickReason.trim()) {
       alert('Please provide a reason for kicking');
@@ -109,14 +131,13 @@ export default function MyTeam() {
   }
 
 
-  if (isLoading) return (
+  if (teamLoading) return (
     <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
-      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
       Loading...
     </div>
   )
 
-  // const isLeader = user.id == team?.leaderId
   const isMember = team?.members?.some(member => member.userId === user.id);
   if (!isMember) gotoHomePage()
 
@@ -143,9 +164,18 @@ export default function MyTeam() {
         )}
       </div>
 
-      <div className="w-full min-h-[50%] bg-gray-800 p-6 rounded-lg shadow-2xl flex items-center justify-center relative">
-        <h2 className="text-2xl font-bold absolute top-2 left-6">Noticeboard :</h2>
-        <RichTextEditor content={team?.notice} readOnly height="90%" />
+      <div className="w-full h-[50%] bg-gray-800 p-6 rounded-lg shadow-2xl flex items-center justify-center relative">
+        <h2 className="text-xl text-gray-500 font-serif absolute top-2 left-4 select-none">Noticeboard :</h2>
+        {noticeLoading ? (
+          <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+        ) : notice ? (
+          <div className="text-gray-500 text-lg font-serif italic h-[90%] overflow-y-auto select-none flex items-center" >
+            <RichTextEditor key={notice.updatedAt} content={notice.content} readOnly />
+          </div>
+        ) : (
+          <div className="text-gray-500 text-lg font-serif italic select-none" >No notice yet</div>
+        )}
+        <h2 className="text-xs text-gray-500 font-sans absolute bottom-2 right-4 select-none">{notice && `Last Updated at ${formatDate(notice?.updatedAt)}`}</h2>
       </div>
 
       <div className="flex flex-wrap gap-2 w-[50%]">
@@ -183,9 +213,16 @@ export default function MyTeam() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           {openModal === 'edit' && (
             <EditNoticeModal
-              content={team.notice}
-              onUpdate={() => alert('to be handled')}
+              content={notice?.content}
+              onUpdate={(updatedContent) => {
+                editNoticeMutation.mutate({ teamId, content: updatedContent });
+              }}
               onClose={() => setOpenModal(null)}
+              onDelete={() => {
+                if (notice?.id) {
+                  deleteNoticeMutation.mutate({ noticeId: notice.id });
+                }
+              }}
             />
           )}
 

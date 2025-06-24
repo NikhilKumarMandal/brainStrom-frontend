@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CgClose } from 'react-icons/cg'
 import RichTextEditor from './RichTextEditor'
 
-export function EditNoticeModal({ content, onUpdate, onClose }) {
+export function EditNoticeModal({ content, onUpdate, onClose, onDelete }) {
+  const [updatedContent, setUpdatedContent] = useState(content)
   return (
     <div className="bg-gray-800 px-6 pt-4 pb-12 rounded-lg shadow-lg w-full max-w-md h-3/4 relative">
       <button
@@ -13,18 +14,34 @@ export function EditNoticeModal({ content, onUpdate, onClose }) {
       </button>
 
       <h3 className="text-xl font-bold">Edit Notice</h3>
-      <div className="mt-6 h-[85%]">
+      <div className="mt-4 h-[85%]">
         <RichTextEditor
-          content={content}
-          onUpdate={onUpdate}
+          content={updatedContent}
+          onChange={setUpdatedContent}
           height="100%"
         />
       </div>
 
       <div className="flex justify-end">
         <button
-          onClick={onClose}
-          className="px-5 py-1 mt-3 rounded-full border-none bg-amber-700 hover:bg-amber-600 text-sm"
+          onClick={onDelete}
+          disabled={!content}
+          className="px-5 py-1 mt-3 mr-3 rounded-full border-none bg-amber-700 hover:bg-amber-600 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Delete
+        </button>
+        <button
+          onClick={() => {
+            const plainText = updatedContent.replace(/<[^>]*>/g, '').trim(); // Remove HTML tags & trim
+            if (updatedContent === content) {
+              alert('Cannot save existing notice');
+            } else if (plainText !== '') {
+              onUpdate(updatedContent);
+            } else {
+              alert('Notice content cannot be empty or just spaces');
+            }
+          }}
+          className="px-5 py-1 mt-3 rounded-full border-none bg-green-600 hover:bg-green-500 text-sm"
         >
           Save
         </button>
@@ -32,6 +49,7 @@ export function EditNoticeModal({ content, onUpdate, onClose }) {
     </div>
   )
 }
+
 
 export function MembersModal({ members, onClose }) {
   return (
