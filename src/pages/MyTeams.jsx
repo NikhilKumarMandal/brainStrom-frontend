@@ -6,7 +6,7 @@ import useNavigation from '../utils/navigation';
 import { useAuthStore } from '../store/store';
 
 async function getMyAllTeams() {
-  const { data } = await getMyTeams().then((res) => res.data).catch((err) => console.log(err));
+  const { data } = await getMyTeams().then((res) => res.data)
   return data
 }
 

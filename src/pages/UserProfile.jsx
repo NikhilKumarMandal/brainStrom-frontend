@@ -2,35 +2,40 @@ import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '../store/store'
-import { getUserById, updateProfileLinks } from '../http/api'
+import { getUserById, getUserHistory, updateProfileLinks } from '../http/api'
 import AuditLogCard from '../components/AuditLogCard'
 import getRandomImage from '../utils/getRandomImage'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import { CiEdit } from 'react-icons/ci'
 import EditLinksModal from '../components/EditLinkModel'
 
-function isValidUrl(url) {
-  try {
-    new URL(url)
-    return true
-  } catch {
-    return false
-  }
+// function isValidUrl(url) {
+//   try {
+//     new URL(url)
+//     return true
+//   } catch {
+//     return false
+//   }
+// }
+
+async function getUserLogs(userId) {
+  const { data } = await getUserHistory(userId).then(res => res.data)
+  return data
 }
 
 export default function ProfilePage({ isMe = false }) {
   const { userId } = useParams()
   const { user: authUser } = useAuthStore()
   const queryClient = useQueryClient()
-  const [links, setLinks] = useState({
-    gitHubLink: '',
-    linkedinLink: '',
-    hashnodeLink: '',
-    xLink: '',
-    otherLink: ''
-  })
+  // const [links, setLinks] = useState({
+  //   gitHubLink: '',
+  //   linkedinLink: '',
+  //   hashnodeLink: '',
+  //   xLink: '',
+  //   otherLink: ''
+  // })
   console.log(authUser.id);
-  
+
   const userQuery = useQuery({
     queryKey: ['profile', isMe ? authUser.id : userId],
     queryFn: () => getUserById(isMe ? authUser.id : userId).then(res => res.data.data),
@@ -39,6 +44,8 @@ export default function ProfilePage({ isMe = false }) {
   })
 
   const user = userQuery.data
+  console.log('user', user);
+
 
   const [showEditModal, setShowEditModal] = useState(false);
   const mutation = useMutation({
@@ -56,18 +63,24 @@ export default function ProfilePage({ isMe = false }) {
     onError: () => alert('Enter valid URL')
   });
 
+  const { data: userLogs, isLoading: userLogsLoading } = useQuery({
+    queryKey: ['userLogs'],
+    queryFn: () => getUserLogs(isMe ? authUser.id : userId),
+  })
 
-  function handleSubmit() {
-    const validLinks = {}
-    Object.entries(links).forEach(([key, value]) => {
-      if (value && isValidUrl(value)) validLinks[key] = value
-    })
-    if (Object.keys(validLinks).length === 0) {
-      alert('Please enter at least one valid URL')
-      return
-    }
-    mutation.mutate(validLinks)
-  }
+  console.log(userLogs);
+
+  // function handleSubmit() {
+  //   const validLinks = {}
+  //   Object.entries(links).forEach(([key, value]) => {
+  //     if (value && isValidUrl(value)) validLinks[key] = value
+  //   })
+  //   if (Object.keys(validLinks).length === 0) {
+  //     alert('Please enter at least one valid URL')
+  //     return
+  //   }
+  //   mutation.mutate(validLinks)
+  // }
 
   if (!user || userQuery.isLoading)
     return <div className="text-white p-8">Loading profile...</div>
@@ -125,7 +138,12 @@ export default function ProfilePage({ isMe = false }) {
           </div>
         </div>
 
-        <AuditLogCard auditLogs={user.auditLogs || []} className="w-1/2 h-full" />
+        <AuditLogCard
+          auditLogs={userLogs}
+          className="w-1/2 h-full"
+          isLoading={userLogsLoading}
+          fromProfile
+        />
       </div>
 
       {showEditModal && (

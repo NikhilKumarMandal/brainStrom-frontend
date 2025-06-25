@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { Chip } from '../components/Chip'
 import { useAuthStore } from '../store/store'
-import { deleteNotice, disbandTeam, editNotice, getNotice, getTeamById, getTeamRequests, kickMember, respondRequest } from '../http/api'
+import { deleteNotice, disbandTeam, editNotice, getNotice, getTeamById, getTeamHistory, getTeamRequests, kickMember, respondRequest } from '../http/api'
 import { DisbandConfirm, EditNoticeModal, JoinRequestsModal, MembersModal, KickMemberModal } from '../components/MyTeamModels'
 import RichTextEditor from '../components/RichTextEditor'
 import AuditLogCard from '../components/AuditLogCard'
@@ -19,6 +19,12 @@ async function getTeamDetails(teamId) {
 async function getNoticeboard(teamId) {
   const { data } = await getNotice(teamId)
   return data.data?.[0] || null
+}
+
+async function getTeamteamLogs(teamId) {
+  const { data } = await getTeamHistory(teamId)
+  console.log(data.data);
+  return data.data
 }
 
 export default function MyTeam() {
@@ -44,7 +50,14 @@ export default function MyTeam() {
     queryFn: () => getNoticeboard(teamId)
   })
 
-  console.log(notice);
+  const { data: teamLogs, isLoading: teamLogsLoading } = useQuery({
+    queryKey: [teamId, 'teamLogs'],
+    queryFn: () => getTeamteamLogs(teamId)
+  })
+
+  // console.log(notice);
+  console.log(teamLogs);
+  console.log(team);
 
   const isLeader = user.id == team?.leaderId
 
@@ -206,7 +219,14 @@ export default function MyTeam() {
       </div>
 
       <div className="absolute right-6 bottom-6 w-1/3 h-[34%]">
-        <AuditLogCard auditLogs={team.auditLogs} className="w-full h-full" />
+        <AuditLogCard
+          auditLogs={teamLogs}
+          className="w-full h-full"
+          isLoading={teamLogsLoading}
+          members={team.members}
+          fromTeam
+          leaderId={team.leaderId}
+        />
       </div>
 
       {(openModal) && (
@@ -252,7 +272,7 @@ export default function MyTeam() {
           )}
 
           {openModal === 'kick' && (
-            < KickMemberModal
+            <KickMemberModal
               kickReason={kickReason}
               setKickReason={setKickReason}
               onCancel={() => setOpenModal(null)}
