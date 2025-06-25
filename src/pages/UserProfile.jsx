@@ -1,25 +1,21 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import { CiEdit } from 'react-icons/ci'
 import { useAuthStore } from '../store/store'
 import { getUserById, getUserHistory, updateProfileLinks } from '../http/api'
 import AuditLogCard from '../components/AuditLogCard'
 import getRandomImage from '../utils/getRandomImage'
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { CiEdit } from 'react-icons/ci'
 import EditLinksModal from '../components/EditLinkModel'
-
-// function isValidUrl(url) {
-//   try {
-//     new URL(url)
-//     return true
-//   } catch {
-//     return false
-//   }
-// }
 
 async function getUserLogs(userId) {
   const { data } = await getUserHistory(userId).then(res => res.data)
+  return data
+}
+
+async function getUser(userId) {
+  const { data } = await getUserById(userId).then(res => res.data)
   return data
 }
 
@@ -27,27 +23,15 @@ export default function ProfilePage({ isMe = false }) {
   const { userId } = useParams()
   const { user: authUser } = useAuthStore()
   const queryClient = useQueryClient()
-  // const [links, setLinks] = useState({
-  //   gitHubLink: '',
-  //   linkedinLink: '',
-  //   hashnodeLink: '',
-  //   xLink: '',
-  //   otherLink: ''
-  // })
-  console.log(authUser.id);
-
-  const userQuery = useQuery({
-    queryKey: ['profile', isMe ? authUser.id : userId],
-    queryFn: () => getUserById(isMe ? authUser.id : userId).then(res => res.data.data),
-    enabled: !isMe || !!authUser?.id,
-    staleTime: 5 * 60 * 1000
+  const [showEditModal, setShowEditModal] = useState(false);
+  
+  const { data: user, isLoading: userDataLoading, isError: userDataError } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => getUser(userId),
   })
 
-  const user = userQuery.data
-  console.log('user', user);
+  // console.log('user: ', user);
 
-
-  const [showEditModal, setShowEditModal] = useState(false);
   const mutation = useMutation({
     mutationFn: (links) => updateProfileLinks(
       links.gitHubLink,
@@ -57,34 +41,22 @@ export default function ProfilePage({ isMe = false }) {
       links.otherLink
     ),
     onSuccess: () => {
-      queryClient.invalidateQueries(['profile', authUser.id]);
+      queryClient.invalidateQueries(['profile', userId]);
       setShowEditModal(false);
     },
     onError: () => alert('Enter valid URL')
   });
 
   const { data: userLogs, isLoading: userLogsLoading } = useQuery({
-    queryKey: ['userLogs'],
-    queryFn: () => getUserLogs(isMe ? authUser.id : userId),
+    queryKey: ['userLogs', userId],
+    queryFn: () => getUserLogs(userId),
   })
 
   console.log(userLogs);
 
-  // function handleSubmit() {
-  //   const validLinks = {}
-  //   Object.entries(links).forEach(([key, value]) => {
-  //     if (value && isValidUrl(value)) validLinks[key] = value
-  //   })
-  //   if (Object.keys(validLinks).length === 0) {
-  //     alert('Please enter at least one valid URL')
-  //     return
-  //   }
-  //   mutation.mutate(validLinks)
-  // }
-
-  if (!user || userQuery.isLoading)
+  if (userDataLoading)
     return <div className="text-white p-8">Loading profile...</div>
-  if (userQuery.isError)
+  if (userDataError)
     return <div className="text-red-400 p-8">Failed to load profile.</div>
 
   return (
@@ -110,7 +82,7 @@ export default function ProfilePage({ isMe = false }) {
       <div className="flex gap-8 flex-1 h-[calc(100vh-12rem)]">
         <div className="flex flex-col gap-8 flex-1 h-full">
           <div className="relative bg-gray-800 rounded-lg p-6 w-full flex-1">
-            {isMe && (
+            {(userId === authUser.id) && (
               <button
                 onClick={() => setShowEditModal(true)}
                 className="text-sm px-4 py-1 bg-amber-700 hover:bg-amber-600 rounded-md absolute top-2 right-2 flex items-center gap-1"

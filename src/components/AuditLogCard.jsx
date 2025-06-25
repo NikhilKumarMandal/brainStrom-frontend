@@ -8,7 +8,6 @@ export default function AuditLogCard({
   members, fromProfile = false, fromTeam = false,
   leaderId
 }) {
-  console.log('auditLogs', auditLogs);
   const { user } = useAuthStore()
   const localUserId = user.id
 
@@ -28,7 +27,7 @@ export default function AuditLogCard({
           {auditLogs.map((log, index) => (
             <li key={index} className="border-b border-gray-700 pb-2">
               <p><span className="font-semibold text-amber-100">Action: </span>
-                {handleAction(log.action, log.userId, members, leaderId, localUserId, log.actor.name)}
+                {handleAction(log.action, log.userId, members, leaderId, localUserId, log.actor?.name)}
               </p>
               {log.reason && (
                 <p><span className="font-semibold text-amber-300">Reason: </span>{log.reason}</p>

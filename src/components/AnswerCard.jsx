@@ -1,10 +1,10 @@
 import React from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { BiDownvote, BiSolidDownvote, BiSolidUpvote, BiUpvote } from 'react-icons/bi'
 import { vote } from '../http/api'
 import { useAuthStore } from '../store/store'
 import formatDate from '../utils/formatePostTime'
 import RichTextEditor from './RichTextEditor'
-import { BiDownvote, BiSolidDownvote, BiSolidUpvote, BiUpvote } from 'react-icons/bi'
 
 export default function AnswerCard({ answer }) {
   const queryClient = useQueryClient()

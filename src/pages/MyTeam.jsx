@@ -3,8 +3,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { Chip } from '../components/Chip'
 import { useAuthStore } from '../store/store'
-import { deleteNotice, disbandTeam, editNotice, getNotice, getTeamById, getTeamHistory, getTeamRequests, kickMember, leaveTeam, respondRequest } from '../http/api'
-import { DisbandConfirm, EditNoticeModal, JoinRequestsModal, MembersModal, KickMemberModal } from '../components/MyTeamModels'
+import {
+  deleteNotice, disbandTeam, editNotice, getNotice, getTeamById,
+  getTeamHistory, getTeamRequests, kickMember, leaveTeam, respondRequest
+} from '../http/api'
+import {
+  DisbandConfirm, EditNoticeModal, JoinRequestsModal, MembersModal, KickMemberModal
+} from '../components/MyTeamModels'
 import RichTextEditor from '../components/RichTextEditor'
 import AuditLogCard from '../components/AuditLogCard'
 import TeamMemberDetails from '../components/TeamMemberDetails'
@@ -39,7 +44,7 @@ export default function MyTeam() {
   const dropdownRef = useRef(null)
   const { user } = useAuthStore()
   const { teamId } = useParams()
-  const { gotoHomePage } = useNavigation()
+  const { gotoHomePage, gotoUserProfile } = useNavigation()
 
   const { data: team, isLoading: teamLoading } = useQuery({
     queryKey: [teamId],
@@ -126,7 +131,9 @@ export default function MyTeam() {
 
   function toggleDropdown(index) { setDropdownOpenIndex(prev => (prev === index ? null : index)) }
 
-  function handleSeeProfile(member) { alert(`Viewing profile of ${member.name}`) }
+  function handleSeeProfile(member) {
+    gotoUserProfile(member.user.id)
+  }
 
   function handleKick(userId) {
     setKickTargetUserId(userId)
@@ -167,9 +174,6 @@ export default function MyTeam() {
     leaveMutation.mutate({ teamId, reason: leaveReason })
   }
 
-  console.log(leaveReason)
-
-
   if (teamLoading) return (
     <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
       <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
@@ -185,35 +189,34 @@ export default function MyTeam() {
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">{team.name}</h1>
         {isLeader
-          ? (<div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setShowLeaderMenu(!showLeaderMenu)}
-              className="bg-amber-700 hover:bg-amber-600 px-4 py-2 rounded-md text-sm"
-            >
-              Leader Options
-            </button>
-            {showLeaderMenu && (
-              <div className="absolute top-12 right-0 bg-gray-800 border border-gray-700 rounded-md shadow-lg p-2 w-48 z-10">
-                <button onClick={() => { setOpenModal('notifications'); setShowLeaderMenu(false) }} className="w-full text-left px-2 py-1 hover:bg-gray-700 rounded">See Requests</button>
-                <button onClick={() => { setOpenModal('edit'); setShowLeaderMenu(false) }} className="w-full text-left px-2 py-1 hover:bg-gray-700 rounded">Edit Notice</button>
-                <button
-                  onClick={() => {
-                    if (team?.members?.length > 1) {
-                      alert("You can only disband the team after removing all other members.");
-                      return;
-                    }
-                    setOpenModal('disband');
-                    setShowLeaderMenu(false);
-                  }}
-                  className="w-full text-left px-2 py-1 text-red-400 hover:bg-red-800 rounded"
-                >
-                  Disband Team
-                </button>
-              </div>
-            )}
-          </div>
-          )
-          : (
+          ? (
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setShowLeaderMenu(!showLeaderMenu)}
+                className="bg-amber-700 hover:bg-amber-600 px-4 py-2 rounded-md text-sm"
+              > Leader Options </button>
+
+              {showLeaderMenu && (
+                <div className="absolute top-12 right-0 bg-gray-800 border border-gray-700 rounded-md shadow-lg p-2 w-48 z-10">
+                  <button onClick={() => { setOpenModal('notifications'); setShowLeaderMenu(false) }} className="w-full text-left px-2 py-1 hover:bg-gray-700 rounded">See Requests</button>
+                  <button onClick={() => { setOpenModal('edit'); setShowLeaderMenu(false) }} className="w-full text-left px-2 py-1 hover:bg-gray-700 rounded">Edit Notice</button>
+                  <button
+                    onClick={() => {
+                      if (team?.members?.length > 1) {
+                        alert("You can only disband the team after removing all other members.");
+                        return;
+                      }
+                      setOpenModal('disband');
+                      setShowLeaderMenu(false);
+                    }}
+                    className="w-full text-left px-2 py-1 text-red-400 hover:bg-red-800 rounded"
+                  >
+                    Disband Team
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
             <button
               onClick={handleLeaveTeam}
               className="bg-amber-700 hover:bg-amber-600 px-4 py-2 rounded-md text-sm"
@@ -228,7 +231,7 @@ export default function MyTeam() {
         {noticeLoading ? (
           <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
         ) : notice ? (
-          <div className="text-gray-500 text-lg font-serif italic h-[90%] overflow-y-auto select-none flex items-center" >
+          <div className="text-gray-500 text-lg font-serif italic h-[90%] overflow-y-auto flex items-center" >
             <RichTextEditor key={notice.updatedAt} content={notice.content} readOnly />
           </div>
         ) : (
