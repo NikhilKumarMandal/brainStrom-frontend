@@ -9,7 +9,7 @@ export default function AuditLogCard({
   leaderId
 }) {
   console.log('auditLogs', auditLogs);
-  const {user} = useAuthStore()
+  const { user } = useAuthStore()
   const localUserId = user.id
 
   return (
@@ -28,7 +28,7 @@ export default function AuditLogCard({
           {auditLogs.map((log, index) => (
             <li key={index} className="border-b border-gray-700 pb-2">
               <p><span className="font-semibold text-amber-100">Action: </span>
-                {handleAction(log.action, log.userId, members, leaderId, localUserId)}
+                {handleAction(log.action, log.userId, members, leaderId, localUserId, log.actor.name)}
               </p>
               {log.reason && (
                 <p><span className="font-semibold text-amber-300">Reason: </span>{log.reason}</p>
@@ -61,7 +61,7 @@ function getUsernameById(members, userId, localUserId, leaderId) {
   return member?.user?.name ?? 'Unknown User';
 }
 
-function handleAction(action, userId, members, leaderId, localUserId) {
+function handleAction(action, userId, members, leaderId, localUserId, actorName) {
 
   const username = getUsernameById(members, userId, localUserId, leaderId);
 
@@ -74,6 +74,8 @@ function handleAction(action, userId, members, leaderId, localUserId) {
       return 'Left the team';
     case 'KICKED_MEMBER':
       return 'A member kicked from the team';
+    case 'LEFT_TEAM':
+      return `${actorName} Left the team`;
     default:
       return formateString(action);
   }

@@ -3,13 +3,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { Chip } from '../components/Chip'
 import { useAuthStore } from '../store/store'
-import { deleteNotice, disbandTeam, editNotice, getNotice, getTeamById, getTeamHistory, getTeamRequests, kickMember, respondRequest } from '../http/api'
+import { deleteNotice, disbandTeam, editNotice, getNotice, getTeamById, getTeamHistory, getTeamRequests, kickMember, leaveTeam, respondRequest } from '../http/api'
 import { DisbandConfirm, EditNoticeModal, JoinRequestsModal, MembersModal, KickMemberModal } from '../components/MyTeamModels'
 import RichTextEditor from '../components/RichTextEditor'
 import AuditLogCard from '../components/AuditLogCard'
 import TeamMemberDetails from '../components/TeamMemberDetails'
 import useNavigation from '../utils/navigation'
 import formatDate from '../utils/formatePostTime'
+import LeaveTeamModal from '../components/LeaveTeamModal'
 
 async function getTeamDetails(teamId) {
   const { data } = await getTeamById(teamId)
@@ -23,17 +24,17 @@ async function getNoticeboard(teamId) {
 
 async function getTeamteamLogs(teamId) {
   const { data } = await getTeamHistory(teamId)
-  console.log(data.data);
   return data.data
 }
 
 export default function MyTeam() {
-  const [openModal, setOpenModal] = useState(null) // 'edit', 'members', 'notifications', 'kick', 'disband'
+  const [openModal, setOpenModal] = useState(null) // 'edit', 'members', 'notifications', 'kick', 'disband', 'leave'
   const [dropdownOpenIndex, setDropdownOpenIndex] = useState(null)
   const [disbandReason, setDisbandReason] = useState('')
   const [showLeaderMenu, setShowLeaderMenu] = useState(false)
   const [kickTargetUserId, setKickTargetUserId] = useState(null)
   const [kickReason, setKickReason] = useState('')
+  const [leaveReason, setLeaveReason] = useState('')
   const queryClient = useQueryClient()
   const dropdownRef = useRef(null)
   const { user } = useAuthStore()
@@ -56,8 +57,8 @@ export default function MyTeam() {
   })
 
   // console.log(notice);
-  console.log(teamLogs);
-  console.log(team);
+  // console.log(teamLogs);
+  // console.log(team);
 
   const isLeader = user.id == team?.leaderId
 
@@ -112,6 +113,15 @@ export default function MyTeam() {
     onError: () => alert('Failed to disband team')
   })
 
+  const leaveMutation = useMutation({
+    mutationFn: ({ teamId, reason }) => leaveTeam(teamId, reason),
+    onSuccess: () => {
+      // alert('You have left the team successfully')
+      gotoHomePage()
+    },
+    onError: () => alert('Failed to leave team')
+  })
+
   const handleRequest = (requestId, accept) => { respondMutation.mutate({ requestId, accept }) }
 
   function toggleDropdown(index) { setDropdownOpenIndex(prev => (prev === index ? null : index)) }
@@ -143,6 +153,22 @@ export default function MyTeam() {
       })
   }
 
+  function handleLeaveTeam() {
+    setOpenModal('leave')
+  }
+
+  function confirmLeave() {
+    console.log(teamId, leaveReason);
+    
+    if (!leaveReason.trim()) {
+      alert('Please provide a reason for leaving');
+      return;
+    }
+    leaveMutation.mutate({ teamId, reason: leaveReason })
+  }
+
+  console.log(leaveReason)
+
 
   if (teamLoading) return (
     <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
@@ -158,8 +184,8 @@ export default function MyTeam() {
     <div className="min-h-screen w-full bg-gray-900 text-white px-6 py-4 flex flex-col gap-4 overflow-y-auto">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">{team.name}</h1>
-        {isLeader && (
-          <div className="relative" ref={dropdownRef}>
+        {isLeader
+          ? (<div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setShowLeaderMenu(!showLeaderMenu)}
               className="bg-amber-700 hover:bg-amber-600 px-4 py-2 rounded-md text-sm"
@@ -174,7 +200,15 @@ export default function MyTeam() {
               </div>
             )}
           </div>
-        )}
+          )
+          : (
+            <button
+              onClick={handleLeaveTeam}
+              className="bg-amber-700 hover:bg-amber-600 px-4 py-2 rounded-md text-sm"
+            >
+              Leave Team
+            </button>
+          )}
       </div>
 
       <div className="w-full h-[50%] bg-gray-800 p-6 rounded-lg shadow-2xl flex items-center justify-center relative">
@@ -277,6 +311,15 @@ export default function MyTeam() {
               setKickReason={setKickReason}
               onCancel={() => setOpenModal(null)}
               onConfirm={confirmKick}
+            />
+          )}
+
+          {openModal === 'leave' && (
+            <LeaveTeamModal
+              leaveReason={leaveReason}
+              setLeaveReason={setLeaveReason}
+              onCancel={() => setOpenModal(null)}
+              onConfirm={confirmLeave}
             />
           )}
         </div>

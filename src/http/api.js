@@ -48,6 +48,8 @@ export const kickMember = (teamId, userId, reason) => api.post(`/team/${teamId}/
 
 export const getMyTeams = () => api.get("/team/getMyTeams");
 
+export const leaveTeam = (teamId, reason) => api.post("/team/leaveTeam", {teamId, reason});
+
 // team notice
 export const editNotice = (teamId, content) => api.post("/notice/", { teamId, content });
 
