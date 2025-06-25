@@ -159,7 +159,7 @@ export default function MyTeam() {
 
   function confirmLeave() {
     console.log(teamId, leaveReason);
-    
+
     if (!leaveReason.trim()) {
       alert('Please provide a reason for leaving');
       return;
@@ -196,7 +196,19 @@ export default function MyTeam() {
               <div className="absolute top-12 right-0 bg-gray-800 border border-gray-700 rounded-md shadow-lg p-2 w-48 z-10">
                 <button onClick={() => { setOpenModal('notifications'); setShowLeaderMenu(false) }} className="w-full text-left px-2 py-1 hover:bg-gray-700 rounded">See Requests</button>
                 <button onClick={() => { setOpenModal('edit'); setShowLeaderMenu(false) }} className="w-full text-left px-2 py-1 hover:bg-gray-700 rounded">Edit Notice</button>
-                <button onClick={() => { setOpenModal('disband'); setShowLeaderMenu(false) }} className="w-full text-left px-2 py-1 text-red-400 hover:bg-red-800 rounded">Disband Team</button>
+                <button
+                  onClick={() => {
+                    if (team?.members?.length > 1) {
+                      alert("You can only disband the team after removing all other members.");
+                      return;
+                    }
+                    setOpenModal('disband');
+                    setShowLeaderMenu(false);
+                  }}
+                  className="w-full text-left px-2 py-1 text-red-400 hover:bg-red-800 rounded"
+                >
+                  Disband Team
+                </button>
               </div>
             )}
           </div>
