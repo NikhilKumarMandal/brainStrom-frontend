@@ -1,5 +1,5 @@
+import { presiceTime } from "@/utils/formateTime";
 import React from "react";
-import formatDate from "../utils/formatePostTime";
 
 export default function QuestionMetaData({
   author,
@@ -14,7 +14,7 @@ export default function QuestionMetaData({
           <strong>By:</strong> {author}
         </p>
         <p className="text-sm text-gray-400">
-          {answers} answers · {formatDate(createdAt)}
+          {answers} answers · {presiceTime(createdAt)}
         </p>
       </div>
 

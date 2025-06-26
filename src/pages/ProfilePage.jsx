@@ -2,92 +2,56 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getUserHistory } from "@/http/api";
+import { useAuthStore } from "@/store/store";
+import { formateString } from "@/utils/formateString";
+import { timeAgo } from "@/utils/formateTime";
+import { useQuery } from "@tanstack/react-query";
 import {
   Github,
   Linkedin,
   Twitter,
   Globe,
   Mail,
-  Briefcase,
-  GraduationCap,
+  Diamond,
+  Activity,
+  Users,
+  MessageSquareX,
 } from "lucide-react";
+import { useState } from "react";
+
+
+async function getUserLogs(userId) {
+  const { data } = await getUserHistory(userId).then((res) => res.data);
+  return data;
+}
 
 export default function ProfilePage() {
-  const user = {
-    name: "Alex Johnson",
-    email: "alex.johnson@example.com",
-    avatar: "/placeholder.svg?height=120&width=120",
-    location: "San Francisco, CA",
-    joinDate: "March 2021",
-    socialLinks: [
-      {
-        platform: "GitHub",
-        url: "https://github.com/alexjohnson",
-        icon: Github,
-      },
-      {
-        platform: "LinkedIn",
-        url: "https://linkedin.com/in/alexjohnson",
-        icon: Linkedin,
-      },
-      {
-        platform: "Twitter",
-        url: "https://twitter.com/alexjohnson",
-        icon: Twitter,
-      },
-      { platform: "Website", url: "https://alexjohnson.dev", icon: Globe },
-    ],
-    skills: [
-      "React",
-      "Next.js",
-      "TypeScript",
-      "Node.js",
-      "Python",
-      "PostgreSQL",
-      "AWS",
-      "Docker",
-      "GraphQL",
-      "Tailwind CSS",
-      "MongoDB",
-      "Redis",
-    ],
-    history: [
-      {
-        type: "work",
-        title: "Senior Frontend Developer",
-        company: "TechCorp Inc.",
-        period: "2023 - Present",
-        description:
-          "Leading frontend development for enterprise applications, mentoring junior developers, and implementing modern React patterns.",
-      },
-      {
-        type: "work",
-        title: "Full Stack Developer",
-        company: "StartupXYZ",
-        period: "2021 - 2023",
-        description:
-          "Built and maintained multiple web applications using React, Node.js, and PostgreSQL. Improved application performance by 40%.",
-      },
-      {
-        type: "education",
-        title: "Bachelor of Computer Science",
-        company: "University of California",
-        period: "2017 - 2021",
-        description:
-          "Graduated with honors. Focused on software engineering and web development technologies.",
-      },
-      {
-        type: "work",
-        title: "Junior Developer",
-        company: "WebSolutions Ltd.",
-        period: "2020 - 2021",
-        description:
-          "Internship and part-time role developing responsive websites and learning industry best practices.",
-      },
-    ],
-  };
+  const { user } = useAuthStore();
+  const [visibleLogsCount, setVisibleLogsCount] = useState(5);
 
-  delete user.bio;
+  const userId = user.id;
+
+  const { data: userLogs, isLoading: userLogsLoading } = useQuery({
+    queryKey: ["userLogs", userId],
+    queryFn: () => getUserLogs(userId),
+  });
+
+  const socialLinksMap = [
+    { platform: "GitHub", field: "gitHubLink", icon: Github },
+    { platform: "LinkedIn", field: "linkedinLink", icon: Linkedin },
+    { platform: "X", field: "xLink", icon: Twitter },
+    { platform: "Hashnode", field: "hashnodeLink", icon: Diamond },
+    { platform: "Other", field: "otherLink", icon: Globe },
+  ];
+
+  const formattedSocialLinks = socialLinksMap.map(({ platform, field, icon }) => {
+    const url = user?.[field];
+    return url ? { platform, url, icon } : null;
+  }).filter(Boolean);
+
+
+  const visibleLogs = userLogs?.slice(0, visibleLogsCount);
 
   return (
     <div className="p-4">
@@ -124,7 +88,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="flex space-x-2 pt-2">
-                  {user.socialLinks.map((link) => {
+                  {formattedSocialLinks.map((link) => {
                     const IconComponent = link.icon;
                     return (
                       <Button
@@ -185,40 +149,53 @@ export default function ProfilePage() {
             </CardHeader>
             <CardContent>
               <div className="max-h-96 overflow-y-auto pr-2 space-y-6 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                {user.history.map((item, index) => (
+                {visibleLogs?.map((item, index) => (
                   <div key={index} className="relative">
                     <div className="flex items-start space-x-4">
                       <div className="flex-shrink-0">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
-                          {item.type === "work" ? (
-                            <Briefcase className="h-5 w-5 text-gray-600" />
-                          ) : (
-                            <GraduationCap className="h-5 w-5 text-gray-600" />
-                          )}
+                          {selectIcon(item.action)}
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
                           <h3 className="text-lg font-semibold text-gray-900">
-                            {item.title}
+                            {formateString(item.action)}
                           </h3>
-                          <span className="text-sm text-gray-500 font-medium">
-                            {item.period}
-                          </span>
+                          {item.timestamp && (
+                            <span className="text-sm text-gray-500 font-medium">
+                              {timeAgo(item.timestamp)}
+                            </span>
+                          )}
                         </div>
-                        <p className="text-sm font-medium text-gray-600 mb-1">
-                          {item.company}
-                        </p>
-                        <p className="text-sm text-gray-700">
-                          {item.description}
-                        </p>
+                        {item.teamName && (
+                          <p className="text-sm font-medium text-gray-600 mb-1">
+                            Team: {item.teamName}
+                          </p>
+                        )}
+                        {item.reason && (
+                          <p className="text-sm text-gray-700">
+                            Reason: {item.reason}
+                          </p>
+                        )}
                       </div>
                     </div>
-                    {index < user.history.length - 1 && (
+                    {index < visibleLogs.length - 1 && (
                       <div className="absolute left-5 top-10 h-6 w-px bg-gray-200"></div>
                     )}
                   </div>
                 ))}
+
+                {userLogs?.length > visibleLogsCount && (
+                  <div className="text-center pt-4">
+                    <Button
+                      onClick={() => setVisibleLogsCount((prev) => prev + 5)}
+                      variant={"secondary"}
+                    >
+                      See More
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -226,4 +203,16 @@ export default function ProfilePage() {
       </div>
     </div>
   );
+}
+
+
+function selectIcon(action) {
+  switch (action) {
+    case "TEAM_CREATED":
+      return <Users className="h-4 w-4" />
+    case "DISBAND_TEAM":
+      return <MessageSquareX className="h-4 w-4" />
+    default:
+      return <Activity className="h-4 w-4" />;
+  }
 }
