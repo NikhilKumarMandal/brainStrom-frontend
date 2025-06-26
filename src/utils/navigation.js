@@ -11,8 +11,10 @@ export default function useNavigation() {
   const gotoBrowseTeams = () => navigate("/browse-teams");
   const gotoMyTeam = (teamId) => navigate(`/my-teams/${teamId}`);
   const gotoUserProfile = (userId) => navigate(`/profile/${userId}`);
+  const gotoSelfProfile = () => navigate("/profile/me");
   const gotoMyTeams = () => navigate("/my-teams");
   const gotoCreateTeam = () => navigate("/create-team");
+  const gotoEditProfile = () => navigate("/edit-profile");
 
   return {
     gotoDashboard,
@@ -23,7 +25,9 @@ export default function useNavigation() {
     gotoBrowseTeams,
     gotoMyTeam,
     gotoUserProfile,
+    gotoSelfProfile,
     gotoMyTeams,
     gotoCreateTeam,
+    gotoEditProfile,
   };
 }
