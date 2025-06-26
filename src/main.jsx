@@ -1,25 +1,24 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import './App.css';
-import { QueryClient,QueryClientProvider} from '@tanstack/react-query';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./App.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Toaster } from 'sonner';
+import { Toaster } from "sonner";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
-
 
 const queryClinet = new QueryClient();
 
 const googleClientId =
   "96337949620-36lrmcsg5ui4lgmi3sa8227kek1i6gkc.apps.googleusercontent.com";
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <QueryClientProvider client={queryClinet}>
-    <GoogleOAuthProvider clientId={googleClientId}>
+      <GoogleOAuthProvider clientId={googleClientId}>
         <Toaster />
         <RouterProvider router={router} />
-        </GoogleOAuthProvider>
-      </QueryClientProvider>
+      </GoogleOAuthProvider>
+    </QueryClientProvider>
   </StrictMode>
 );

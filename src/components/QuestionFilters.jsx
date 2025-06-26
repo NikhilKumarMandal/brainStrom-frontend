@@ -1,10 +1,13 @@
-
-import React from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Filter, Pin } from 'lucide-react';
-
-
+import React from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Filter, Pin } from "lucide-react";
 
 export const QuestionFilters = ({
   courses,
@@ -13,7 +16,7 @@ export const QuestionFilters = ({
   onFilter,
 }) => {
   const handleCourseChange = (value) => {
-    const courseValue = value === 'all-courses' ? '' : value;
+    const courseValue = value === "all-courses" ? "" : value;
     onFilter(courseValue, pinFilter);
   };
 
@@ -34,7 +37,10 @@ export const QuestionFilters = ({
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Filter by Course
             </label>
-            <Select value={selectedCourse || 'all-courses'} onValueChange={handleCourseChange}>
+            <Select
+              value={selectedCourse || "all-courses"}
+              onValueChange={handleCourseChange}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="All Courses" />
               </SelectTrigger>
@@ -55,26 +61,26 @@ export const QuestionFilters = ({
             </label>
             <div className="flex gap-2">
               <Button
-                variant={pinFilter === 'all' ? 'default' : 'outline'}
+                variant={pinFilter === "all" ? "default" : "outline"}
                 size="sm"
-                onClick={() => handlePinFilterChange('all')}
+                onClick={() => handlePinFilterChange("all")}
                 className="flex-1"
               >
                 All
               </Button>
               <Button
-                variant={pinFilter === 'pinned' ? 'default' : 'outline'}
+                variant={pinFilter === "pinned" ? "default" : "outline"}
                 size="sm"
-                onClick={() => handlePinFilterChange('pinned')}
+                onClick={() => handlePinFilterChange("pinned")}
                 className="flex-1 gap-1"
               >
                 <Pin className="w-4 h-4" />
                 Pinned
               </Button>
               <Button
-                variant={pinFilter === 'unpinned' ? 'default' : 'outline'}
+                variant={pinFilter === "unpinned" ? "default" : "outline"}
                 size="sm"
-                onClick={() => handlePinFilterChange('unpinned')}
+                onClick={() => handlePinFilterChange("unpinned")}
                 className="flex-1"
               >
                 Unpinned

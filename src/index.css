@@ -38,7 +38,7 @@
 .custom-code-block {
   background-color: #0e0e0e;
   color: #d0d0d0;
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
   padding: 0.05rem;
   /* border-radius: 0.5rem; */
   white-space: pre-wrap;

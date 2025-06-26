@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import { useAuthStore } from '@/store/store';
-import { useMutation } from '@tanstack/react-query';
-import { createTicket } from '@/http/api';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { useAuthStore } from "@/store/store";
+import { useMutation } from "@tanstack/react-query";
+import { createTicket } from "@/http/api";
 
+export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("");
 
-
-export const AskQuestionModal = ({
-  isOpen,
-  onClose,
-  refetchQuestions,
-}) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [selectedCourse, setSelectedCourse] = useState('');
-
-  const { user } = useAuthStore()
-  const courses = user.enrolledCourses.map(c => c.course.name)
+  const { user } = useAuthStore();
+  const courses = user.enrolledCourses.map((c) => c.course.name);
 
   useEffect(() => {
     if (courses.length === 1) {
@@ -35,43 +35,42 @@ export const AskQuestionModal = ({
     }
   }, [courses]);
 
-
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData) => {
-      const { data } = await createTicket(formData)
-      return data
+      const { data } = await createTicket(formData);
+      return data;
     },
     onSuccess: () => {
-      alert('Submitted')
+      alert("Submitted");
 
       // Reset form and close modal
-      setTitle('');
-      setDescription('');
-      setSelectedCourse('');
+      setTitle("");
+      setDescription("");
+      setSelectedCourse("");
       refetchQuestions();
       onClose();
     },
     onError: () => {
-      alert('Failed to submit ticket')
-    }
-  })
+      alert("Failed to submit ticket");
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Handle form submission
-    const formData = new FormData()
-    formData.append('title', title)
-    formData.append('description', description)
-    formData.append('courses', selectedCourse)
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("courses", selectedCourse);
 
-    mutate(formData)
+    mutate(formData);
   };
 
   const handleClose = () => {
-    setTitle('');
-    setDescription('');
-    setSelectedCourse('');
+    setTitle("");
+    setDescription("");
+    setSelectedCourse("");
     onClose();
   };
 
@@ -108,7 +107,11 @@ export const AskQuestionModal = ({
 
           <div className="space-y-2">
             <Label htmlFor="course">Course</Label>
-            <Select value={selectedCourse} onValueChange={setSelectedCourse} required>
+            <Select
+              value={selectedCourse}
+              onValueChange={setSelectedCourse}
+              required
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select a course" />
               </SelectTrigger>
@@ -127,7 +130,7 @@ export const AskQuestionModal = ({
               Cancel
             </Button>
             <Button type="submit">
-              {isPending ? 'Submitting...' : 'Submit Question'}
+              {isPending ? "Submitting..." : "Submit Question"}
             </Button>
           </DialogFooter>
         </form>

@@ -1,32 +1,34 @@
-import React, { useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
-import { logout } from '../http/api'
-import { useAuthStore } from '../store/store'
-import logo from '../assets/logo.png'
-import getRandomImage from '../utils/getRandomImage'
+import React, { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { logout } from "../http/api";
+import { useAuthStore } from "../store/store";
+import logo from "../assets/logo.png";
+import getRandomImage from "../utils/getRandomImage";
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const { logout: logoutUserFromStore } = useAuthStore()
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { logout: logoutUserFromStore } = useAuthStore();
 
   const { mutate: logoutMutate } = useMutation({
-    mutationKey: ['logout'],
+    mutationKey: ["logout"],
     mutationFn: logout,
     onSuccess: async () => {
-      logoutUserFromStore()
+      logoutUserFromStore();
     },
-  })
+  });
 
   const handleLogout = () => {
-    logoutMutate()
-    setMenuOpen(false)
-  }
+    logoutMutate();
+    setMenuOpen(false);
+  };
 
   return (
     <div className="w-[90%] text-white py-4  flex justify-between items-center self-center relative">
       <img src={logo} alt="Logo" className="w-24 h-16" />
 
-      <h1 className="text-2xl text-gray-300 font-bold text-center">Ask Questions, Get Answers</h1>
+      <h1 className="text-2xl text-gray-300 font-bold text-center">
+        Ask Questions, Get Answers
+      </h1>
 
       {/* Profile Button */}
       <button
@@ -52,5 +54,5 @@ export default function Header() {
         </div>
       )}
     </div>
-  )
+  );
 }
