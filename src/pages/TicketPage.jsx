@@ -1,12 +1,11 @@
-
 import React, { useEffect, useState } from 'react';
-
 import { QuestionFilters } from '../components/QuestionFilters';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { QuestionsCard } from '../components/QuestionsCard';
 import { getAllTicket } from '@/http/api';
 import { useQuery } from '@tanstack/react-query';
+import { AskQuestionModal } from '../components/AskQuestionModal';
 
 const mockQuestions = [
   {
@@ -81,7 +80,8 @@ const TicketPage = () => {
   // const [questions] = useState(mockQuestions);
   const [selectedCourse, setSelectedCourse] = useState('');
   const [pinFilter, setPinFilter] = useState('all');
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    
   const { data: questions, isLoading: isQuestionsLoading } = useQuery({
     queryKey: ['tickets'],
     queryFn: getAllTickets,
@@ -133,7 +133,10 @@ const TicketPage = () => {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Questions</h1>
             <p className="text-gray-600">Manage and explore student questions across all courses</p>
           </div>
-          <Button className="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700">
+          <Button 
+            className="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700"
+            onClick={() => setIsModalOpen(true)}
+          >
             <Plus className="w-4 h-4 mr-2" />
             Ask Question
           </Button>
@@ -158,7 +161,12 @@ const TicketPage = () => {
             </div>
           )}
         </div>
-      </div>
+          </div>
+          <AskQuestionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      
+      />
     </div>
   );
 };
