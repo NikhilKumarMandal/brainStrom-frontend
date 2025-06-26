@@ -9,80 +9,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Teamcards } from "../components/Teamcards";
+import { useAuthStore } from "@/store/store";
+import { useQuery } from "@tanstack/react-query";
+import { getAllTeam } from "@/http/api";
 
-const mockTeams = [
-  {
-    id: 1,
-    title: "Web Development Team",
-    description:
-      "Building modern web applications using React, TypeScript, and Node.js. Looking for passionate developers to join our journey.",
-    totalMembers: 8,
-    course: "Computer Science",
-    skills: ["React", "TypeScript", "Node.js"],
-  },
-  {
-    id: 2,
-    title: "Data Science Explorers",
-    description:
-      "Analyzing complex datasets and building machine learning models. Perfect for students interested in AI and analytics.",
-    totalMembers: 6,
-    course: "Data Science",
-    skills: ["Python", "Machine Learning", "Statistics"],
-  },
-  {
-    id: 3,
-    title: "Mobile App Innovators",
-    description:
-      "Creating cross-platform mobile applications with Flutter and React Native. Join us to build the next big app!",
-    totalMembers: 5,
-    course: "Software Engineering",
-    skills: ["Flutter", "React Native", "Mobile Development"],
-  },
-  {
-    id: 4,
-    title: "UI/UX Design Studio",
-    description:
-      "Crafting beautiful and intuitive user experiences. We focus on user research, prototyping, and modern design principles.",
-    totalMembers: 4,
-    course: "Design",
-    skills: ["Figma", "User Research", "Prototyping"],
-  },
-  {
-    id: 5,
-    title: "Cybersecurity Hawks",
-    description:
-      "Exploring the world of cybersecurity, ethical hacking, and digital forensics. Security enthusiasts welcome!",
-    totalMembers: 7,
-    course: "Cybersecurity",
-    skills: ["Penetration Testing", "Network Security", "Forensics"],
-  },
-  {
-    id: 6,
-    title: "Blockchain Builders",
-    description:
-      "Developing decentralized applications and exploring cryptocurrency technologies. The future of finance awaits!",
-    totalMembers: 9,
-    course: "Computer Science",
-    skills: ["Solidity", "Web3", "Smart Contracts"],
-  },
-];
 
-const courses = [
-  "All Courses",
-  "Computer Science",
-  "Data Science",
-  "Software Engineering",
-  "Design",
-  "Cybersecurity",
-];
+async function getTeams() {
+  const { data } = await getAllTeam().then((res) => res.data);
+  return data;
+}
 
 function BrowsesTeams() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("All Courses");
+  const { user } = useAuthStore();
+  const courses = user.enrolledCourses.map((c) => c.course.name);
 
-  const filteredTeams = mockTeams.filter((team) => {
+
+  const { data: allTeamData, isLoading: isTeamsLoading } = useQuery({
+    queryKey: ["team"],
+    queryFn: getTeams,
+  });
+
+  if (isTeamsLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
+        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+        Loading...
+      </div>
+    );
+  }
+
+  const filteredTeams = allTeamData.filter((team) => {
     const matchesSearch =
-      team.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       team.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       team.skills.some((skill) =>
         skill.toLowerCase().includes(searchTerm.toLowerCase())
@@ -127,6 +87,7 @@ function BrowsesTeams() {
                   <SelectValue placeholder="Select course" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="All Courses">All Courses</SelectItem>
                   {courses.map((course) => (
                     <SelectItem key={course} value={course}>
                       {course}

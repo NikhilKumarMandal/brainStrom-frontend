@@ -18,7 +18,7 @@ export default function BrowseTeams() {
     queryFn: getTeams,
   });
 
-  const user = useAuthStore((state) => state.user);
+  const { user } = useAuthStore();
 
   if (isLoading) {
     return (

@@ -15,7 +15,7 @@ export const Teamcards = ({ team }) => {
   const handleJoinRequest = () => {
     toast({
       title: "Join request sent!",
-      description: `Your request to join "${team.title}" has been sent to the team leader.`,
+      description: `Your request to join "${team.name}" has been sent to the team leader.`,
     });
   };
 
@@ -24,11 +24,11 @@ export const Teamcards = ({ team }) => {
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between mb-3">
           <CardTitle className="text-lg font-semibold text-gray-900 leading-tight">
-            {team.title}
+            {team.name}
           </CardTitle>
           <div className="flex items-center gap-1 text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
             <Users className="h-3 w-3" />
-            <span>{team.totalMembers}</span>
+            <span>{team._count.members}</span>
           </div>
         </div>
 
