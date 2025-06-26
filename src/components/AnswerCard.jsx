@@ -8,7 +8,7 @@ import {
 } from "react-icons/bi";
 import { vote } from "../http/api";
 import { useAuthStore } from "../store/store";
-import formatDate from "../utils/formatePostTime";
+import { presiceTime } from "@/utils/formateTime";
 import RichTextEditor from "./RichTextEditor";
 
 export default function AnswerCard({ answer }) {
@@ -35,7 +35,7 @@ export default function AnswerCard({ answer }) {
 
       <div className="w-[97%] mx-auto mt-3 flex justify-between items-center text-sm text-gray-400">
         <span>
-          By {answer.user?.name} · {formatDate(answer.createdAt)}
+          By {answer.user?.name} · {presiceTime(answer.createdAt)}
         </span>
 
         <div className="flex items-center gap-4">

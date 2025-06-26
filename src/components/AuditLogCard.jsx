@@ -1,6 +1,6 @@
 import React, { act } from "react";
-import formatDate from "../utils/formatePostTime";
-import formateString from "../utils/formateString";
+import { presiceTime } from "@/utils/formateTime";
+import { formateString } from "../utils/formateString";
 import { useAuthStore } from "../store/store";
 
 export default function AuditLogCard({
@@ -58,7 +58,7 @@ export default function AuditLogCard({
               )}
               {log.createdAt && (
                 <p className="text-xs text-gray-500 mt-1">
-                  {formatDate(log.createdAt)}
+                  {presiceTime(log.createdAt)}
                 </p>
               )}
             </li>

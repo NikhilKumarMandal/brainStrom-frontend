@@ -26,8 +26,8 @@ import RichTextEditor from "../components/RichTextEditor";
 import AuditLogCard from "../components/AuditLogCard";
 import TeamMemberDetails from "../components/TeamMemberDetails";
 import useNavigation from "../utils/navigation";
-import formatDate from "../utils/formatePostTime";
 import LeaveTeamModal from "../components/LeaveTeamModal";
+import { presiceTime } from "@/utils/formateTime";
 
 async function getTeamDetails(teamId) {
   const { data } = await getTeamById(teamId);
@@ -281,7 +281,7 @@ export default function MyTeam() {
           </div>
         )}
         <h2 className="text-xs text-gray-500 font-sans absolute bottom-2 right-4 select-none">
-          {notice && `Last Updated at ${formatDate(notice?.updatedAt)}`}
+          {notice && `Last Updated at ${presiceTime(notice?.updatedAt)}`}
         </h2>
       </div>
 
