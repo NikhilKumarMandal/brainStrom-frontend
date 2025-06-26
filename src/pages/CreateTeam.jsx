@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { createTeam } from "../http/api";
 import CourseSelector from "../components/CourseSelector";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuthStore } from "@/store/store";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function CreateTeam() {
   const [teamName, setTeamName] = useState("");
   const [description, setDescription] = useState("");
   const [newSkill, setNewSkill] = useState("");
   const [skills, setSkills] = useState([]);
-  const [course, setCourse] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("");
   const [showErrors, setShowErrors] = useState(false);
   const [openLimitModal, setOpenLimitModal] = useState(false);
+  const { user } = useAuthStore();
+  const courses = user.enrolledCourses.map((c) => c.course.name);
 
+  useEffect(() => {
+    if (courses.length === 1) {
+      setSelectedCourse(courses[0]);
+    }
+  }, [courses]);
+  
   const { mutate, isPending } = useMutation({
     mutationFn: async (teamData) => {
       const { data } = await createTeam(teamData);
@@ -54,7 +64,7 @@ export default function CreateTeam() {
     e.preventDefault();
     setShowErrors(true);
 
-    if (!teamName || !description || !course) {
+    if (!teamName || !description || !selectedCourse) {
       alert("Team name, description, and course are required.");
       return;
     }
@@ -62,7 +72,7 @@ export default function CreateTeam() {
     const teamData = {
       name: teamName,
       description,
-      course,
+      course: selectedCourse,
       skills,
     };
 
@@ -82,11 +92,22 @@ export default function CreateTeam() {
           placeholder="Team Name"
         />
 
-        <CourseSelector
-          course={course}
-          setCourse={setCourse}
-          showError={showErrors}
-        />
+        <Select
+          value={selectedCourse}
+          onValueChange={setSelectedCourse}
+          required
+        >
+          <SelectTrigger className={"w-full"} >
+            <SelectValue placeholder="Select a course" />
+          </SelectTrigger>
+          <SelectContent>
+            {courses.map((course) => (
+              <SelectItem key={course} value={course}>
+                {course}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         <Textarea
           value={description}

@@ -101,14 +101,6 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
               onChange={setDescription}
               required
             />
-            {/* <Textarea
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Provide more details about your question..."
-              className="min-h-[100px]"
-              required
-            /> */}
           </div>
 
           <div className="space-y-2">
