@@ -13,7 +13,6 @@ import { useAuthStore } from "@/store/store";
 import { useQuery } from "@tanstack/react-query";
 import { getAllTeam } from "@/http/api";
 
-
 async function getTeams() {
   const { data } = await getAllTeam().then((res) => res.data);
   return data;
@@ -24,7 +23,6 @@ function BrowsesTeams() {
   const [selectedCourse, setSelectedCourse] = useState("All Courses");
   const { user } = useAuthStore();
   const courses = user.enrolledCourses.map((c) => c.course.name);
-
 
   const { data: allTeamData, isLoading: isTeamsLoading } = useQuery({
     queryKey: ["team"],

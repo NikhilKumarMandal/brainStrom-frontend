@@ -13,6 +13,7 @@ import UserProfile from "./pages/UserProfile";
 import MyTeams from "./pages/MyTeams";
 import TicketPage from "./pages/TicketPage";
 import BrowsesTeams from "./pages/BrowsesTeams";
+import ProfileEditor from "./pages/ProfileEditor";
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
           {
             path: "create-team",
             element: <CreateTeam />,
+          },
+          {
+            path: "edit-profile",
+            element: <ProfileEditor />,
           },
         ],
       },
