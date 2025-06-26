@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useAuthStore } from '../store/store'
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
-export default function CourseSelector({ course, setCourse, showError, showHint = true }) {
+export default function CourseSelector({ course, setCourse, showError }) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef()
   const { user } = useAuthStore()

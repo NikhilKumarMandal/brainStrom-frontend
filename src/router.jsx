@@ -7,8 +7,6 @@ import ProblemPage from "./pages/ProblemPage";
 import BrowseTeams from "./pages/BrowseTeams";
 import HomePage from "./pages/Homepage";
 import AskQuestion from "./pages/AskQuestion";
-import DumpCSV from "./pages/DumpCSV";
-import SupAdminDashboard from "./pages/Dashboard";
 import MyTeam from "./pages/MyTeam";
 import CreateTeam from "./pages/CreateTeam";
 import UserProfile from "./pages/UserProfile";
@@ -24,7 +22,7 @@ export const router = createBrowserRouter([
           element: <Dashboard />,
           children: [
             {
-              path: "home",
+              path: "/",
               element: <HomePage/>,
             },
             {
@@ -36,16 +34,8 @@ export const router = createBrowserRouter([
               element: <ProblemPage />,
             },
             {
-              path: "profile/me",
-              element: <UserProfile isMe />,
-            },
-            {
               path: "profile/:userId",
               element: <UserProfile />,
-            },
-            {
-              path: "dump-csv",
-              element: <DumpCSV />,
             },
             {
               path: "browse-teams",
@@ -62,10 +52,6 @@ export const router = createBrowserRouter([
             {
               path: "create-team",
               element: <CreateTeam />,
-            },
-            {
-              path: "dashboard",
-              element: <SupAdminDashboard />,
             },
           ],
         },

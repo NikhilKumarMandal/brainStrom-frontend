@@ -1,5 +1,5 @@
-import { useMutation } from '@tanstack/react-query'
 import React, { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import { createTeam } from '../http/api'
 import CourseSelector from '../components/CourseSelector'
@@ -81,7 +81,7 @@ export default function CreateTeam() {
           className="px-4 py-2 bg-gray-700 rounded text-white border border-gray-600 focus:outline-none focus:ring-1 focus:ring-amber-600 hover:border-amber-600"
         />
 
-        <CourseSelector course={course} setCourse={setCourse} showError={showErrors} showHint={false} />
+        <CourseSelector course={course} setCourse={setCourse} showError={showErrors} />
 
         <textarea
           value={description}

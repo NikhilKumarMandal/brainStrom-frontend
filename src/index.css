@@ -39,9 +39,10 @@
   background-color: #0e0e0e;
   color: #d0d0d0;
   font-family: 'Fira Code', monospace;
-  padding: 0.25rem;
-  border-radius: 0.5rem;
+  padding: 0.05rem;
+  /* border-radius: 0.5rem; */
   white-space: pre-wrap;
+  line-height: 1.2;
 }
 
 a {

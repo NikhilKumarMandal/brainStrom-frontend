@@ -7,7 +7,7 @@ export default function TeamMemberDetails({
   onKick, closeDropdown, isLeader, leaderId
 }) {
   const dropdownRef = useRef(null)
-  const {user} = useAuthStore()
+  const { user } = useAuthStore()
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -16,18 +16,15 @@ export default function TeamMemberDetails({
       }
     }
 
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
+    if (isOpen) { document.addEventListener('mousedown', handleClickOutside) }
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
+    return () => { document.removeEventListener('mousedown', handleClickOutside) }
+
   }, [isOpen, closeDropdown])
 
   return (
     <div className="relative group flex items-center gap-2 flex-col cursor-pointer hover:scale-110 transition">
-      {/* Avatar + Name click */}
+      {/* Avatar + Name */}
       <div
         className="flex items-center flex-col gap-2"
         onClick={onClick}
@@ -37,9 +34,7 @@ export default function TeamMemberDetails({
           alt=""
           className="w-12 h-12 rounded-full bg-gray-700"
         />
-        <h2
-          className={`text-sm font-semibold ${member.role === 'LEADER' ? 'text-green-400' : 'text-gray-300'} group-hover:text-amber-400`}
-        >
+        <h2 className={`text-sm font-semibold ${member.role === 'LEADER' ? 'text-green-400' : 'text-gray-300'} group-hover:text-amber-400`} >
           {user.id === member.user.id ? 'You' : member.user.name}
         </h2>
       </div>
@@ -60,16 +55,16 @@ export default function TeamMemberDetails({
           >
             See Profile
           </button>
-          <div className="border-t border-gray-700"></div>
-          {(isLeader && member.user.id !== leaderId ) && <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onKick(member.user.id)
-            }}
-            className="block w-full text-left px-4 py-2 text-sm text-red-400 border-none hover:bg-red-600 hover:text-gray-200 focus:outline-none"
-          >
-            Kick
-          </button>}
+          <div className="border-t border-gray-700" />
+          {(isLeader && member.user.id !== leaderId) &&
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                onKick(member.user.id)
+              }}
+              className="block w-full text-left px-4 py-2 text-sm text-red-400 border-none hover:bg-red-600 hover:text-gray-200 focus:outline-none"
+            > Kick </button>
+          }
         </div>
       )}
     </div>

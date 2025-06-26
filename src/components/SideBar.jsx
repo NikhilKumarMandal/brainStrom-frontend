@@ -1,10 +1,12 @@
 import React from 'react'
 import useNavigation from '../utils/navigation'
 import MenuOption from './MenuOption'
+import { useAuthStore } from '../store/store'
 
 export default function SideBar() {
   const location = window.location.pathname
-  const { gotoHomePage, gotoAskQuestion, gotoBrowseTeams, gotoMyTeams, gotoMyProfile } = useNavigation()
+  const { gotoHomePage, gotoAskQuestion, gotoBrowseTeams, gotoMyTeams, gotoUserProfile } = useNavigation()
+  const { user } = useAuthStore()
 
   return (
     <div className="h-screen w-[20%] min-w-[200px] bg-gray-900 flex-none flex items-center">
@@ -34,8 +36,8 @@ export default function SideBar() {
           />
           <MenuOption
             title={"Profile"}
-            action={gotoMyProfile}
-            selected={location === '/profile/me'}
+            action={() => gotoUserProfile(user.id)}
+            selected={location === `/profile/${user.id}`}
           />
         </div>
       </div>

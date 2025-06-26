@@ -29,7 +29,7 @@ export const getTopDiscussion = (id) => api.get(`/discussion/getTopDiscussion/${
 // vote service
 export const vote = (id, type) => api.post(`/vote/${id}`, { type });
 
-// Team service
+// team service
 export const getAllTeam = () => api.get("/team/getAllTeam");
 
 export const createTeam = (formData) => api.post("/team/", formData);
@@ -48,9 +48,16 @@ export const kickMember = (teamId, userId, reason) => api.post(`/team/${teamId}/
 
 export const getMyTeams = () => api.get("/team/getMyTeams");
 
-// Team Notice
+export const leaveTeam = (teamId, reason) => api.post("/team/leaveTeam", {teamId, reason});
+
+// team notice
 export const editNotice = (teamId, content) => api.post("/notice/", { teamId, content });
 
 export const getNotice = (teamId) => api.get(`/notice/${teamId}`);
 
 export const deleteNotice = (noticeId) => api.delete(`/notice/${noticeId}/delete`);
+
+// history
+export const getUserHistory = (userId) => api.get(`/history/${userId}`);
+
+export const getTeamHistory = (teamId) => api.get(`/history/teamHistory/${teamId}`);
