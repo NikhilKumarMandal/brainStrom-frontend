@@ -17,7 +17,7 @@ export default function CreateTeam() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async (teamData) => {
-      const { data } = await createTeam(teamData); // ensure this sends JSON
+      const { data } = await createTeam(teamData);
       return data;
     },
     onSuccess: () => {
@@ -74,7 +74,7 @@ export default function CreateTeam() {
     <div className="w-full text-black p-6 flex flex-col items-center justify-center gap-6 text-center">
       <h1 className="text-3xl font-bold">Create a New Team</h1>
 
-      <div className="w-full max-w-lg flex flex-col gap-4 bg-white/80 backdrop-blur-sm text-white p-6 rounded-lg shadow-lg">
+      <div className="w-full max-w-lg flex flex-col gap-4 bg-white/80 backdrop-blur-sm text-black p-6 rounded-lg shadow-lg">
         <Input
           type="text"
           value={teamName}

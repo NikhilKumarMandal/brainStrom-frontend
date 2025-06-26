@@ -12,6 +12,7 @@ import CreateTeam from "./pages/CreateTeam";
 import UserProfile from "./pages/UserProfile";
 import MyTeams from "./pages/MyTeams";
 import TicketPage from "./pages/TicketPage";
+import BrowsesTeams from "./pages/BrowsesTeams";
 
 export const router = createBrowserRouter([
   {
@@ -40,7 +41,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "browse-teams",
-            element: <BrowseTeams />,
+            element: <BrowsesTeams />,
           },
           {
             path: "my-teams/:teamId",
