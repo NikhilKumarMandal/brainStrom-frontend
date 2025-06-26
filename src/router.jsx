@@ -11,6 +11,7 @@ import MyTeam from "./pages/MyTeam";
 import CreateTeam from "./pages/CreateTeam";
 import UserProfile from "./pages/UserProfile";
 import MyTeams from "./pages/MyTeams";
+import TicketPage from "./pages/TicketPage";
 
 export const router = createBrowserRouter([
     {
@@ -23,7 +24,7 @@ export const router = createBrowserRouter([
           children: [
             {
               path: "/",
-              element: <HomePage/>,
+              element: <TicketPage/>,
             },
             {
               path: "ask-questions",
