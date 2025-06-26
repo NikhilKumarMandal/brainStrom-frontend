@@ -1,31 +1,31 @@
-import { useState, useEffect, useRef } from 'react'
-import { useAuthStore } from '../store/store'
+import { useState, useEffect, useRef } from "react";
+import { useAuthStore } from "../store/store";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
 
 export default function CourseSelector({ course, setCourse, showError }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const dropdownRef = useRef()
-  const { user } = useAuthStore()
-  const courses = user.enrolledCourses.map(c => c.course.name)
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef();
+  const { user } = useAuthStore();
+  const courses = user.enrolledCourses.map((c) => c.course.name);
 
   console.log("user", user);
   console.log("courses", courses);
 
   useEffect(() => {
     setTimeout(() => {
-      if (courses.length === 1) setCourse(courses[0])
-    }, 500)
-  }, [])
+      if (courses.length === 1) setCourse(courses[0]);
+    }, 500);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   if (courses.length === 1) {
     return (
@@ -37,7 +37,7 @@ export default function CourseSelector({ course, setCourse, showError }) {
           className="w-full bg-gray-900 border border-gray-700 text-white rounded-lg px-4 py-2 cursor-not-allowed"
         />
       </div>
-    )
+    );
   }
 
   return (
@@ -45,14 +45,16 @@ export default function CourseSelector({ course, setCourse, showError }) {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full flex items-center bg-gray-900 border justify-between ${showError && !course ? 'border-red-500' : 'border-gray-700'} text-gray-300 rounded-lg px-4 py-2 text-left focus:outline-none hover:border-amber-500`}
+        className={`w-full flex items-cent border justify-between ${showError && !course ? "border-red-500" : "border-gray-700"} text-gray-300 rounded-lg px-4 py-2 text-left focus:outline-none hover:border-gray-500`}
       >
-        {course || 'Select course'}
+        {course || "Select course"}
         {isOpen ? <FaChevronUp /> : <FaChevronDown />}
       </button>
 
       {showError && !course && (
-        <p className="text-sm text-red-500 mt-1">Course selection is required.</p>
+        <p className="text-sm text-red-500 mt-1">
+          Course selection is required.
+        </p>
       )}
 
       {isOpen && (
@@ -61,12 +63,15 @@ export default function CourseSelector({ course, setCourse, showError }) {
             <div key={index}>
               <div
                 onClick={() => {
-                  setCourse(c)
-                  setIsOpen(false)
+                  setCourse(c);
+                  setIsOpen(false);
                 }}
-                className={`px-4 py-2 cursor-pointer hover:bg-gray-800 ${course === c ? 'bg-gray-800 text-amber-500 font-medium' : 'text-gray-300'}`}
-              > {c} </div>
-              
+                className={`px-4 py-2 cursor-pointer hover:bg-gray-800 ${course === c ? "bg-gray-800 text-amber-500 font-medium" : "text-gray-300"}`}
+              >
+                {" "}
+                {c}{" "}
+              </div>
+
               {index < courses.length - 1 && (
                 <div className="border-t border-gray-700 mx-2" />
               )}
@@ -75,5 +80,5 @@ export default function CourseSelector({ course, setCourse, showError }) {
         </div>
       )}
     </div>
-  )
+  );
 }

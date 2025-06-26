@@ -1,41 +1,49 @@
-import React, { useRef, useEffect } from 'react'
-import getRandomImage from '../utils/getRandomImage'
-import { useAuthStore } from '../store/store'
+import React, { useRef, useEffect } from "react";
+import getRandomImage from "../utils/getRandomImage";
+import { useAuthStore } from "../store/store";
 
 export default function TeamMemberDetails({
-  member, isOpen, onClick, onSeeProfile,
-  onKick, closeDropdown, isLeader, leaderId
+  member,
+  isOpen,
+  onClick,
+  onSeeProfile,
+  onKick,
+  closeDropdown,
+  isLeader,
+  leaderId,
 }) {
-  const dropdownRef = useRef(null)
-  const { user } = useAuthStore()
+  const dropdownRef = useRef(null);
+  const { user } = useAuthStore();
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        closeDropdown()
+        closeDropdown();
       }
     }
 
-    if (isOpen) { document.addEventListener('mousedown', handleClickOutside) }
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
 
-    return () => { document.removeEventListener('mousedown', handleClickOutside) }
-
-  }, [isOpen, closeDropdown])
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, closeDropdown]);
 
   return (
     <div className="relative group flex items-center gap-2 flex-col cursor-pointer hover:scale-110 transition">
       {/* Avatar + Name */}
-      <div
-        className="flex items-center flex-col gap-2"
-        onClick={onClick}
-      >
+      <div className="flex items-center flex-col gap-2" onClick={onClick}>
         <img
           src={member.user.avatar || getRandomImage()}
           alt=""
           className="w-12 h-12 rounded-full bg-gray-700"
         />
-        <h2 className={`text-sm font-semibold ${member.role === 'LEADER' ? 'text-green-400' : 'text-gray-300'} group-hover:text-amber-400`} >
-          {user.id === member.user.id ? 'You' : member.user.name}
+        <h2
+          className={`text-sm font-semibold ${member.role === "LEADER" ? "text-green-400" : "text-gray-300"} group-hover:text-amber-400`}
+        >
+          {user.id === member.user.id ? "You" : member.user.name}
         </h2>
       </div>
 
@@ -48,25 +56,28 @@ export default function TeamMemberDetails({
         >
           <button
             onClick={(e) => {
-              e.stopPropagation()
-              onSeeProfile(member)
+              e.stopPropagation();
+              onSeeProfile(member);
             }}
             className="block w-full text-left px-4 py-2 text-sm border-none hover:bg-gray-700 focus:outline-none"
           >
             See Profile
           </button>
           <div className="border-t border-gray-700" />
-          {(isLeader && member.user.id !== leaderId) &&
+          {isLeader && member.user.id !== leaderId && (
             <button
               onClick={(e) => {
-                e.stopPropagation()
-                onKick(member.user.id)
+                e.stopPropagation();
+                onKick(member.user.id);
               }}
               className="block w-full text-left px-4 py-2 text-sm text-red-400 border-none hover:bg-red-600 hover:text-gray-200 focus:outline-none"
-            > Kick </button>
-          }
+            >
+              {" "}
+              Kick{" "}
+            </button>
+          )}
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,12 +1,14 @@
-import React from 'react'
-import RichTextEditor from './RichTextEditor'
-import { Chip } from './Chip'
+import React from "react";
+import RichTextEditor from "./RichTextEditor";
+import { Chip } from "./Chip";
 // import Chip from './Chip'
 
 export default function QuestionCard({ title, description, courses }) {
   return (
     <div className="text-gray-200 rounded-xl px-6 w-full">
-      <h2 className="text-3xl font-bold text-center mb-4 text-gray-100">{title}</h2>
+      <h2 className="text-3xl font-bold text-center mb-4 text-gray-100">
+        {title}
+      </h2>
 
       <p className="font-mono mb-2 text-gray-400">
         <strong>Description:</strong>
@@ -25,5 +27,5 @@ export default function QuestionCard({ title, description, courses }) {
         {courses}
       </button> */}
     </div>
-  )
+  );
 }
