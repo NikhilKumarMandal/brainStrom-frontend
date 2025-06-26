@@ -77,12 +77,16 @@ const getAllTickets = async () => {
 }
 
 const TicketPage = () => {
-  // const [questions] = useState(mockQuestions);
+
   const [selectedCourse, setSelectedCourse] = useState('');
   const [pinFilter, setPinFilter] = useState('all');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    
-  const { data: questions, isLoading: isQuestionsLoading } = useQuery({
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const {
+    data: questions,
+    isLoading: isQuestionsLoading,
+    refetch: refetchQuestions
+  } = useQuery({
     queryKey: ['tickets'],
     queryFn: getAllTickets,
   });
@@ -133,7 +137,7 @@ const TicketPage = () => {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Questions</h1>
             <p className="text-gray-600">Manage and explore student questions across all courses</p>
           </div>
-          <Button 
+          <Button
             className="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700"
             onClick={() => setIsModalOpen(true)}
           >
@@ -161,11 +165,11 @@ const TicketPage = () => {
             </div>
           )}
         </div>
-          </div>
-          <AskQuestionModal
+      </div>
+      <AskQuestionModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-      
+        refetchQuestions={refetchQuestions}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,28 +11,61 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { useAuthStore } from '@/store/store';
+import { useMutation } from '@tanstack/react-query';
+import { createTicket } from '@/http/api';
 
 
 
-export const AskQuestionModal= ({
+export const AskQuestionModal = ({
   isOpen,
-onClose,
-  
+  onClose,
+  refetchQuestions,
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('');
 
+  const { user } = useAuthStore()
+  const courses = user.enrolledCourses.map(c => c.course.name)
+
+  useEffect(() => {
+    if (courses.length === 1) {
+      setSelectedCourse(courses[0]);
+    }
+  }, [courses]);
+
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (formData) => {
+      const { data } = await createTicket(formData)
+      return data
+    },
+    onSuccess: () => {
+      alert('Submitted')
+
+      // Reset form and close modal
+      setTitle('');
+      setDescription('');
+      setSelectedCourse('');
+      refetchQuestions();
+      onClose();
+    },
+    onError: () => {
+      alert('Failed to submit ticket')
+    }
+  })
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Question submitted:', { title, description, course: selectedCourse });
-    
-    // Reset form and close modal
-    setTitle('');
-    setDescription('');
-    setSelectedCourse('');
-    onClose();
+
+    // Handle form submission
+    const formData = new FormData()
+    formData.append('title', title)
+    formData.append('description', description)
+    formData.append('courses', selectedCourse)
+
+    mutate(formData)
   };
 
   const handleClose = () => {
@@ -48,7 +81,7 @@ onClose,
         <DialogHeader>
           <DialogTitle>Ask a Question</DialogTitle>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="title">Question Title</Label>
@@ -80,11 +113,11 @@ onClose,
                 <SelectValue placeholder="Select a course" />
               </SelectTrigger>
               <SelectContent>
-                {/* {courses.map((course) => (
+                {courses.map((course) => (
                   <SelectItem key={course} value={course}>
                     {course}
                   </SelectItem>
-                ))} */}
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -94,7 +127,7 @@ onClose,
               Cancel
             </Button>
             <Button type="submit">
-              Submit Question
+              {isPending ? 'Submitting...' : 'Submit Question'}
             </Button>
           </DialogFooter>
         </form>
