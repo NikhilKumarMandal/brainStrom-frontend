@@ -14,62 +14,62 @@ import MyTeams from "./pages/MyTeams";
 import TicketPage from "./pages/TicketPage";
 
 export const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Root/>,
-      children: [
-        {
-          path: "",
-          element: <Dashboard />,
-          children: [
-            {
-              path: "/",
-              element: <TicketPage/>,
-            },
-            {
-              path: "ask-questions",
-              element: <AskQuestion />,
-            },
-            {
-              path: "problem/:id",
-              element: <ProblemPage />,
-            },
-            {
-              path: "profile/:userId",
-              element: <UserProfile />,
-            },
-            {
-              path: "browse-teams",
-              element: <BrowseTeams />,
-            },
-            {
-              path: "my-teams/:teamId",
-              element: <MyTeam />,
-            },
-            {
-              path: "my-teams",
-              element: <MyTeams />,
-            },
-            {
-              path: "create-team",
-              element: <CreateTeam />,
-            },
-          ],
-        },
-        {
-          path: "/auth",
-          element: <NoAuth />,
-          children: [
-            {
-              path: "login",
-              element: <LoginPage />,
-            },
-          ],
-        },
-        // {
-        //   path: "*",
-        //   element: <NotFoundPage />,
-        // },
-      ],
-    },
-  ]);
+  {
+    path: "/",
+    element: <Root />,
+    children: [
+      {
+        path: "",
+        element: <Dashboard />,
+        children: [
+          {
+            path: "/",
+            element: <TicketPage />,
+          },
+          {
+            path: "ask-questions",
+            element: <AskQuestion />,
+          },
+          {
+            path: "problem/:id",
+            element: <ProblemPage />,
+          },
+          {
+            path: "profile/:userId",
+            element: <UserProfile />,
+          },
+          {
+            path: "browse-teams",
+            element: <BrowseTeams />,
+          },
+          {
+            path: "my-teams/:teamId",
+            element: <MyTeam />,
+          },
+          {
+            path: "my-teams",
+            element: <MyTeams />,
+          },
+          {
+            path: "create-team",
+            element: <CreateTeam />,
+          },
+        ],
+      },
+      {
+        path: "/auth",
+        element: <NoAuth />,
+        children: [
+          {
+            path: "login",
+            element: <LoginPage />,
+          },
+        ],
+      },
+      // {
+      //   path: "*",
+      //   element: <NotFoundPage />,
+      // },
+    ],
+  },
+]);

@@ -35,9 +35,9 @@ function Root() {
     refetchOnReconnect: false,
     staleTime: Infinity,
   });
-  
+
   // console.log(data);
-  
+
   useEffect(() => {
     if (data) {
       setUser(data?.data);

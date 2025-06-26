@@ -1,10 +1,17 @@
-import React from 'react'
+import React from "react";
 
-export default function LeaveTeamModal({ leaveReason, setLeaveReason, onCancel, onConfirm }) {
+export default function LeaveTeamModal({
+  leaveReason,
+  setLeaveReason,
+  onCancel,
+  onConfirm,
+}) {
   return (
     <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-[28rem] flex flex-col gap-4 text-white">
       <h2 className="text-xl font-semibold text-red-400">Leave Team</h2>
-      <p className="text-sm text-gray-300">Are you sure you want to leave the team? Please provide a reason:</p>
+      <p className="text-sm text-gray-300">
+        Are you sure you want to leave the team? Please provide a reason:
+      </p>
       <textarea
         value={leaveReason}
         onChange={(e) => setLeaveReason(e.target.value)}
@@ -26,5 +33,5 @@ export default function LeaveTeamModal({ leaveReason, setLeaveReason, onCancel, 
         </button>
       </div>
     </div>
-  )
+  );
 }

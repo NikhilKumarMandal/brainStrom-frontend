@@ -1,7 +1,12 @@
-import React from 'react'
-import formatDate from '../utils/formatePostTime'
+import React from "react";
+import formatDate from "../utils/formatePostTime";
 
-export default function QuestionMetaData({ author, answers, createdAt, isOpen, }) {
+export default function QuestionMetaData({
+  author,
+  answers,
+  createdAt,
+  isOpen,
+}) {
   return (
     <div className="flex items-center px-6 justify-between w-full">
       <div>
@@ -15,13 +20,14 @@ export default function QuestionMetaData({ author, answers, createdAt, isOpen, }
 
       <span
         className={`px-3 py-1 border rounded-full text-sm font-semibold
-          ${isOpen
-            ? 'border-green-500 text-green-500'
-            : 'border-red-500 text-red-500'
+          ${
+            isOpen
+              ? "border-green-500 text-green-500"
+              : "border-red-500 text-red-500"
           }`}
       >
-        {isOpen ? 'Open' : 'Closed'}
+        {isOpen ? "Open" : "Closed"}
       </span>
     </div>
-  )
+  );
 }

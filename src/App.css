@@ -119,6 +119,7 @@
   }
 }
 
+
 /* Remove focus outline */
 .custom-editor [contenteditable="true"]:focus {
   outline: none !important;
@@ -149,3 +150,4 @@
   white-space: pre-wrap;
   line-height: 1.2;
 }
+

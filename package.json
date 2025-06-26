@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format:check": "prettier . --check",
+    "format:fix": "prettier . --write"
   },
   "dependencies": {
     "@editorjs/code": "^2.9.3",
