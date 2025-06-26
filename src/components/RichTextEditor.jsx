@@ -56,7 +56,8 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
           editor.commands.focus()
         }
       }}
-      className={flex flex-col rounded-lg ${readOnly ? '' : `border border-gray-700 h-[${height}]}`}
+      className={`flex flex-col rounded-lg ${readOnly ? '' : `border border-gray-700 h-[${height}]`}`}
+
     >
       {/* Toolbar */}
       {!readOnly && (
