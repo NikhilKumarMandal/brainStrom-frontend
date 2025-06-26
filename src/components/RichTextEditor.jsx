@@ -32,7 +32,7 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
   if (!editor) return null
 
   const iconColor = (isActive) =>
-    isActive ? 'text-amber-500' : 'text-gray-400 hover:text-gray-100'
+    isActive ? 'text-primary' : 'text-gray-400 hover:text-primary'
 
   const toggleCommand = (type) => {
     switch (type) {
@@ -56,7 +56,7 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
           editor.commands.focus()
         }
       }}
-      className={`flex flex-col rounded-lg ${readOnly ? '' : `border border-gray-700 bg-gray-900 h-[${height}]`}`}
+      className={`flex flex-col rounded-lg ${readOnly ? '' : `border border-gray-700 h-[${height}]`}`}
     >
       {/* Toolbar */}
       {!readOnly && (
@@ -80,7 +80,7 @@ export default function RichTextEditor({ content = '', onChange, readOnly = fals
       )}
 
       {/* Editor Content */}
-      <div className={`flex-1 overflow-y-auto ${padding} text-base text-gray-200 leading-relaxed ${readOnly ? '' : 'min-h-[200px]'} `}>
+      <div className={`flex-1 overflow-y-auto ${padding} text-black leading-relaxed ${readOnly ? '' : 'min-h-[200px]'} `}>
         <EditorContent
           editor={editor}
           spellCheck={false}

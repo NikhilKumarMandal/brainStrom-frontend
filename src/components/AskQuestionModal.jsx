@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { useAuthStore } from '@/store/store';
 import { useMutation } from '@tanstack/react-query';
 import { createTicket } from '@/http/api';
+import RichTextEditor from './RichTextEditor';
 
 
 
@@ -96,14 +97,19 @@ export const AskQuestionModal = ({
 
           <div className="space-y-2">
             <Label htmlFor="description">Description</Label>
-            <Textarea
+            <RichTextEditor
+              content={description} 
+              onChange={setDescription}
+              required
+            />
+            {/* <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Provide more details about your question..."
               className="min-h-[100px]"
               required
-            />
+            /> */}
           </div>
 
           <div className="space-y-2">

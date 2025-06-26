@@ -118,3 +118,34 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Remove focus outline */
+.custom-editor [contenteditable="true"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Allows soft-wrapped lines to have normal spacing */
+.custom-editor p span {
+  line-height: 1.2;
+  display: inline;
+}
+
+/* Allows to show placeholder when text field is empty */
+.is-editor-empty::before {
+  content: attr(data-placeholder);
+  color: #888;
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Shows code box */
+.custom-code-block {
+  background-color: #0e0e0e;
+  color: #d0d0d0;
+  font-family: 'Fira Code', monospace;
+  padding: 0.15rem;
+  white-space: pre-wrap;
+  line-height: 1.2;
+}
