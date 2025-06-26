@@ -14,6 +14,7 @@ import MyTeams from "./pages/MyTeams";
 import TicketPage from "./pages/TicketPage";
 import BrowsesTeams from "./pages/BrowsesTeams";
 import ProfileEditor from "./pages/ProfileEditor";
+import ProfilePage from "./pages/ProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
           {
             path: "edit-profile",
             element: <ProfileEditor />,
+          },
+          {
+            path: "Profile",
+            element: <ProfilePage />,
           },
         ],
       },
