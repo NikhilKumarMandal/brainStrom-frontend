@@ -9,23 +9,19 @@ export const logout = () => api.post("/auth/logout");
 
 export const getUserById = (userId) => api.get(`/auth/${userId}`);
 
-export const updateProfileLinks = (
-  gitHubLink,
-  linkedinLink,
-  xLink,
-  hashnodeLink,
-  otherLink
-) =>
-  api.patch(`/auth/updateProfile`, {
-    gitHubLink,
-    linkedinLink,
-    xLink,
-    hashnodeLink,
-    otherLink,
-  });
+export const updateProfileLinks = (links) =>
+  api.patch("/auth/updateProfile", links);
 
-export const deleteProfileLink = (field) =>
+export const deleteProfileLink = (field) => 
   api.delete("/auth/profileLink", { data: { field } });
+
+export const updateSkills = (skillsToAdd = [], skillsToRemove = []) => {
+  return api.patch('/auth/updateSkills', {
+    skillsToAdd,
+    skillsToRemove,
+  });
+};
+
 
 // ticket service
 export const createTicket = (formData) =>
@@ -44,8 +40,13 @@ export const getAllDiscussion = (id) =>
 export const getTopDiscussion = (id) =>
   api.get(`/discussion/getTopDiscussion/${id}`);
 
+
+
 // vote service
-export const vote = (id, type) => api.post(`/vote/${id}`, { type });
+export const vote = (id, type) => 
+  api.post(`/vote/${id}`, { type });
+
+
 
 // team service
 export const getAllTeam = () => api.get("/team/getAllTeam");

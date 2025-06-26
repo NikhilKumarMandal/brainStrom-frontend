@@ -4,9 +4,8 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import CodeBlock from "@tiptap/extension-code-block";
-import { FaCode } from "react-icons/fa6";
-import { FaBold, FaItalic } from "react-icons/fa";
-import { ImUnderline } from "react-icons/im";
+import { Bold, Code2, Italic, UnderlineIcon } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function RichTextEditor({
   content = "",
@@ -23,10 +22,10 @@ export default function RichTextEditor({
       }),
       Underline,
       !readOnly &&
-        Placeholder.configure({
-          placeholder: "Explain yourself...",
-          emptyEditorClass: "is-editor-empty",
-        }),
+      Placeholder.configure({
+        placeholder: "Explain yourself...",
+        emptyEditorClass: "is-editor-empty",
+      }),
     ].filter(Boolean),
     content,
     editable: !readOnly,
@@ -62,32 +61,32 @@ export default function RichTextEditor({
           editor.commands.focus();
         }
       }}
-      className={`flex flex-col rounded-lg ${readOnly ? "" : `border border-gray-700 h-[${height}]`}`}
+      className={`flex flex-col rounded-md border border-input bg-background ${readOnly ? "" : `h-[${height}]`}`}
     >
       {/* Toolbar */}
       {!readOnly && (
-        <div className="editor-toolbar flex justify-evenly border-b border-gray-700 px-2 py-1">
+        <div className="editor-toolbar flex justify-evenly border-b border-input px-2 py-1">
+
           {[
-            ["codeBlock", FaCode],
-            ["bold", FaBold],
-            ["italic", FaItalic],
-            ["underline", ImUnderline],
+            ["codeBlock", Code2],
+            ["bold", Bold],
+            ["italic", Italic],
+            ["underline", UnderlineIcon],
           ].map(([type, Icon], i) => (
-            <button
+            <Button
               key={i}
               onClick={() => toggleCommand(type)}
-              className="focus:outline-none bg-transparent p-1 hover:border-amber-500 "
-              type="button"
+              variant={"ghost"}
             >
-              <Icon size={20} className={iconColor(editor.isActive(type))} />
-            </button>
+              <Icon strokeWidth={2.5} className={iconColor(editor.isActive(type))} />
+            </Button>
           ))}
         </div>
       )}
 
       {/* Editor Content */}
       <div
-        className={`flex-1 overflow-y-auto ${padding} text-black leading-relaxed ${readOnly ? "" : "min-h-[200px]"} `}
+        className={`flex-1 overflow-y-auto ${padding}  text-black leading-relaxed ${readOnly ? "" : "min-h-[200px]"} `}
       >
         <EditorContent
           editor={editor}
