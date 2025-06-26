@@ -1,10 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { QuestionFilters } from '../components/QuestionFilters';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import {QuestionsCard} from '../components/QuestionsCard';
+import { QuestionsCard } from '../components/QuestionsCard';
+import { getAllTicket } from '@/http/api';
+import { useQuery } from '@tanstack/react-query';
 
 const mockQuestions = [
   {
@@ -69,15 +71,33 @@ const mockQuestions = [
   },
 ];
 
+const getAllTickets = async () => {
+  const { data } = await getAllTicket()
+  console.log(data.data);
+  return data.data
+}
+
 const TicketPage = () => {
-  const [questions] = useState(mockQuestions);
-  const [filteredQuestions, setFilteredQuestions] = useState(mockQuestions);
+  // const [questions] = useState(mockQuestions);
   const [selectedCourse, setSelectedCourse] = useState('');
   const [pinFilter, setPinFilter] = useState('all');
 
-  const courses = Array.from(new Set(questions.map(q => q.courseName)));
+  const { data: questions, isLoading: isQuestionsLoading } = useQuery({
+    queryKey: ['tickets'],
+    queryFn: getAllTickets,
+  });
 
-  const handleFilter = (course, pin ) => {
+  const [filteredQuestions, setFilteredQuestions] = useState([]);
+
+  useEffect(() => {
+    if (questions) {
+      setFilteredQuestions(questions);
+    }
+  }, [questions]);
+
+  const courses = Array.from(new Set(questions?.map(q => q.courses)));
+
+  const handleFilter = (course, pin) => {
     let filtered = questions;
 
     if (course) {
@@ -94,6 +114,15 @@ const TicketPage = () => {
     setSelectedCourse(course);
     setPinFilter(pin);
   };
+
+  if (isQuestionsLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
+        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen p-6">

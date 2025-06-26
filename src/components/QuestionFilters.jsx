@@ -6,7 +6,7 @@ import { Filter, Pin } from 'lucide-react';
 
 
 
-export const QuestionFilters= ({
+export const QuestionFilters = ({
   courses,
   selectedCourse,
   pinFilter,
@@ -28,7 +28,7 @@ export const QuestionFilters= ({
           <Filter className="w-5 h-5 text-gray-600" />
           <span className="font-medium text-gray-900">Filters:</span>
         </div>
-        
+
         <div className="flex flex-col sm:flex-row gap-4 flex-1">
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -40,8 +40,8 @@ export const QuestionFilters= ({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all-courses">All Courses</SelectItem>
-                {courses.map((course) => (
-                  <SelectItem key={course} value={course}>
+                {courses.map((course, index) => (
+                  <SelectItem key={index} value={course}>
                     {course}
                   </SelectItem>
                 ))}
