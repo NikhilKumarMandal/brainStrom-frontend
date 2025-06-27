@@ -6,6 +6,7 @@ import { QuestionsCard } from "../components/QuestionsCard";
 import { getAllTicket } from "@/http/api";
 import { useQuery } from "@tanstack/react-query";
 import { AskQuestionModal } from "../components/AskQuestionModal";
+import useNavigation from "@/utils/navigation";
 
 // const mockQuestions = [
 //   {
@@ -80,6 +81,7 @@ const TicketPage = () => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [pinFilter, setPinFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { gotoDiscussion } = useNavigation();
 
   const {
     data: questions,
@@ -157,7 +159,7 @@ const TicketPage = () => {
         <div className="space-y-4">
           {filteredQuestions.length > 0 ? (
             filteredQuestions.map((question) => (
-              <QuestionsCard key={question.id} question={question} />
+              <QuestionsCard key={question.id} question={question} gotoDiscussion={gotoDiscussion} />
             ))
           ) : (
             <div className="text-center py-12 bg-white rounded-xl border border-gray-200">

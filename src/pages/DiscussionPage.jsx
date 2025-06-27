@@ -21,8 +21,7 @@ async function getDiscussions(discussionId) {
 
 function DiscussionPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const { discussionId } = useParams();
-  const discussionId = "eda5224c-eaae-499c-8e4e-29dab24c071c";
+  const { discussionId } = useParams();
 
   const {
     data: questionData,

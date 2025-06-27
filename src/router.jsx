@@ -71,7 +71,7 @@ export const router = createBrowserRouter([
             element: <ProfilePage isMe />,
           },
           {
-            path: "/discussion",
+            path: "/discussion/:discussionId",
             element: <DiscussionPage />,
           },
         ],
