@@ -45,10 +45,8 @@ export const vote = (id, type) => api.post(`/vote/${id}`, { type });
 // team service
 export const getAllTeam = () => api.get("/team/getAllTeam");
 
-export const createTeam = (formData) => {
-  console.log(formData)
+export const createTeam = (formData) => 
   api.post("/team/", formData);
-}
 
 export const requestJoinTeam = (teamId, description) =>
   api.post(`/team/request`, { teamId, description });

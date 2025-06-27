@@ -16,7 +16,6 @@ import { Clock } from "lucide-react";
 
 async function getTeamteamLogs(teamId) {
   const { data } = await getTeamHistory(teamId);
-  console.log(data.data);
   return data.data;
 }
 
@@ -44,7 +43,7 @@ export function ActivityLog({ teamId }) {
         <ScrollArea className="h-[300px]">
           <div className="space-y-4">
             {logs.map((log, index) => (
-              <div key={log.id}>
+              <div key={index}>
                 <div className="flex gap-3">
                   <div className="flex-shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-2" />
                   <div className="flex-1 min-w-0">

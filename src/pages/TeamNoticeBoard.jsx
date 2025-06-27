@@ -13,7 +13,6 @@ import { useAuthStore } from "@/store/store";
 
 async function getTeamDetails(teamId) {
   const { data } = await getTeamById(teamId);
-  console.log(data.data);
   return data.data;
 }
 
@@ -22,16 +21,12 @@ export default function TeamNoticeBoard() {
   const [selectedMember, setSelectedMember] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user } = useAuthStore();
-
   const { teamId } = useParams()
-  console.log(teamId);
 
   const { data: team, isLoading: teamLoading } = useQuery({
     queryKey: [teamId],
     queryFn: () => getTeamDetails(teamId),
   });
-
-  console.log(team);
 
   const handleMemberClick = (member) => {
     setSelectedMember(member);
