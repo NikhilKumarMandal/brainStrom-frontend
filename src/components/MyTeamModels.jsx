@@ -18,7 +18,7 @@ export function EditNoticeModal({ content, onUpdate, onClose, onDelete }) {
         <RichTextEditor
           content={updatedContent}
           onChange={setUpdatedContent}
-          height="100%"
+          height="h-[100%]"
         />
       </div>
 

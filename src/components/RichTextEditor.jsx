@@ -11,8 +11,9 @@ export default function RichTextEditor({
   content = "",
   onChange,
   readOnly = false,
-  height = "90%",
+  height = "h-[90%]",
   padding = "p-4",
+  placeholder = "Explain yourself...",
 }) {
   const editor = useEditor({
     extensions: [
@@ -23,7 +24,7 @@ export default function RichTextEditor({
       Underline,
       !readOnly &&
         Placeholder.configure({
-          placeholder: "Explain yourself...",
+          placeholder: placeholder,
           emptyEditorClass: "is-editor-empty",
         }),
     ].filter(Boolean),
@@ -61,7 +62,7 @@ export default function RichTextEditor({
           editor.commands.focus();
         }
       }}
-      className={`flex flex-col rounded-md border border-input bg-background ${readOnly ? "" : `h-[${height}]`}`}
+      className={`flex flex-col rounded-md bg-background ${readOnly ? "" : `border border-input h-[${height}]`}`}
     >
       {/* Toolbar */}
       {!readOnly && (
@@ -88,7 +89,7 @@ export default function RichTextEditor({
 
       {/* Editor Content */}
       <div
-        className={`flex-1 overflow-y-auto ${padding}  text-black leading-relaxed ${readOnly ? "" : "min-h-[200px]"} `}
+        className={`flex-1 overflow-y-auto ${padding}  text-gray-800 leading-relaxed ${readOnly ? "" : "min-h-[200px]"} `}
       >
         <EditorContent
           editor={editor}
