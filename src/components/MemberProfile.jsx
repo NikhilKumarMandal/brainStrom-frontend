@@ -1,0 +1,100 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Crown,
+  Star,
+  TrendingUp,
+  UserMinus,
+  Mail,
+  Calendar,
+} from "lucide-react";
+
+export function MemberProfile({ member, isOpen, onClose, onKick, onPromote }) {
+  if (!member) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-3">
+            <Avatar className="h-12 w-12">
+              <AvatarImage
+                src={member.avatar || "/placeholder.svg"}
+                alt={member.name}
+              />
+              <AvatarFallback>
+                {member.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <div className="flex items-center gap-2">
+                {member.name}
+                {member.role === "Team Lead" && (
+                  <Crown className="h-4 w-4 text-yellow-600" />
+                )}
+                {member.role === "Co-Leader" && (
+                  <Star className="h-4 w-4 text-blue-600" />
+                )}
+              </div>
+              <p className="text-sm text-gray-500 font-normal">{member.role}</p>
+            </div>
+          </DialogTitle>
+          <DialogDescription>
+            Manage team member profile and permissions
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          <div className="flex items-center gap-3">
+            <Mail className="h-4 w-4 text-gray-400" />
+            <span className="text-sm">{member.email}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Calendar className="h-4 w-4 text-gray-400" />
+            <span className="text-sm">Joined {member.joinDate}</span>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-3">
+            <Label className="text-sm font-medium">Change Role</Label>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onPromote("Co-Leader")}
+                disabled={member.role === "Co-Leader"}
+              >
+                <TrendingUp className="h-4 w-4 mr-2" />
+                Promote to Co-Leader
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="flex gap-2">
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={onKick}>
+            <UserMinus className="h-4 w-4 mr-2" />
+            Remove from Team
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
