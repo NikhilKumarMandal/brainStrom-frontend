@@ -19,7 +19,7 @@ const QuestionSection = ({ question }) => {
       <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-100">
         <div className="flex items-center">
           <span className="font-medium text-gray-700">
-            Asked by {question.author}
+            Asked by {question.user.name}
           </span>
           <span className="mx-2">•</span>
           <span>{timeAgo(question.createdAt)}</span>

@@ -9,13 +9,11 @@ import { useParams } from "react-router-dom";
 
 async function getQuestion(discussionId) {
   const data = await getTicketById(discussionId).then((res) => res.data);
-  console.log(data.data);
   return data.data;
 }
 
 async function getDiscussions(discussionId) {
   const data = await getTopDiscussion(discussionId).then((res) => res.data);
-  console.log(data.data);
   return data.data;
 }
 
