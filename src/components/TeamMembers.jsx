@@ -32,7 +32,7 @@ export function TeamMembers({
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[200px]">
-          <div className="space-y-3">
+          <div className="space-y-3 p-1">
             {members.map((member) => (
               <div key={member.id} className="flex items-center gap-3">
                 <div className="relative">
@@ -67,7 +67,7 @@ export function TeamMembers({
                     {member.role === "LEADER" && (
                       <Crown className="h-3 w-3 text-yellow-600" />
                     )}
-                    {member.role === "CO-LEADER" && (
+                    {member.role === "CO_LEADER" && (
                       <Star className="h-3 w-3 text-blue-600" />
                     )}
                   </div>

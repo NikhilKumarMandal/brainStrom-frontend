@@ -33,7 +33,7 @@ export const QuestionsCard = ({ question, gotoDiscussion }) => {
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
               <User className="w-4 h-4" />
-              <span>{question.askedBy}</span>
+              <span>{question.user.name}</span>
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />

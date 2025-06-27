@@ -38,56 +38,56 @@ export default function TeamNoticeBoard() {
   //   avatar: "/placeholder.svg?height=40&width=40",
   // });
 
-  const [currentNotice, setCurrentNotice] = useState({
-    title: "Weekly Team Meeting",
-    content:
-      "Don't forget about our weekly team meeting tomorrow at 2 PM. We'll be discussing the Q4 roadmap and project updates.",
-    author: "Sarah Johnson",
-    timestamp: "2 hours ago",
-  });
+  // const [currentNotice, setCurrentNotice] = useState({
+  //   title: "Weekly Team Meeting",
+  //   content:
+  //     "Don't forget about our weekly team meeting tomorrow at 2 PM. We'll be discussing the Q4 roadmap and project updates.",
+  //   author: "Sarah Johnson",
+  //   timestamp: "2 hours ago",
+  // });
 
-  const [teamMembers, setTeamMembers] = useState([
-    {
-      id: "1",
-      name: "Sarah Johnson",
-      role: "Team Lead",
-      avatar: "/placeholder.svg?height=40&width=40",
-      email: "sarah.johnson@company.com",
-      joinDate: "Jan 2023",
-    },
-    {
-      id: "2",
-      name: "Mike Chen",
-      role: "Co-Leader",
-      avatar: "/placeholder.svg?height=40&width=40",
-      email: "mike.chen@company.com",
-      joinDate: "Feb 2023",
-    },
-    {
-      id: "3",
-      name: "Emily Davis",
-      role: "Designer",
-      avatar: "/placeholder.svg?height=40&width=40",
-      email: "emily.davis@company.com",
-      joinDate: "Mar 2023",
-    },
-    {
-      id: "4",
-      name: "Alex Rodriguez",
-      role: "Developer",
-      avatar: "/placeholder.svg?height=40&width=40",
-      email: "alex.rodriguez@company.com",
-      joinDate: "Apr 2023",
-    },
-    {
-      id: "5",
-      name: "Lisa Wang",
-      role: "QA Engineer",
-      avatar: "/placeholder.svg?height=40&width=40",
-      email: "lisa.wang@company.com",
-      joinDate: "May 2023",
-    },
-  ]);
+  // const [teamMembers, setTeamMembers] = useState([
+  //   {
+  //     id: "1",
+  //     name: "Sarah Johnson",
+  //     role: "Team Lead",
+  //     avatar: "/placeholder.svg?height=40&width=40",
+  //     email: "sarah.johnson@company.com",
+  //     joinDate: "Jan 2023",
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "Mike Chen",
+  //     role: "Co-Leader",
+  //     avatar: "/placeholder.svg?height=40&width=40",
+  //     email: "mike.chen@company.com",
+  //     joinDate: "Feb 2023",
+  //   },
+  //   {
+  //     id: "3",
+  //     name: "Emily Davis",
+  //     role: "Designer",
+  //     avatar: "/placeholder.svg?height=40&width=40",
+  //     email: "emily.davis@company.com",
+  //     joinDate: "Mar 2023",
+  //   },
+  //   {
+  //     id: "4",
+  //     name: "Alex Rodriguez",
+  //     role: "Developer",
+  //     avatar: "/placeholder.svg?height=40&width=40",
+  //     email: "alex.rodriguez@company.com",
+  //     joinDate: "Apr 2023",
+  //   },
+  //   {
+  //     id: "5",
+  //     name: "Lisa Wang",
+  //     role: "QA Engineer",
+  //     avatar: "/placeholder.svg?height=40&width=40",
+  //     email: "lisa.wang@company.com",
+  //     joinDate: "May 2023",
+  //   },
+  // ]);
 
   // const auditLogs = [
   //   {
@@ -141,9 +141,9 @@ export default function TeamNoticeBoard() {
 
   console.log(team);
 
-  const handleRoleChange = (role) => {
-    setCurrentUser({ ...currentUser, role });
-  };
+  // const handleRoleChange = (role) => {
+  //   setCurrentUser({ ...currentUser, role });
+  // };
 
   const handleMemberClick = (member) => {
     setSelectedMember(member);
@@ -182,7 +182,7 @@ export default function TeamNoticeBoard() {
     </div>
   );
 
-  // const hasPermission = user.role === "LEADER" || currentUser.role === "CO-LEADER";
+  // const hasPermission = user.role === "LEADER" || currentUser.role === "CO_LEADER";
   const currentUser = team.members.find((member) => member.user.id === user.id);
   // const currentUser = user
   const isLeader = user.id === team?.leaderId;
@@ -191,7 +191,7 @@ export default function TeamNoticeBoard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <NoticeHeader currentUser={currentUser} onRoleChange={handleRoleChange} teamName={team?.name} />
+      <NoticeHeader currentUser={currentUser} teamName={team?.name} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
@@ -220,6 +220,7 @@ export default function TeamNoticeBoard() {
         onClose={() => setIsProfileOpen(false)}
         onKick={handleKickMember}
         onPromote={handlePromoteMember}
+        teamId={teamId}
       />
     </div>
   );

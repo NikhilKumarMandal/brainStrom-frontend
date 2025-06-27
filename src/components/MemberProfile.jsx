@@ -18,9 +18,31 @@ import {
   Mail,
   Calendar,
 } from "lucide-react";
+import { useState } from "react";
+import { ReasonModal } from "./ReasonModel";
+import { useMutation } from "@tanstack/react-query";
+import { changeRole } from "@/http/api";
 
-export function MemberProfile({ member, isOpen, onClose, onKick, onPromote }) {
+export function MemberProfile({ member, isOpen, onClose, onKick, onPromote, teamId }) {
   if (!member) return null;
+  const userId = member.user.id
+
+  const [open, setOpen] = useState(false);
+  const handleReasonSubmit = (reason) => {
+    console.log("Reason submitted:", reason);
+
+    mutation.mutate({ teamId, userId, targetRole: "CO_LEADER", reason: reason });
+  };
+
+  const mutation = useMutation({
+    mutationFn: ({ teamId, userId, targetRole, reason }) =>
+      changeRole(teamId, userId, targetRole, reason),
+    onSuccess: () => {
+      toast.success("Role changed successfully!");
+      queryClient.invalidateQueries(["user"]);
+    },
+    onError: () => toast.error("Failed to change Role."),
+  });
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -29,11 +51,11 @@ export function MemberProfile({ member, isOpen, onClose, onKick, onPromote }) {
           <DialogTitle className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
               <AvatarImage
-                src={member.avatar || "/placeholder.svg"}
-                alt={member.name}
+                src={member.user.avatar || "/placeholder.svg"}
+                alt={member.user.name}
               />
               <AvatarFallback>
-                {member.name
+                {member.user.name
                   .split(" ")
                   .map((n) => n[0])
                   .join("")}
@@ -41,7 +63,7 @@ export function MemberProfile({ member, isOpen, onClose, onKick, onPromote }) {
             </Avatar>
             <div>
               <div className="flex items-center gap-2">
-                {member.name}
+                {member.user.name}
                 {member.role === "Team Lead" && (
                   <Crown className="h-4 w-4 text-yellow-600" />
                 )}
@@ -60,7 +82,7 @@ export function MemberProfile({ member, isOpen, onClose, onKick, onPromote }) {
         <div className="space-y-4 py-4">
           <div className="flex items-center gap-3">
             <Mail className="h-4 w-4 text-gray-400" />
-            <span className="text-sm">{member.email}</span>
+            <span className="text-sm">{member.user.email}</span>
           </div>
           <div className="flex items-center gap-3">
             <Calendar className="h-4 w-4 text-gray-400" />
@@ -75,7 +97,7 @@ export function MemberProfile({ member, isOpen, onClose, onKick, onPromote }) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => onPromote("Co-Leader")}
+                onClick={() => setOpen(true)}
                 disabled={member.role === "Co-Leader"}
               >
                 <TrendingUp className="h-4 w-4 mr-2" />
@@ -95,6 +117,15 @@ export function MemberProfile({ member, isOpen, onClose, onKick, onPromote }) {
           </Button>
         </DialogFooter>
       </DialogContent>
+
+      <ReasonModal
+        open={open}
+        onOpenChange={setOpen}
+        title="Provide Reason"
+        description="Please enter a reason for this action."
+        onConfirm={handleReasonSubmit}
+      />
+
     </Dialog>
   );
 }
