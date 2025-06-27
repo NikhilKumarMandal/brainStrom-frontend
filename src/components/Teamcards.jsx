@@ -10,8 +10,54 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Users, BookOpen } from "lucide-react";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import { requestJoinTeam } from "@/http/api";
+import { useAuthStore } from "@/store/store";
+import { useEffect, useState } from "react";
 
 export const Teamcards = ({ team }) => {
+  const { user } = useAuthStore();
+  const teamId = team.id;
+  // const [showDialog, setShowDialog] = useState(false);
+  // const [showWarningDialog, setShowWarningDialog] = useState(false);
+  const [description, setDescription] = useState("i want to (testing)...");
+
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async ({ teamId, description }) => {
+      console.log(teamId, description);
+      const { data } = await requestJoinTeam(teamId, description);
+      return data;
+    },
+    onSuccess: () => {
+      alert("Submitted");
+    },
+    onError: () => {
+      alert("Failed to submit ticket");
+    },
+  });
+
+  const handleSendRequest = () => {
+    if (description.trim() === "") {
+      setShowWarningDialog(true);
+      return;
+    }
+
+    console.log("description to join:", description);
+
+    mutate({ teamId, description });
+    setShowDialog(false);
+    setDescription("");
+  };
+
+  useEffect(() => {
+    if (!user?.joinRequestLockAt) return;
+    const now = Date.now();
+    const diff = now - new Date(user.joinRequestLockAt).getTime();
+    if (diff < 10 * 60 * 1000) setIsRequested(true);
+  }, [user]);
+
+
   const handleJoinRequest = () => {
     toast({
       title: "Join request sent!",
@@ -68,7 +114,7 @@ export const Teamcards = ({ team }) => {
 
       <CardFooter className="pt-4">
         <Button
-          onClick={handleJoinRequest}
+          onClick={handleSendRequest}
           className="w-full bg-primary text-white font-medium transition-colors"
         >
           Request to Join

@@ -45,7 +45,10 @@ export const vote = (id, type) => api.post(`/vote/${id}`, { type });
 // team service
 export const getAllTeam = () => api.get("/team/getAllTeam");
 
-export const createTeam = (formData) => api.post("/team/", formData);
+export const createTeam = (formData) => {
+  console.log(formData)
+  api.post("/team/", formData);
+}
 
 export const requestJoinTeam = (teamId, description) =>
   api.post(`/team/request`, { teamId, description });
@@ -69,8 +72,10 @@ export const leaveTeam = (teamId, reason) =>
   api.post("/team/leaveTeam", { teamId, reason });
 
 // team notice
-export const editNotice = (teamId, content) =>
-  api.post("/notice/", { teamId, content });
+export const editNotice = (teamId, title, content) => {
+  console.log(teamId, title, content)
+  api.post("/notice/", { teamId, title, content });
+}
 
 export const getNotice = (teamId) => api.get(`/notice/${teamId}`);
 

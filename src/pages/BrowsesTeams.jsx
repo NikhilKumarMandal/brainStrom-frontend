@@ -28,6 +28,8 @@ function BrowsesTeams() {
     queryKey: ["team"],
     queryFn: getTeams,
   });
+  console.log(allTeamData);
+  
 
   if (isTeamsLoading) {
     return (

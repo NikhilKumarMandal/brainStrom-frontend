@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { formateString } from "@/utils/formateString";
 import { Users, Crown, Star } from "lucide-react";
 
 export function TeamMembers({
@@ -36,11 +37,10 @@ export function TeamMembers({
               <div key={member.id} className="flex items-center gap-3">
                 <div className="relative">
                   <Avatar
-                    className={`h-10 w-10 ${
-                      isLeader && member.id !== currentUserId
-                        ? "cursor-pointer hover:ring-2 hover:ring-blue-500"
-                        : ""
-                    }`}
+                    className={`h-10 w-10 ${isLeader && member.id !== currentUserId
+                      ? "cursor-pointer hover:ring-2 hover:ring-blue-500"
+                      : ""
+                      }`}
                     onClick={() =>
                       isLeader &&
                       member.id !== currentUserId &&
@@ -52,7 +52,7 @@ export function TeamMembers({
                       alt={member.name}
                     />
                     <AvatarFallback>
-                      {member.name
+                      {member.user.name
                         .split(" ")
                         .map((n) => n[0])
                         .join("")}
@@ -62,16 +62,16 @@ export function TeamMembers({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium text-gray-900 truncate">
-                      {member.name}
+                      {member.user.name}
                     </p>
-                    {member.role === "Team Lead" && (
+                    {member.role === "LEADER" && (
                       <Crown className="h-3 w-3 text-yellow-600" />
                     )}
-                    {member.role === "Co-Leader" && (
+                    {member.role === "CO-LEADER" && (
                       <Star className="h-3 w-3 text-blue-600" />
                     )}
                   </div>
-                  <p className="text-xs text-gray-500">{member.role}</p>
+                  <p className="text-xs text-gray-500">{formateString(member.role)}</p>
                 </div>
               </div>
             ))}
