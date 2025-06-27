@@ -14,14 +14,14 @@ import { useMutation } from "@tanstack/react-query";
 import { requestJoinTeam } from "@/http/api";
 import { useAuthStore } from "@/store/store";
 import { useEffect, useState } from "react";
+import { ReasonModal } from "./ReasonModel";
 
 export const Teamcards = ({ team }) => {
   const { user } = useAuthStore();
   const teamId = team.id;
-  // const [showDialog, setShowDialog] = useState(false);
-  // const [showWarningDialog, setShowWarningDialog] = useState(false);
-  const [description, setDescription] = useState("i want to (testing)...");
-
+  const [showDialog, setShowDialog] = useState(false);
+  const [description, setDescription] = useState("");
+  const [isRequested, setIsRequested] = useState(false);  
 
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ teamId, description }) => {
@@ -30,10 +30,10 @@ export const Teamcards = ({ team }) => {
       return data;
     },
     onSuccess: () => {
-      alert("Submitted");
+      toast.success("Submitted");
     },
     onError: () => {
-      alert("Failed to submit ticket");
+      toast.error("Failed to submit");
     },
   });
 
@@ -42,8 +42,6 @@ export const Teamcards = ({ team }) => {
       setShowWarningDialog(true);
       return;
     }
-
-    console.log("description to join:", description);
 
     mutate({ teamId, description });
     setShowDialog(false);
@@ -57,13 +55,6 @@ export const Teamcards = ({ team }) => {
     if (diff < 10 * 60 * 1000) setIsRequested(true);
   }, [user]);
 
-
-  const handleJoinRequest = () => {
-    toast({
-      title: "Join request sent!",
-      description: `Your request to join "${team.name}" has been sent to the team leader.`,
-    });
-  };
 
   return (
     <Card className="h-full flex flex-col hover:shadow-lg transition-all duration-200 border-gray-200 bg-white">
@@ -84,7 +75,7 @@ export const Teamcards = ({ team }) => {
             variant="secondary"
             className="text-xs bg-blue-50 text-blue-700 border-blue-200"
           >
-            {team.course}
+            {team.course.name}
           </Badge>
         </div>
 
@@ -114,12 +105,24 @@ export const Teamcards = ({ team }) => {
 
       <CardFooter className="pt-4">
         <Button
-          onClick={handleSendRequest}
+          onClick={() => setShowDialog(true)}
+          disabled={isRequested}
           className="w-full bg-primary text-white font-medium transition-colors"
         >
-          Request to Join
+          {isRequested ? "Already Requested" : "Request to join"}
         </Button>
       </CardFooter>
+
+      <ReasonModal
+        title={"Request to join team"}
+        description={"Please provide a reason for joining the team."}
+        open={showDialog}
+        onOpenChange={(val) => setShowDialog(val)}
+        onConfirm={handleSendRequest}
+        reason={description}
+        setReason={setDescription}
+        isPending={isPending}
+      />
     </Card>
   );
 };

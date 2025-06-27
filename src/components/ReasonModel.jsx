@@ -1,6 +1,5 @@
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -9,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 
 export function ReasonModal({
   title,
@@ -18,9 +16,9 @@ export function ReasonModal({
   onOpenChange,
   onConfirm,
   reason,
-  setReason
+  setReason,
+  isPending
 }) {
-  // const [reason, setReason] = useState("");
 
   const handleConfirm = () => {
     if (!reason.trim()) {
@@ -35,7 +33,7 @@ export function ReasonModal({
 
   return (
     <Dialog open={open} onOpenChange={(val) => {
-      setReason(""); // clear reason on close
+      setReason("");
       onOpenChange(val);
     }}>
       <DialogContent className="sm:max-w-md">
@@ -58,7 +56,7 @@ export function ReasonModal({
             Cancel
           </Button>
           <Button onClick={handleConfirm}>
-            Confirm
+            {isPending ? "Submitting..." : "Submit"}
           </Button>
         </DialogFooter>
       </DialogContent>

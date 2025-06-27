@@ -145,6 +145,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId }) {
         onConfirm={handleReasonSubmit}
         reason={promoteReason}
         setReason={setPromoteReason}
+        isPending={changeRoleMutation.isPending}
       />
 
       <ReasonModal
@@ -155,6 +156,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId }) {
         onConfirm={handleKickSubmit}
         reason={kickReason}
         setReason={setKickReason}
+        isPending={kickMutation.isPending}
       />
 
     </Dialog>

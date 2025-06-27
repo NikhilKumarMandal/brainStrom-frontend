@@ -28,9 +28,7 @@ function BrowsesTeams() {
     queryKey: ["team"],
     queryFn: getTeams,
   });
-  console.log(allTeamData);
   
-
   if (isTeamsLoading) {
     return (
       <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">

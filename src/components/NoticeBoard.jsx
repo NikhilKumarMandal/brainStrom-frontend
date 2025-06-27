@@ -43,7 +43,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
   });
 
   const author = members.find((member) => member.user.id === notice?.createdBy);
-  
+
   useEffect(() => {
     if (notice) {
       setEditTitle(notice.title || "");
@@ -54,8 +54,9 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
   const editNoticeMutation = useMutation({
     mutationFn: ({ teamId, title, content }) =>
       editNotice(teamId, title, content),
-    onSuccess: () => {
-      queryClient.invalidateQueries([teamId, "notice"]);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries([teamId, "notice"]);
+      await queryClient.refetchQueries([teamId, "notice"]);
       toast.success("Notice updated successfully");
       setIsEditing(false);
     },
@@ -134,7 +135,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
               <div>
                 <Label htmlFor="content">Content</Label>
                 <RichTextEditor
-                  value={editContent}
+                  content={editContent}
                   onChange={setEditContent}
                 />
               </div>
@@ -158,7 +159,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                 </Button>
               </div>
             </div>
-          ) : (
+          ) : (notice ? (
             <div className="space-y-4">
               <h2 className="text-2xl font-bold text-gray-900 leading-tight">
                 {notice?.title}
@@ -169,11 +170,11 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="/placeholder.svg?height=32&width=32" />
                     <AvatarFallback>
-                      {author.user.name?.split(" ").map((n) => n[0]).join("")}
+                      {author?.user?.name?.split(" ").map((n) => n[0]).join("")}
                     </AvatarFallback>
                   </Avatar>
                   <span className="text-sm font-medium">
-                    {author.user.name}
+                    {author?.user?.name}
                   </span>
                 </div>
                 <div className="flex items-center gap-1 text-sm text-gray-500">
@@ -182,7 +183,16 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                 </div>
               </div>
             </div>
-          )}
+          ) : (
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold text-gray-900 leading-tight">
+                No notice found
+              </h2>
+              <p className="text-sm text-gray-500">
+                No notice has been created yet.
+              </p>
+            </div>
+          ))}
         </CardContent>
       </Card>
 
