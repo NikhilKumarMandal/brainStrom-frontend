@@ -15,6 +15,7 @@ import TicketPage from "./pages/TicketPage";
 import BrowsesTeams from "./pages/BrowsesTeams";
 import ProfileEditor from "./pages/ProfileEditor";
 import ProfilePage from "./pages/ProfilePage";
+import DiscussionPage from "./pages/DiscussionPage";
 
 export const router = createBrowserRouter([
   {
@@ -68,7 +69,11 @@ export const router = createBrowserRouter([
           {
             path: "profile/me",
             element: <ProfilePage isMe />,
-          }
+          },
+          {
+            path: "/discussion",
+            element: <DiscussionPage />,
+          },
         ],
       },
       {

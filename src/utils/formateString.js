@@ -17,8 +17,12 @@ function getUsernameById(members, userId, localUserId, leaderId) {
 }
 
 export function handleActionString(
-  action, userId, members,
-  leaderId, localUserId, actorName
+  action,
+  userId,
+  members,
+  leaderId,
+  localUserId,
+  actorName
 ) {
   const username = getUsernameById(members, userId, localUserId, leaderId);
 

@@ -22,10 +22,10 @@ export default function RichTextEditor({
       }),
       Underline,
       !readOnly &&
-      Placeholder.configure({
-        placeholder: "Explain yourself...",
-        emptyEditorClass: "is-editor-empty",
-      }),
+        Placeholder.configure({
+          placeholder: "Explain yourself...",
+          emptyEditorClass: "is-editor-empty",
+        }),
     ].filter(Boolean),
     content,
     editable: !readOnly,
@@ -66,7 +66,6 @@ export default function RichTextEditor({
       {/* Toolbar */}
       {!readOnly && (
         <div className="editor-toolbar flex justify-evenly border-b border-input px-2 py-1">
-
           {[
             ["codeBlock", Code2],
             ["bold", Bold],
@@ -78,7 +77,10 @@ export default function RichTextEditor({
               onClick={() => toggleCommand(type)}
               variant={"ghost"}
             >
-              <Icon strokeWidth={2.5} className={iconColor(editor.isActive(type))} />
+              <Icon
+                strokeWidth={2.5}
+                className={iconColor(editor.isActive(type))}
+              />
             </Button>
           ))}
         </div>

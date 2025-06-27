@@ -22,7 +22,6 @@ import {
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-
 const fetchUserById = async (id) => (await getUserById(id)).data.data;
 const fetchUserLogs = async (id) => (await getUserHistory(id)).data.data;
 
@@ -54,17 +53,20 @@ export default function ProfilePage({ isMe = false }) {
     { platform: "Other", field: "otherLink", icon: Globe },
   ];
 
-  const formattedSocialLinks = socialLinksMap.map(({ platform, field, icon }) => {
-    const url = user?.[field];
-    return url ? { platform, url, icon } : null;
-  }).filter(Boolean);
+  const formattedSocialLinks = socialLinksMap
+    .map(({ platform, field, icon }) => {
+      const url = user?.[field];
+      return url ? { platform, url, icon } : null;
+    })
+    .filter(Boolean);
 
-  if (userLoading || logsLoading) return (
-    <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
-      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-      Loading...
-    </div>
-  );
+  if (userLoading || logsLoading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
+        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+        Loading...
+      </div>
+    );
 
   return (
     <div className="p-4">
@@ -125,11 +127,11 @@ export default function ProfilePage({ isMe = false }) {
                 </div>
               </div>
 
-              {isMe &&
+              {isMe && (
                 <Button onClick={gotoEditProfile} size={"sm"}>
                   Edit Profile
                 </Button>
-              }
+              )}
             </div>
           </CardContent>
         </Card>
@@ -224,13 +226,12 @@ export default function ProfilePage({ isMe = false }) {
   );
 }
 
-
 function selectIcon(action) {
   switch (action) {
     case "TEAM_CREATED":
-      return <Users className="h-4 w-4" />
+      return <Users className="h-4 w-4" />;
     case "DISBAND_TEAM":
-      return <MessageSquareX className="h-4 w-4" />
+      return <MessageSquareX className="h-4 w-4" />;
     default:
       return <Activity className="h-4 w-4" />;
   }

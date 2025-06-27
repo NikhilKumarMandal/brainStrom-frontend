@@ -6,7 +6,13 @@ import CourseSelector from "../components/CourseSelector";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/store/store";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function CreateTeam() {
   const [teamName, setTeamName] = useState("");
@@ -24,7 +30,7 @@ export default function CreateTeam() {
       setSelectedCourse(courses[0]);
     }
   }, [courses]);
-  
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (teamData) => {
       const { data } = await createTeam(teamData);
@@ -97,7 +103,7 @@ export default function CreateTeam() {
           onValueChange={setSelectedCourse}
           required
         >
-          <SelectTrigger className={"w-full"} >
+          <SelectTrigger className={"w-full"}>
             <SelectValue placeholder="Select a course" />
           </SelectTrigger>
           <SelectContent>
