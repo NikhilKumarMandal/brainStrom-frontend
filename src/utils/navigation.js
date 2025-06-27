@@ -15,6 +15,7 @@ export default function useNavigation() {
   const gotoMyTeams = () => navigate("/my-teams");
   const gotoCreateTeam = () => navigate("/create-team");
   const gotoEditProfile = () => navigate("/edit-profile");
+  const gotoDiscussion = (discussionId) => navigate( `/discussion/${discussionId}`);
 
   return {
     gotoDashboard,
@@ -29,5 +30,7 @@ export default function useNavigation() {
     gotoMyTeams,
     gotoCreateTeam,
     gotoEditProfile,
+    gotoDiscussion,
+
   };
 }

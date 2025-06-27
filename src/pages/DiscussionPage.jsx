@@ -3,61 +3,51 @@ import { Button } from "@/components/ui/button";
 import QuestionSection from "../components/QuestionSection";
 import DiscussionItem from "../components/DiscussionItem";
 import AddAnswerModel from "../components/AddAnswerModel";
+import { getTicketById, getTopDiscussion } from "@/http/api";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+
+async function getQuestion(discussionId) {
+  const data = await getTicketById(discussionId).then((res) => res.data);
+  return data.data;
+}
+
+async function getDiscussions(discussionId) {
+  const data = await getTopDiscussion(discussionId).then((res) => res.data);
+  return data.data;
+}
 
 function DiscussionPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { discussionId } = useParams();
 
-  const questionData = {
-    title: "How to implement efficient state management in React applications?",
-    description:
-      "I'm working on a large React application and struggling with state management. Currently using useState and useContext, but wondering if I should switch to Redux or Zustand. What are the best practices for managing complex state across multiple components?",
-    author: "Sarah Johnson",
-    timestamp: "2 hours ago",
-    tags: ["React", "State Management", "Redux", "Performance"],
-  };
+  const {
+    data: questionData,
+    isLoading: ticketLoading,
+    isError: ticketError,
+  } = useQuery({
+    queryKey: ["ticket", discussionId],
+    queryFn: () => getQuestion(discussionId),
+    enabled: !!discussionId,
+  });
 
-  const discussions = [
-    {
-      id: 1,
-      author: "Alex Chen",
-      content:
-        "For large applications, I'd recommend Zustand over Redux. It has a much simpler API and less boilerplate code. Here's a basic example of how you can structure your stores...",
-      timestamp: "1 hour ago",
-      upvotes: 12,
-      downvotes: 2,
-      replies: 3,
-    },
-    {
-      id: 2,
-      author: "Maria Rodriguez",
-      content:
-        "I've been using Redux Toolkit for years and it's fantastic. The learning curve is steeper than Zustand, but for complex applications with time-travel debugging needs, it's unmatched. The DevTools extension is invaluable for debugging.",
-      timestamp: "45 minutes ago",
-      upvotes: 8,
-      downvotes: 1,
-      replies: 1,
-    },
-    {
-      id: 3,
-      author: "David Kim",
-      content:
-        "Don't overlook the built-in React solutions! useReducer combined with Context can handle most use cases without external dependencies. Start simple and only add complexity when you actually need it.",
-      timestamp: "30 minutes ago",
-      upvotes: 15,
-      downvotes: 0,
-      replies: 2,
-    },
-    {
-      id: 4,
-      author: "Emily Thompson",
-      content:
-        "Has anyone tried Jotai? It's an atomic approach to state management that works really well for component-level state that needs to be shared. Much lighter than Redux for smaller state pieces.",
-      timestamp: "15 minutes ago",
-      upvotes: 6,
-      downvotes: 1,
-      replies: 0,
-    },
-  ];
+  const {
+    data: discussions,
+    isLoading: discussionLoading,
+    isError: discussionError,
+  } = useQuery({
+    queryKey: ["topDiscussion", discussionId],
+    queryFn: () => getDiscussions(discussionId),
+    enabled: !!discussionId,
+  });
+
+  if (ticketLoading || discussionLoading) return (
+    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+      Loading...
+    </div>
+  );
+
   return (
     <>
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -87,6 +77,7 @@ function DiscussionPage() {
       <AddAnswerModel
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        id={discussionId}
       />
     </>
   );

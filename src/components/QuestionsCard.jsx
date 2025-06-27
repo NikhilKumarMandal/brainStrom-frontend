@@ -4,7 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Pin, User, Calendar } from "lucide-react";
 
-export const QuestionsCard = ({ question }) => {
+export const QuestionsCard = ({ question, gotoDiscussion }) => {
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
@@ -73,6 +74,7 @@ export const QuestionsCard = ({ question }) => {
           </Badge>
 
           <Button
+            onClick={() => gotoDiscussion(question.id)}
             variant="outline"
             size="sm"
             className="hover:bg-blue-50 hover:border-blue-300"

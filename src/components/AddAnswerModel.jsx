@@ -7,24 +7,40 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createDiscussion } from "@/http/api";
+import { toast } from "sonner";
+import RichTextEditor from "./RichTextEditor";
 
-function AddAnswerModel({ isOpen, onClose }) {
+function AddAnswerModel({ isOpen, onClose, id }) {
   const [answer, setAnswer] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const queryClient = useQueryClient();
+
   const handleSubmit = () => {
     if (answer.trim()) {
-      console.log("Submitting answer:", answer);
-      setAnswer("");
-      onClose();
+      mutate({ ticketId: id, content: answer });
     }
   };
+
+  const { mutate, isPending: isPosting } = useMutation({
+    mutationFn: (formData) => createDiscussion(formData),
+    onSuccess: () => {
+      setAnswer("");
+      queryClient.invalidateQueries(["discussions", id]);
+      toast.success("Answer submitted successfully");
+      onClose();
+    },
+    onError: () => {
+      toast.warning("Failed to submit answer");
+    },
+  });
 
   const handleClose = () => {
     setAnswer("");
     onClose();
   };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[600px]">
@@ -35,12 +51,10 @@ function AddAnswerModel({ isOpen, onClose }) {
         <div className="space-y-4 py-4">
           <div className="space-y-2">
             <Label htmlFor="answer">Your Answer</Label>
-            <Textarea
-              id="answer"
-              placeholder="Share your knowledge and help others..."
+            <RichTextEditor
+              onChange={setAnswer}
               value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              className="min-h-[150px]"
+              placeholder="Share your knowledge and help others..."
             />
           </div>
         </div>
@@ -49,8 +63,8 @@ function AddAnswerModel({ isOpen, onClose }) {
           <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!answer.trim()}>
-            Post Answer
+          <Button onClick={handleSubmit} disabled={(!answer.trim() || isPosting)}>
+            {isPosting ? "Posting..." : "Post Answer"}
           </Button>
         </DialogFooter>
       </DialogContent>

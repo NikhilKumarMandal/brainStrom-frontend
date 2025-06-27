@@ -6,73 +6,10 @@ import { QuestionsCard } from "../components/QuestionsCard";
 import { getAllTicket } from "@/http/api";
 import { useQuery } from "@tanstack/react-query";
 import { AskQuestionModal } from "../components/AskQuestionModal";
-
-const mockQuestions = [
-  {
-    id: "1",
-    title: "How to implement React hooks effectively?",
-    totalAnswers: 12,
-    isOpen: true,
-    isPinned: true,
-    courseName: "Advanced React Development",
-    askedBy: "John Doe",
-    createdAt: "2024-01-15",
-  },
-  {
-    id: "2",
-    title: "Best practices for TypeScript configuration",
-    totalAnswers: 8,
-    isOpen: true,
-    isPinned: false,
-    courseName: "TypeScript Fundamentals",
-    askedBy: "Jane Smith",
-    createdAt: "2024-01-14",
-  },
-  {
-    id: "3",
-    title: "Database optimization techniques for large datasets",
-    totalAnswers: 15,
-    isOpen: false,
-    isPinned: true,
-    courseName: "Database Management",
-    askedBy: "Mike Johnson",
-    createdAt: "2024-01-13",
-  },
-  {
-    id: "4",
-    title: "CSS Grid vs Flexbox - when to use what?",
-    totalAnswers: 6,
-    isOpen: true,
-    isPinned: false,
-    courseName: "Modern CSS Techniques",
-    askedBy: "Sarah Wilson",
-    createdAt: "2024-01-12",
-  },
-  {
-    id: "5",
-    title: "API security best practices",
-    totalAnswers: 9,
-    isOpen: true,
-    isPinned: false,
-    courseName: "Backend Development",
-    askedBy: "Alex Brown",
-    createdAt: "2024-01-11",
-  },
-  {
-    id: "6",
-    title: "State management patterns in React",
-    totalAnswers: 18,
-    isOpen: false,
-    isPinned: true,
-    courseName: "Advanced React Development",
-    askedBy: "Emily Davis",
-    createdAt: "2024-01-10",
-  },
-];
+import useNavigation from "@/utils/navigation";
 
 const getAllTickets = async () => {
   const { data } = await getAllTicket();
-  console.log(data.data);
   return data.data;
 };
 
@@ -80,6 +17,7 @@ const TicketPage = () => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [pinFilter, setPinFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { gotoDiscussion } = useNavigation();
 
   const {
     data: questions,
@@ -120,7 +58,7 @@ const TicketPage = () => {
 
   if (isQuestionsLoading) {
     return (
-      <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
+      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
         <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
         Loading...
       </div>
@@ -157,7 +95,7 @@ const TicketPage = () => {
         <div className="space-y-4">
           {filteredQuestions.length > 0 ? (
             filteredQuestions.map((question) => (
-              <QuestionsCard key={question.id} question={question} />
+              <QuestionsCard key={question.id} question={question} gotoDiscussion={gotoDiscussion} />
             ))
           ) : (
             <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
