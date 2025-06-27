@@ -37,10 +37,10 @@ export const router = createBrowserRouter([
             path: "problem/:id",
             element: <ProblemPage />,
           },
-          {
-            path: "profile/:userId",
-            element: <UserProfile />,
-          },
+          // {
+          //   path: "profile/:userId",
+          //   element: <UserProfile />,
+          // },
           {
             path: "browse-teams",
             element: <BrowsesTeams />,
@@ -62,9 +62,13 @@ export const router = createBrowserRouter([
             element: <ProfileEditor />,
           },
           {
-            path: "Profile",
+            path: "profile/:userId",
             element: <ProfilePage />,
           },
+          {
+            path: "profile/me",
+            element: <ProfilePage isMe />,
+          }
         ],
       },
       {

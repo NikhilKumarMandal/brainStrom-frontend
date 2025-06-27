@@ -2,10 +2,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getUserHistory } from "@/http/api";
+import { getUserById, getUserHistory } from "@/http/api";
 import { useAuthStore } from "@/store/store";
 import { formateString } from "@/utils/formateString";
 import { timeAgo } from "@/utils/formateTime";
+import useNavigation from "@/utils/navigation";
 import { useQuery } from "@tanstack/react-query";
 import {
   Github,
@@ -19,24 +20,32 @@ import {
   MessageSquareX,
 } from "lucide-react";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 
-async function getUserLogs(userId) {
-  const { data } = await getUserHistory(userId).then((res) => res.data);
-  return data;
-}
+const fetchUserById = async (id) => (await getUserById(id)).data.data;
+const fetchUserLogs = async (id) => (await getUserHistory(id)).data.data;
 
-export default function ProfilePage() {
-  const { user } = useAuthStore();
+export default function ProfilePage({ isMe = false }) {
+  const { user: authUser } = useAuthStore();
+  const { userId: paramId } = useParams();
+  const userId = isMe ? authUser.id : paramId;
+  const { gotoEditProfile } = useNavigation();
   const [visibleLogsCount, setVisibleLogsCount] = useState(5);
 
-  const userId = user.id;
-
-  const { data: userLogs, isLoading: userLogsLoading } = useQuery({
-    queryKey: ["userLogs", userId],
-    queryFn: () => getUserLogs(userId),
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ["user", userId],
+    queryFn: () => (isMe ? Promise.resolve(authUser) : fetchUserById(userId)),
+    enabled: !!userId,
   });
 
+  const { data: userLogs, isLoading: logsLoading } = useQuery({
+    queryKey: ["userLogs", userId],
+    queryFn: () => fetchUserLogs(userId),
+    enabled: !!userId,
+  });
+
+  const visibleLogs = userLogs?.slice(0, visibleLogsCount);
   const socialLinksMap = [
     { platform: "GitHub", field: "gitHubLink", icon: Github },
     { platform: "LinkedIn", field: "linkedinLink", icon: Linkedin },
@@ -50,8 +59,12 @@ export default function ProfilePage() {
     return url ? { platform, url, icon } : null;
   }).filter(Boolean);
 
-
-  const visibleLogs = userLogs?.slice(0, visibleLogsCount);
+  if (userLoading || logsLoading) return (
+    <div className="flex flex-col items-center justify-center gap-2 text-xl text-white m-auto h-screen">
+      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+      Loading...
+    </div>
+  );
 
   return (
     <div className="p-4">
@@ -111,6 +124,12 @@ export default function ProfilePage() {
                   })}
                 </div>
               </div>
+
+              {isMe &&
+                <Button onClick={gotoEditProfile} size={"sm"}>
+                  Edit Profile
+                </Button>
+              }
             </div>
           </CardContent>
         </Card>
