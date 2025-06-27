@@ -16,6 +16,7 @@ import BrowsesTeams from "./pages/BrowsesTeams";
 import ProfileEditor from "./pages/ProfileEditor";
 import ProfilePage from "./pages/ProfilePage";
 import DiscussionPage from "./pages/DiscussionPage";
+import TeamNoticeBoard from "./pages/TeamNoticeBoard";
 
 export const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
           {
             path: "/discussion/:discussionId",
             element: <DiscussionPage />,
+          },
+          {
+            path: "/noticeBoard",
+            element: <TeamNoticeBoard />,
           },
         ],
       },
