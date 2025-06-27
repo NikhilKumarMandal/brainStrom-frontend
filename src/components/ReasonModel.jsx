@@ -11,8 +11,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-export function ReasonModal({ title, description, open, onOpenChange, onConfirm }) {
-  const [reason, setReason] = useState("");
+export function ReasonModal({
+  title,
+  description,
+  open,
+  onOpenChange,
+  onConfirm,
+  reason,
+  setReason
+}) {
+  // const [reason, setReason] = useState("");
 
   const handleConfirm = () => {
     if (!reason.trim()) {

@@ -20,29 +20,48 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { ReasonModal } from "./ReasonModel";
-import { useMutation } from "@tanstack/react-query";
-import { changeRole } from "@/http/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { changeRole, kickMember } from "@/http/api";
+import { toast } from "sonner";
 
-export function MemberProfile({ member, isOpen, onClose, onKick, onPromote, teamId }) {
+export function MemberProfile({ member, isOpen, onClose, teamId }) {
   if (!member) return null;
-  const userId = member.user.id
+  const userId = member.user.id;
+  const [promoteOpen, setPromoteOpen] = useState(false);
+  const [kickOpen, setKickOpen] = useState(false);
+  const [promoteReason, setPromoteReason] = useState("");
+  const [kickReason, setKickReason] = useState("");
+  const queryClient = useQueryClient();
 
-  const [open, setOpen] = useState(false);
-  const handleReasonSubmit = (reason) => {
-    console.log("Reason submitted:", reason);
-
-    mutation.mutate({ teamId, userId, targetRole: "CO_LEADER", reason: reason });
-  };
-
-  const mutation = useMutation({
-    mutationFn: ({ teamId, userId, targetRole, reason }) =>
-      changeRole(teamId, userId, targetRole, reason),
+  const changeRoleMutation = useMutation({
+    mutationFn: ({ teamId, userId, reason }) =>
+      changeRole(teamId, userId, reason),
     onSuccess: () => {
       toast.success("Role changed successfully!");
-      queryClient.invalidateQueries(["user"]);
+      queryClient.invalidateQueries([teamId, "members"]);
+      setPromoteReason("");
     },
     onError: () => toast.error("Failed to change Role."),
   });
+
+  const handleReasonSubmit = (reason) => {
+    changeRoleMutation.mutate({ teamId, userId, targetRole: "CO_LEADER", reason });
+  };
+
+  const kickMutation = useMutation({
+    mutationFn: ({ teamId, userId, reason }) =>
+      kickMember(teamId, userId, reason),
+    onSuccess: () => {
+      toast.success("Member kicked successfully!");
+      queryClient.invalidateQueries([teamId, "members"]);
+      setKickReason("");
+    },
+    onError: () => toast.error("Failed to kick member."),
+  })
+
+  const handleKickSubmit = (reason) => {
+    kickMutation.mutate({ teamId, userId, reason });
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -97,7 +116,7 @@ export function MemberProfile({ member, isOpen, onClose, onKick, onPromote, team
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setOpen(true)}
+                onClick={() => setPromoteOpen(true)}
                 disabled={member.role === "Co-Leader"}
               >
                 <TrendingUp className="h-4 w-4 mr-2" />
@@ -111,7 +130,7 @@ export function MemberProfile({ member, isOpen, onClose, onKick, onPromote, team
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={onKick}>
+          <Button variant="destructive" onClick={() => setKickOpen(true)}>
             <UserMinus className="h-4 w-4 mr-2" />
             Remove from Team
           </Button>
@@ -119,11 +138,23 @@ export function MemberProfile({ member, isOpen, onClose, onKick, onPromote, team
       </DialogContent>
 
       <ReasonModal
-        open={open}
-        onOpenChange={setOpen}
+        open={promoteOpen}
+        onOpenChange={setPromoteOpen}
         title="Provide Reason"
-        description="Please enter a reason for this action."
+        description="Please enter a reason for promotion."
         onConfirm={handleReasonSubmit}
+        reason={promoteReason}
+        setReason={setPromoteReason}
+      />
+
+      <ReasonModal
+        open={kickOpen}
+        onOpenChange={setKickOpen}
+        title="Provide Reason"
+        description="Please enter a reason for kick."
+        onConfirm={handleKickSubmit}
+        reason={kickReason}
+        setReason={setKickReason}
       />
 
     </Dialog>

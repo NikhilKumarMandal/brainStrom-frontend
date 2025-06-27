@@ -71,10 +71,8 @@ export const getMyTeams = () => api.get("/team/getMyTeams");
 export const leaveTeam = (teamId, reason) =>
   api.post("/team/leaveTeam", { teamId, reason });
 
-export const changeRole = (teamId, userId, targetRole, reason) => {
-  console.log(teamId, userId, targetRole, reason);
+export const changeRole = (teamId, userId, targetRole, reason) =>
   api.patch("/team/changeRole", { teamId, userId, targetRole, reason });
-}
 
 // team notice
 export const editNotice = (teamId, title, content) =>
