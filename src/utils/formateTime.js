@@ -10,7 +10,6 @@ export function presiceTime(dateString) {
   return `${time}, ${day}-${month}-${year}`;
 }
 
-
 export function timeAgo(isoDateStr) {
   const now = new Date();
   const past = new Date(isoDateStr);
@@ -23,10 +22,9 @@ export function timeAgo(isoDateStr) {
     return `${minutes} min ago`;
   } else if (diffInSeconds < 86400) {
     const hours = Math.floor(diffInSeconds / 3600);
-    return `${hours} hr${hours !== 1 ? 's' : ''} ago`;
+    return `${hours} hr${hours !== 1 ? "s" : ""} ago`;
   } else {
     const days = Math.floor(diffInSeconds / 86400);
-    return `${days} day${days !== 1 ? 's' : ''} ago`;
+    return `${days} day${days !== 1 ? "s" : ""} ago`;
   }
 }
-
