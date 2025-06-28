@@ -61,6 +61,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
       queryClient.invalidateQueries([teamId, "members"]);
       setKickReason("");
       toast.success("Member kicked successfully!");
+      onClose();
     },
     onError: () => toast.error("Failed to kick member."),
   });
