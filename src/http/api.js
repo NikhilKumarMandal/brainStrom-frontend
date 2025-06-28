@@ -125,4 +125,3 @@ export const getUserHistory = (userId) =>
 
 export const getTeamHistory = (teamId) => 
   api.get(`/history/teamHistory/${teamId}`);
-

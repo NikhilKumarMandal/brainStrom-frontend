@@ -95,7 +95,11 @@ const TicketPage = () => {
         <div className="space-y-4">
           {filteredQuestions.length > 0 ? (
             filteredQuestions.map((question) => (
-              <QuestionsCard key={question.id} question={question} gotoDiscussion={gotoDiscussion} />
+              <QuestionsCard
+                key={question.id}
+                question={question}
+                gotoDiscussion={gotoDiscussion}
+              />
             ))
           ) : (
             <div className="text-center py-12 bg-white rounded-xl border border-gray-200">

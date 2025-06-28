@@ -1,25 +1,10 @@
 import { useState, useEffect } from "react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Edit3,
-  Trash2,
-  MessageSquare,
-  Clock,
-  Eye,
-} from "lucide-react";
+import { Edit3, Trash2, MessageSquare, Clock, Eye } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteNotice, editNotice, getNotice } from "@/http/api";
 import RichTextEditor from "./RichTextEditor";
@@ -152,15 +137,12 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                 >
                   {editNoticeMutation.isPending ? "Saving..." : "Save Notice"}
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setIsEditing(false)}
-                >
+                <Button variant="outline" onClick={() => setIsEditing(false)}>
                   Cancel
                 </Button>
               </div>
             </div>
-          ) : (notice ? (
+          ) : notice ? (
             <div className="space-y-4">
               <h2 className="text-2xl font-bold text-gray-900 leading-tight">
                 {notice?.title}
@@ -171,7 +153,10 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="/placeholder.svg?height=32&width=32" />
                     <AvatarFallback>
-                      {author?.user?.name?.split(" ").map((n) => n[0]).join("")}
+                      {author?.user?.name
+                        ?.split(" ")
+                        .map((n) => n[0])
+                        .join("")}
                     </AvatarFallback>
                   </Avatar>
                   <span className="text-sm font-medium">
@@ -193,7 +178,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                 No notice has been created yet.
               </p>
             </div>
-          ))}
+          )}
         </CardContent>
       </Card>
 

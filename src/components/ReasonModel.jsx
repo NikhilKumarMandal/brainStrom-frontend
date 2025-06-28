@@ -17,9 +17,8 @@ export function ReasonModal({
   onConfirm,
   reason,
   setReason,
-  isPending
+  isPending,
 }) {
-
   const handleConfirm = () => {
     if (!reason.trim()) {
       alert("Please enter a reason.");
@@ -32,10 +31,13 @@ export function ReasonModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={(val) => {
-      setReason("");
-      onOpenChange(val);
-    }}>
+    <Dialog
+      open={open}
+      onOpenChange={(val) => {
+        setReason("");
+        onOpenChange(val);
+      }}
+    >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -55,10 +57,7 @@ export function ReasonModal({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button
-            disabled={isPending} 
-            onClick={handleConfirm}
-          >
+          <Button disabled={isPending} onClick={handleConfirm}>
             {isPending ? "Submitting..." : "Submit"}
           </Button>
         </DialogFooter>

@@ -63,7 +63,7 @@ function AddAnswerModel({ isOpen, onClose, id }) {
           <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={(!answer.trim() || isPosting)}>
+          <Button onClick={handleSubmit} disabled={!answer.trim() || isPosting}>
             {isPosting ? "Posting..." : "Post Answer"}
           </Button>
         </DialogFooter>

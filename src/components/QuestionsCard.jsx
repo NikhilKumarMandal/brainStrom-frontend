@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { MessageCircle, Pin, User, Calendar } from "lucide-react";
 
 export const QuestionsCard = ({ question, gotoDiscussion }) => {
-
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       month: "short",
