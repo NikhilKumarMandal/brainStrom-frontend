@@ -148,6 +148,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                       content: editContent,
                     })
                   }
+                  disabled={editNoticeMutation.isPending}
                 >
                   {editNoticeMutation.isPending ? "Saving..." : "Save Notice"}
                 </Button>

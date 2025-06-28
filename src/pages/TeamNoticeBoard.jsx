@@ -40,9 +40,13 @@ export default function TeamNoticeBoard() {
     </div>
   );
 
+  console.log(team);
+  
   const currentUser = team.members.find((member) => member.user.id === user.id);
   const isLeader = user.id === team?.leaderId;
-  const isCoLeader = user.id === team?.coLeaderId;
+  const coLeader = team.members.find((member) => member.role === "CO_LEADER") || null;
+  console.log(isLeader, coLeader);
+  
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -52,7 +56,7 @@ export default function TeamNoticeBoard() {
         <div className="lg:col-span-2 space-y-4">
           <NoticeBoard
             teamId={teamId}
-            hasPermission={isLeader || isCoLeader}
+            hasPermission={isLeader || coLeader?.user.id === user.id}
             members={team.members}
           />
           <LeaderActions isLeader={isLeader} userRole={currentUser.role} />
@@ -74,6 +78,7 @@ export default function TeamNoticeBoard() {
         isOpen={isProfileOpen}
         onClose={() => setIsProfileOpen(false)}
         teamId={teamId}
+        coLeader={coLeader}
       />
     </div>
   );

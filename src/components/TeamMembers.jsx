@@ -48,8 +48,8 @@ export function TeamMembers({
                     }
                   >
                     <AvatarImage
-                      src={member.avatar || "/placeholder.svg"}
-                      alt={member.name}
+                      src={member.user.avatar || "/placeholder.svg"}
+                      alt={member.user.name}
                     />
                     <AvatarFallback>
                       {member.user.name

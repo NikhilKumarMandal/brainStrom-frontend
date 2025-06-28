@@ -55,7 +55,10 @@ export function ReasonModal({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleConfirm}>
+          <Button
+            disabled={isPending} 
+            onClick={handleConfirm}
+          >
             {isPending ? "Submitting..." : "Submit"}
           </Button>
         </DialogFooter>

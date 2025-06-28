@@ -17,44 +17,50 @@ import {
   UserMinus,
   Mail,
   Calendar,
+  TrendingDown,
 } from "lucide-react";
 import { useState } from "react";
 import { ReasonModal } from "./ReasonModel";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { changeRole, kickMember } from "@/http/api";
 import { toast } from "sonner";
+import { formateString } from "@/utils/formateString";
 
-export function MemberProfile({ member, isOpen, onClose, teamId }) {
+export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
   if (!member) return null;
+
   const userId = member.user.id;
-  const [promoteOpen, setPromoteOpen] = useState(false);
+  const [changeRoleOpen, setChangeRoleOpen] = useState(false);
   const [kickOpen, setKickOpen] = useState(false);
-  const [promoteReason, setPromoteReason] = useState("");
+  const [changeRoleReason, setChangeRoleReason] = useState("");
   const [kickReason, setKickReason] = useState("");
   const queryClient = useQueryClient();
 
   const changeRoleMutation = useMutation({
-    mutationFn: ({ teamId, userId, reason }) =>
-      changeRole(teamId, userId, reason),
+    mutationFn: ({ teamId, userId, targetRole, reason }) =>
+      changeRole(teamId, userId, targetRole, reason),
     onSuccess: () => {
       toast.success("Role changed successfully!");
       queryClient.invalidateQueries([teamId, "members"]);
-      setPromoteReason("");
+      setChangeRoleReason("");
+      onClose();
     },
     onError: () => toast.error("Failed to change Role."),
   });
 
+  const targetRole = member.role === "CO_LEADER" ? "MEMBER" : "CO_LEADER";
+
   const handleReasonSubmit = (reason) => {
-    changeRoleMutation.mutate({ teamId, userId, targetRole: "CO_LEADER", reason });
+    changeRoleMutation.mutate({ teamId, userId, targetRole, reason });
   };
 
   const kickMutation = useMutation({
     mutationFn: ({ teamId, userId, reason }) =>
       kickMember(teamId, userId, reason),
     onSuccess: () => {
-      toast.success("Member kicked successfully!");
       queryClient.invalidateQueries([teamId, "members"]);
       setKickReason("");
+      toast.success("Member kicked successfully!");
     },
     onError: () => toast.error("Failed to kick member."),
   })
@@ -70,7 +76,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId }) {
           <DialogTitle className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
               <AvatarImage
-                src={member.user.avatar || "/placeholder.svg"}
+                src={member.user.avatar}
                 alt={member.user.name}
               />
               <AvatarFallback>
@@ -90,7 +96,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId }) {
                   <Star className="h-4 w-4 text-blue-600" />
                 )}
               </div>
-              <p className="text-sm text-gray-500 font-normal">{member.role}</p>
+              <p className="text-sm text-gray-500 font-normal">{formateString(member.role)}</p>
             </div>
           </DialogTitle>
           <DialogDescription>
@@ -116,11 +122,10 @@ export function MemberProfile({ member, isOpen, onClose, teamId }) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setPromoteOpen(true)}
-                disabled={member.role === "Co-Leader"}
+                onClick={() => setChangeRoleOpen(true)}
               >
-                <TrendingUp className="h-4 w-4 mr-2" />
-                Promote to Co-Leader
+                {member.role === "CO_LEADER" ? <TrendingDown className="h-4 w-4 mr-2" /> : <TrendingUp className="h-4 w-4 mr-2" />}
+                {member.role === "CO_LEADER" ? "Demote to Member" : "Promote to Co-Leader"}
               </Button>
             </div>
           </div>
@@ -138,13 +143,13 @@ export function MemberProfile({ member, isOpen, onClose, teamId }) {
       </DialogContent>
 
       <ReasonModal
-        open={promoteOpen}
-        onOpenChange={setPromoteOpen}
+        open={changeRoleOpen}
+        onOpenChange={setChangeRoleOpen}
         title="Provide Reason"
-        description="Please enter a reason for promotion."
+        description={member.role === "CO_LEADER" ? "Please enter a reason for demotion." : "Please enter a reason for promotion."}
         onConfirm={handleReasonSubmit}
-        reason={promoteReason}
-        setReason={setPromoteReason}
+        reason={changeRoleReason}
+        setReason={setChangeRoleReason}
         isPending={changeRoleMutation.isPending}
       />
 
