@@ -28,7 +28,7 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
   const [selectedCourse, setSelectedCourse] = useState("");
 
   const { user } = useAuthStore();
-  const courses = user.enrolledCourses.map((c) => c.course.name);
+  const courses = user?.enrolledCourses?.map((c) => c.course.name);
 
   useEffect(() => {
     if (courses.length === 1) {
