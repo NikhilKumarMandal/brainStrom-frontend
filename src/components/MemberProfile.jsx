@@ -1,4 +1,15 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { changeRole, kickMember } from "@/http/api";
+import { formateString } from "@/utils/formateString";
+import { useAuthStore } from "@/store/store";
+import { ReasonModal } from "./ReasonModel";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -14,21 +25,16 @@ import {
   Crown,
   Star,
   TrendingUp,
+  TrendingDown,
   UserMinus,
   Mail,
   Calendar,
-  TrendingDown,
 } from "lucide-react";
-import { useState } from "react";
-import { ReasonModal } from "./ReasonModel";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { changeRole, kickMember } from "@/http/api";
-import { toast } from "sonner";
-import { formateString } from "@/utils/formateString";
 
 export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
   if (!member) return null;
 
+  const { user } = useAuthStore();
   const userId = member.user.id;
   const [changeRoleOpen, setChangeRoleOpen] = useState(false);
   const [kickOpen, setKickOpen] = useState(false);
@@ -48,12 +54,6 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
     onError: () => toast.error("Failed to change Role."),
   });
 
-  const targetRole = member.role === "CO_LEADER" ? "MEMBER" : "CO_LEADER";
-
-  const handleReasonSubmit = (reason) => {
-    changeRoleMutation.mutate({ teamId, userId, targetRole, reason });
-  };
-
   const kickMutation = useMutation({
     mutationFn: ({ teamId, userId, reason }) =>
       kickMember(teamId, userId, reason),
@@ -63,11 +63,22 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
       toast.success("Member kicked successfully!");
     },
     onError: () => toast.error("Failed to kick member."),
-  })
+  });
+
+  const targetRole =
+    member.role === "CO_LEADER" ? "MEMBER" : "CO_LEADER";
+
+  const handleReasonSubmit = (reason) => {
+    changeRoleMutation.mutate({ teamId, userId, targetRole, reason });
+  };
 
   const handleKickSubmit = (reason) => {
     kickMutation.mutate({ teamId, userId, reason });
   };
+
+  const isAnotherCoLeaderPresent =
+    coLeader && coLeader.user.id !== user.id;
+  const isPromoting = member.role !== "CO_LEADER";
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -92,11 +103,13 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
                 {member.role === "Team Lead" && (
                   <Crown className="h-4 w-4 text-yellow-600" />
                 )}
-                {member.role === "Co-Leader" && (
+                {member.role === "CO_LEADER" && (
                   <Star className="h-4 w-4 text-blue-600" />
                 )}
               </div>
-              <p className="text-sm text-gray-500 font-normal">{formateString(member.role)}</p>
+              <p className="text-sm text-gray-500 font-normal">
+                {formateString(member.role)}
+              </p>
             </div>
           </DialogTitle>
           <DialogDescription>
@@ -118,15 +131,28 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
 
           <div className="space-y-3">
             <Label className="text-sm font-medium">Change Role</Label>
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-1">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setChangeRoleOpen(true)}
+                disabled={isPromoting && isAnotherCoLeaderPresent}
               >
-                {member.role === "CO_LEADER" ? <TrendingDown className="h-4 w-4 mr-2" /> : <TrendingUp className="h-4 w-4 mr-2" />}
-                {member.role === "CO_LEADER" ? "Demote to Member" : "Promote to Co-Leader"}
+                {member.role === "CO_LEADER" ? (
+                  <TrendingDown className="h-4 w-4 mr-2" />
+                ) : (
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                )}
+                {member.role === "CO_LEADER"
+                  ? "Demote to Member"
+                  : "Promote to Co-Leader"}
               </Button>
+
+              {isPromoting && isAnotherCoLeaderPresent && (
+                <p className="text-xs text-red-500 pl-1">
+                  A team can have only one Co-Leader. Remove the existing Co-Leader to promote a new one.
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -135,24 +161,33 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={() => setKickOpen(true)}>
+          <Button
+            variant="destructive"
+            onClick={() => setKickOpen(true)}
+          >
             <UserMinus className="h-4 w-4 mr-2" />
             Remove from Team
           </Button>
         </DialogFooter>
       </DialogContent>
 
+      {/* Promote/Demote Reason Modal */}
       <ReasonModal
         open={changeRoleOpen}
         onOpenChange={setChangeRoleOpen}
         title="Provide Reason"
-        description={member.role === "CO_LEADER" ? "Please enter a reason for demotion." : "Please enter a reason for promotion."}
+        description={
+          member.role === "CO_LEADER"
+            ? "Please enter a reason for demotion."
+            : "Please enter a reason for promotion."
+        }
         onConfirm={handleReasonSubmit}
         reason={changeRoleReason}
         setReason={setChangeRoleReason}
         isPending={changeRoleMutation.isPending}
       />
 
+      {/* Kick Reason Modal */}
       <ReasonModal
         open={kickOpen}
         onOpenChange={setKickOpen}
@@ -163,7 +198,6 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
         setReason={setKickReason}
         isPending={kickMutation.isPending}
       />
-
     </Dialog>
   );
 }
