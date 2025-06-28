@@ -27,14 +27,10 @@ export function NoticeHeader({ currentUser, teamName }) {
 
   return (
     <div className="flex items-center gap-6">
-      <h1 className="text-3xl font-bold text-gray-900">
-        {teamName}
-      </h1>
+      <h1 className="text-3xl font-bold text-gray-900">{teamName}</h1>
       <div className="flex self-end gap-2">
         {getRoleIcon(currentUser.role)}
-        <Badge
-          className={`${getRoleBadgeColor(currentUser.role)} capitalize`}
-        >
+        <Badge className={`${getRoleBadgeColor(currentUser.role)} capitalize`}>
           {formateString(currentUser.role)}
         </Badge>
       </div>

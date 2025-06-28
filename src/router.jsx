@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Root from "./Layouts/Root";
 import NoAuth from "./Layouts/NoAuth";
 import Dashboard from "./Layouts/Dashboard";
-import LoginPage from "./login/LoginPage";
 import ProblemPage from "./pages/ProblemPage";
 import BrowseTeams from "./pages/BrowseTeams";
 import HomePage from "./pages/Homepage";
@@ -17,6 +16,7 @@ import ProfileEditor from "./pages/ProfileEditor";
 import ProfilePage from "./pages/ProfilePage";
 import DiscussionPage from "./pages/DiscussionPage";
 import TeamNoticeBoard from "./pages/TeamNoticeBoard";
+import LoginPage from "./pages/LoginPage";
 
 export const router = createBrowserRouter([
   {

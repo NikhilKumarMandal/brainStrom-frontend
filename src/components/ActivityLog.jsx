@@ -13,14 +13,12 @@ import { timeAgo } from "@/utils/formateTime";
 import { useQuery } from "@tanstack/react-query";
 import { Clock } from "lucide-react";
 
-
 async function getTeamteamLogs(teamId) {
   const { data } = await getTeamHistory(teamId);
   return data.data;
 }
 
 export function ActivityLog({ teamId }) {
-
   const { data: logs, isLoading: teamLogsLoading } = useQuery({
     queryKey: [teamId, "teamLogs"],
     queryFn: () => getTeamteamLogs(teamId),
@@ -35,9 +33,7 @@ export function ActivityLog({ teamId }) {
           <Clock className="h-5 w-5 text-blue-600" />
           Team Activity Log
         </CardTitle>
-        <CardDescription>
-          Recent team activities and changes
-        </CardDescription>
+        <CardDescription>Recent team activities and changes</CardDescription>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[300px]">
@@ -56,16 +52,12 @@ export function ActivityLog({ teamId }) {
                       </span>
                     </div>
                     {/* {canEdit && ( */}
-                    <p className="text-sm text-gray-600 mb-1">
-                      by {log.actor}
-                    </p>
+                    <p className="text-sm text-gray-600 mb-1">by {log.actor}</p>
                     {/* )} */}
                     <p className="text-xs text-gray-500">{log.message}</p>
                   </div>
                 </div>
-                {index < logs.length - 1 && (
-                  <Separator className="my-3 ml-5" />
-                )}
+                {index < logs.length - 1 && <Separator className="my-3 ml-5" />}
               </div>
             ))}
           </div>

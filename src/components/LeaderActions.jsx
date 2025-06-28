@@ -9,11 +9,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ReasonModal } from "./ReasonModel";
 
-export function LeaderActions({
-  isLeader,
-  userRole,
-  teamId,
-}) {
+export function LeaderActions({ isLeader, userRole, teamId }) {
   if (userRole !== "LEADER") return null;
 
   const [showRequestModal, setShowRequestModal] = useState(false);
@@ -81,11 +77,15 @@ export function LeaderActions({
                 className={"relative"}
                 onClick={() => setShowRequestModal(true)}
               >
-                {(joinRequests && joinRequests.length !== 0) &&
-                  <Badge className={"absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-4 h-4"} >
+                {joinRequests && joinRequests.length !== 0 && (
+                  <Badge
+                    className={
+                      "absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-4 h-4"
+                    }
+                  >
                     {joinRequests.length}
                   </Badge>
-                }
+                )}
                 <UserPlus className="h-4 w-4 mr-2" />
                 See Requests
               </Button>
@@ -119,7 +119,6 @@ export function LeaderActions({
         setReason={setDisbandReason}
         isPending={disbandLoading}
       />
-
     </Card>
   );
 }

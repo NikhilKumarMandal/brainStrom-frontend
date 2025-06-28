@@ -53,7 +53,6 @@ export default function ProblemPage() {
   const answersData = topDiscussion?.data?.data || [];
 
   console.log(data);
-  
 
   return (
     <div className="w-full flex flex-col gap-6 py-8 px-6 overflow-auto text-gray-300 bg-gray-900">

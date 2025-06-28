@@ -5,11 +5,7 @@ import { changeRole, kickMember } from "@/http/api";
 import { formateString } from "@/utils/formateString";
 import { useAuthStore } from "@/store/store";
 import { ReasonModal } from "./ReasonModel";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -66,8 +62,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
     onError: () => toast.error("Failed to kick member."),
   });
 
-  const targetRole =
-    member.role === "CO_LEADER" ? "MEMBER" : "CO_LEADER";
+  const targetRole = member.role === "CO_LEADER" ? "MEMBER" : "CO_LEADER";
 
   const handleReasonSubmit = (reason) => {
     changeRoleMutation.mutate({ teamId, userId, targetRole, reason });
@@ -77,8 +72,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
     kickMutation.mutate({ teamId, userId, reason });
   };
 
-  const isAnotherCoLeaderPresent =
-    coLeader && coLeader.user.id !== user.id;
+  const isAnotherCoLeaderPresent = coLeader && coLeader.user.id !== user.id;
   const isPromoting = member.role !== "CO_LEADER";
 
   return (
@@ -87,10 +81,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <Avatar className="h-12 w-12">
-              <AvatarImage
-                src={member.user.avatar}
-                alt={member.user.name}
-              />
+              <AvatarImage src={member.user.avatar} alt={member.user.name} />
               <AvatarFallback>
                 {member.user.name
                   .split(" ")
@@ -151,7 +142,8 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
 
               {isPromoting && isAnotherCoLeaderPresent && (
                 <p className="text-xs text-red-500 pl-1">
-                  A team can have only one Co-Leader. Remove the existing Co-Leader to promote a new one.
+                  A team can have only one Co-Leader. Remove the existing
+                  Co-Leader to promote a new one.
                 </p>
               )}
             </div>
@@ -162,10 +154,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button
-            variant="destructive"
-            onClick={() => setKickOpen(true)}
-          >
+          <Button variant="destructive" onClick={() => setKickOpen(true)}>
             <UserMinus className="h-4 w-4 mr-2" />
             Remove from Team
           </Button>
