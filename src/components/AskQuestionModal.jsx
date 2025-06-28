@@ -21,17 +21,17 @@ import { useAuthStore } from "@/store/store";
 import { useMutation } from "@tanstack/react-query";
 import { createTicket } from "@/http/api";
 import RichTextEditor from "./RichTextEditor";
+import { toast } from "sonner";
 
 export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("");
-
   const { user } = useAuthStore();
-  const courses = user?.enrolledCourses?.map((c) => c.course.name);
+  const courses = user?.enrolledCourses?.map((c) => c.course?.name);
 
   useEffect(() => {
-    if (courses.length === 1) {
+    if (courses?.length === 1) {
       setSelectedCourse(courses[0]);
     }
   }, [courses]);
@@ -42,7 +42,7 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
       return data;
     },
     onSuccess: () => {
-      alert("Submitted");
+      toast.success("Submitted");
 
       // Reset form and close modal
       setTitle("");
@@ -52,7 +52,7 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
       onClose();
     },
     onError: () => {
-      alert("Failed to submit ticket");
+      toast.error("Failed to submit ticket");
     },
   });
 
@@ -114,7 +114,7 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
                 <SelectValue placeholder="Select a course" />
               </SelectTrigger>
               <SelectContent>
-                {courses.map((course) => (
+                {courses?.map((course) => (
                   <SelectItem key={course} value={course}>
                     {course}
                   </SelectItem>
@@ -127,7 +127,9 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
             <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
-            <Button type="submit">
+            <Button type="submit"
+              disabled={!title || !description || !selectedCourse}
+            >
               {isPending ? "Submitting..." : "Submit Question"}
             </Button>
           </DialogFooter>

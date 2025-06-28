@@ -77,6 +77,7 @@ export default function RichTextEditor({
               key={i}
               onClick={() => toggleCommand(type)}
               variant={"ghost"}
+              type="button"
             >
               <Icon
                 strokeWidth={2.5}

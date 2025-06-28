@@ -24,7 +24,6 @@ function DiscussionPage() {
   const {
     data: questionData,
     isLoading: ticketLoading,
-    isError: ticketError,
   } = useQuery({
     queryKey: ["ticket", discussionId],
     queryFn: () => getQuestion(discussionId),
@@ -34,7 +33,6 @@ function DiscussionPage() {
   const {
     data: discussions,
     isLoading: discussionLoading,
-    isError: discussionError,
   } = useQuery({
     queryKey: ["topDiscussion", discussionId],
     queryFn: () => getDiscussions(discussionId),
@@ -57,7 +55,7 @@ function DiscussionPage() {
         <div className="mt-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900">
-              Discussions ({discussions.length})
+              Discussions ({discussions?.length})
             </h2>
             <Button
               className="bg-blue-600 hover:bg-blue-700"
@@ -69,7 +67,7 @@ function DiscussionPage() {
 
           <div className="space-y-4">
             {discussions.map((discussion) => (
-              <DiscussionItem key={discussion.id} discussion={discussion} />
+              <DiscussionItem key={question?.id} discussion={discussion} />
             ))}
           </div>
         </div>
