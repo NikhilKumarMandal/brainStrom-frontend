@@ -14,7 +14,11 @@ import { useAuthStore } from "@/store/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const socialPlatforms = [
-  { platform: "GitHub", field: "gitHubLink", baseUrl: "https://github.com" },
+  {
+    platform: "GitHub",
+    field: "gitHubLink",
+    baseUrl: "https://github.com"
+  },
   {
     platform: "LinkedIn",
     field: "linkedinLink",
@@ -42,8 +46,6 @@ const ProfileEditor = () => {
   const [linksToRemove, setLinksToRemove] = useState([]);
   const [socialLinks, setSocialLinks] = useState([]);
   const [newLink, setNewLink] = useState({ platform: "GitHub", username: "" });
-
-  console.log(user);
 
   useEffect(() => {
     if (user?.skills) {

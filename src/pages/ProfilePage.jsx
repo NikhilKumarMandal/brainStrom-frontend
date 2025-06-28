@@ -72,7 +72,7 @@ export default function ProfilePage({ isMe = false }) {
     <div className="p-4">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header Card */}
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden pt-0">
           <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600"></div>
           <CardContent className="relative pb-6">
             <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-6">

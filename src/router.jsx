@@ -76,7 +76,7 @@ export const router = createBrowserRouter([
             element: <DiscussionPage />,
           },
           {
-            path: "/noticeBoard",
+            path: "/noticeBoard/:teamId",
             element: <TeamNoticeBoard />,
           },
         ],
