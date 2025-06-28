@@ -37,10 +37,11 @@ export function TeamMembers({
               <div key={member.id} className="flex items-center gap-3">
                 <div className="relative">
                   <Avatar
-                    className={`h-10 w-10 ${isLeader && member.id !== currentUserId
-                      ? "cursor-pointer hover:ring-2 hover:ring-blue-500"
-                      : ""
-                      }`}
+                    className={`h-10 w-10 ${
+                      isLeader && member.id !== currentUserId
+                        ? "cursor-pointer hover:ring-2 hover:ring-blue-500"
+                        : ""
+                    }`}
                     onClick={() =>
                       isLeader &&
                       member.id !== currentUserId &&
@@ -71,7 +72,9 @@ export function TeamMembers({
                       <Star className="h-3 w-3 text-blue-600" />
                     )}
                   </div>
-                  <p className="text-xs text-gray-500">{formateString(member.role)}</p>
+                  <p className="text-xs text-gray-500">
+                    {formateString(member.role)}
+                  </p>
                 </div>
               </div>
             ))}

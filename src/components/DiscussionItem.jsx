@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { vote } from "@/http/api";
 
 const DiscussionItem = ({ discussion }) => {
-
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
 
@@ -39,21 +38,23 @@ const DiscussionItem = ({ discussion }) => {
             variant="ghost"
             size="sm"
             onClick={() => handleVote("UPVOTE")}
-            className={`p-2 rounded-full hover:bg-green-50 ${userVote === "UPVOTE"
-              ? "bg-green-100 text-green-600"
-              : "text-gray-500 hover:text-green-600"
-              }`}
+            className={`p-2 rounded-full hover:bg-green-50 ${
+              userVote === "UPVOTE"
+                ? "bg-green-100 text-green-600"
+                : "text-gray-500 hover:text-green-600"
+            }`}
           >
             <ArrowUp className="w-5 h-5" />
           </Button>
 
           <span
-            className={`font-bold text-lg ${score > 0
-              ? "text-green-600"
-              : score < 0
-                ? "text-red-500"
-                : "text-gray-600"
-              }`}
+            className={`font-bold text-lg ${
+              score > 0
+                ? "text-green-600"
+                : score < 0
+                  ? "text-red-500"
+                  : "text-gray-600"
+            }`}
           >
             {score}
           </span>
@@ -62,10 +63,11 @@ const DiscussionItem = ({ discussion }) => {
             variant="ghost"
             size="sm"
             onClick={() => handleVote("DOWNVOTE")}
-            className={`p-2 rounded-full hover:bg-red-50 ${userVote === "DOWNVOTE"
-              ? "bg-red-100 text-red-600"
-              : "text-gray-500 hover:text-red-600"
-              }`}
+            className={`p-2 rounded-full hover:bg-red-50 ${
+              userVote === "DOWNVOTE"
+                ? "bg-red-100 text-red-600"
+                : "text-gray-500 hover:text-red-600"
+            }`}
           >
             <ArrowDown className="w-5 h-5" />
           </Button>
@@ -82,10 +84,7 @@ const DiscussionItem = ({ discussion }) => {
             </div>
           </div>
 
-          <RichTextEditor
-            content={discussion.content}
-            readOnly
-          />
+          <RichTextEditor content={discussion.content} readOnly />
         </div>
       </div>
     </Card>

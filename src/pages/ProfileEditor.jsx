@@ -17,7 +17,7 @@ const socialPlatforms = [
   {
     platform: "GitHub",
     field: "gitHubLink",
-    baseUrl: "https://github.com"
+    baseUrl: "https://github.com",
   },
   {
     platform: "LinkedIn",

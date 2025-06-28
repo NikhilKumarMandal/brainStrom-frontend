@@ -13,8 +13,7 @@ const QuestionSection = ({ question }) => {
         </h1>
       </div>
 
-
-      <RichTextEditor content={question.description} readOnly  />
+      <RichTextEditor content={question.description} readOnly />
 
       <div className="flex items-center justify-between text-sm text-gray-500 pt-4 border-t border-gray-100">
         <div className="flex items-center">
@@ -26,7 +25,10 @@ const QuestionSection = ({ question }) => {
         </div>
         <div className="flex items-center">
           <MessageSquare className="w-4 h-4 mr-1" />
-          <span>{question._count.discussions} {question._count.discussions === 1 ? "Answer" : "Answers"}</span>
+          <span>
+            {question._count.discussions}{" "}
+            {question._count.discussions === 1 ? "Answer" : "Answers"}
+          </span>
         </div>
       </div>
     </Card>

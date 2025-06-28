@@ -21,7 +21,7 @@ export const Teamcards = ({ team }) => {
   const teamId = team.id;
   const [showDialog, setShowDialog] = useState(false);
   const [description, setDescription] = useState("");
-  const [isRequested, setIsRequested] = useState(false);  
+  const [isRequested, setIsRequested] = useState(false);
 
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ teamId, description }) => {
@@ -54,7 +54,6 @@ export const Teamcards = ({ team }) => {
     const diff = now - new Date(user.joinRequestLockAt).getTime();
     if (diff < 10 * 60 * 1000) setIsRequested(true);
   }, [user]);
-
 
   return (
     <Card className="h-full flex flex-col hover:shadow-lg transition-all duration-200 border-gray-200 bg-white">
