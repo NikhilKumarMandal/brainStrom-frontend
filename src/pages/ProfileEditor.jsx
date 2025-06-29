@@ -125,7 +125,6 @@ const ProfileEditor = () => {
 
   const deleteLinkMutation = useMutation({
     mutationFn: async (fields) => {
-      // either bulk call if API allows array
       return Promise.all(fields.map((field) => deleteProfileLink(field)));
     },
     onSuccess: () => {
@@ -223,7 +222,7 @@ const ProfileEditor = () => {
     <div className="text-black max-w-4xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
-        <RouterLink to="/profile">
+        <RouterLink to="/profile/me">
           <Button variant="outline" size="sm" className="bg-primary text-white">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Profile
@@ -260,7 +259,7 @@ const ProfileEditor = () => {
           {skills.map((skill) => (
             <Badge
               key={skill}
-              className="bg-primary text-white flex items-center gap-2 p-2"
+              className="bg-primary text-white flex items-center gap-2 p-2 text-sm"
             >
               {skill}
               <button onClick={() => removeSkill(skill)}>

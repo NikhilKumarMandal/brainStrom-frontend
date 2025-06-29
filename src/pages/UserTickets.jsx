@@ -14,7 +14,7 @@ const LIMIT = 10
 //   return data;
 // }
 
-export default function MyTickets() {
+export default function UserTickets() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { gotoDiscussion } = useNavigation();
   const [queryParams, setQueryParams] = useState({

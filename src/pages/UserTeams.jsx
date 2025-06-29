@@ -10,7 +10,7 @@ async function getMyAllTeams() {
   return data;
 }
 
-export default function MyTeams() {
+export default function UserTeams() {
   const { gotoMyTeam, gotoCreateTeam } = useNavigation();
 
   const { data: myTeams, isLoading } = useQuery({

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { NoticeHeader } from "../components/NoticeHeader";
 import { NoticeBoard } from "../components/NoticeBoard";
 import { LeaderActions } from "../components/LeaderActions";
 import { TeamMembers } from "../components/TeamMembers";
@@ -10,13 +9,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getTeamById } from "@/http/api";
 import { useAuthStore } from "@/store/store";
 import useNavigation from "@/utils/navigation";
+import TeamHeader from "@/components/TeamHeader";
 
 async function getTeamDetails(teamId) {
   const { data } = await getTeamById(teamId);
   return data.data;
 }
 
-export default function TeamNoticeBoard() {
+export default function TeamPage() {
   const [selectedMember, setSelectedMember] = useState(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user } = useAuthStore();
@@ -49,7 +49,7 @@ export default function TeamNoticeBoard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <NoticeHeader
+      <TeamHeader
         currentUser={currentUser}
         teamName={team?.name}
         teamId={teamId}

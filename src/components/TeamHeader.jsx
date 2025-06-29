@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { leaveTeam } from "@/http/api";
 
-export function NoticeHeader({ currentUser, teamName, teamId }) {
+export default function TeamHeader({ currentUser, teamName, teamId }) {
 
   const [reason, setReason] = useState("");
   const [isOpen, setIsOpen] = useState(false);

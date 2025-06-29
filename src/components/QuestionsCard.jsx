@@ -11,11 +11,7 @@ export const QuestionsCard = ({ question, gotoDiscussion }) => {
       day: "numeric",
       year: "numeric",
     });
-  };
-
-
-  console.log(question);
-  
+  };  
 
   return (
     <Card className="p-6 hover:shadow-md transition-all duration-200 border border-gray-200 bg-white">

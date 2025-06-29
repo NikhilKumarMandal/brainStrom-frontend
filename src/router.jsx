@@ -2,22 +2,16 @@ import { createBrowserRouter } from "react-router-dom";
 import Root from "./Layouts/Root";
 import NoAuth from "./Layouts/NoAuth";
 import Dashboard from "./Layouts/Dashboard";
-import ProblemPage from "./pages/ProblemPage";
-import BrowseTeams from "./pages/BrowseTeams";
-import HomePage from "./pages/Homepage";
-import AskQuestion from "./pages/AskQuestion";
-import MyTeam from "./pages/MyTeam";
 import CreateTeam from "./pages/CreateTeam";
-import UserProfile from "./pages/UserProfile";
-import MyTeams from "./pages/MyTeams";
-import TicketPage from "./pages/TicketPage";
-import BrowsesTeams from "./pages/BrowsesTeams";
+import UserTeams from "./pages/UserTeams";
+import HomePage from "./pages/Homepage";
+import BrowseTeams from "./pages/BrowseTeams";
 import ProfileEditor from "./pages/ProfileEditor";
 import ProfilePage from "./pages/ProfilePage";
 import DiscussionPage from "./pages/DiscussionPage";
-import TeamNoticeBoard from "./pages/TeamNoticeBoard";
+import TeamPage from "./pages/TeamPage";
 import LoginPage from "./pages/LoginPage";
-import MyTickets from "./pages/MyTickets";
+import UserTickets from "./pages/UserTickets";
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +24,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <TicketPage />,
+            element: <HomePage />,
           },
           // {
           //   path: "ask-questions",
@@ -46,7 +40,7 @@ export const router = createBrowserRouter([
           // },
           {
             path: "browse-teams",
-            element: <BrowsesTeams />,
+            element: <BrowseTeams />,
           },
           // {
           //   path: "my-teams/:teamId",
@@ -54,7 +48,7 @@ export const router = createBrowserRouter([
           // },
           {
             path: "my-teams",
-            element: <MyTeams />,
+            element: <UserTeams />,
           },
           {
             path: "create-team",
@@ -78,11 +72,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "/team/:teamId",
-            element: <TeamNoticeBoard />,
+            element: <TeamPage />,
           },
           {
             path: "/my-questions",
-            element: <MyTickets />
+            element: <UserTickets />
           }
         ],
       },

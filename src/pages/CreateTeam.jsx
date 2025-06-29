@@ -14,7 +14,7 @@ import {
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CircleX } from "lucide-react";
+import { CircleX, X } from "lucide-react";
 import useNavigation from "@/utils/navigation";
 
 export default function CreateTeam() {
@@ -147,15 +147,14 @@ export default function CreateTeam() {
 
           <div className="flex flex-wrap gap-2">
             {skills.map((skill, i) => (
-              <Badge key={i} variant={"outline"} className={"px-2 py-1 text-sm"}>
+              <Badge
+                key={skill}
+                className="bg-primary text-white flex items-center gap-2 p-2 text-sm"
+              >
                 {skill}
-                <Button
-                  onClick={() => removeSkill(skill)}
-                  className={"ml-2 h-6 w-6"}
-                  variant={"ghost"}
-                >
-                  <CircleX />
-                </Button>
+                <button onClick={() => removeSkill(skill)}>
+                  <X className="h-3 w-3" />
+                </button>
               </Badge>
             ))}
           </div>
