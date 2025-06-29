@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 export default function useNavigation() {
   const navigate = useNavigate();
 
-  const gotoDashboard = () => navigate("/dashboard");
-  const gotoDumpCSV = () => navigate("/dump-csv");
+
+  const gotoHomePage = () => navigate("/");
   const gotoAskQuestion = () => navigate("/ask-questions");
-  const gotoHomePage = () => navigate("/home");
   const gotoProblemPage = (problemId) => navigate(`/problem/${problemId}`);
   const gotoBrowseTeams = () => navigate("/browse-teams");
   const gotoMyTeam = (teamId) => navigate(`/my-teams/${teamId}`);
@@ -15,14 +14,11 @@ export default function useNavigation() {
   const gotoMyTeams = () => navigate("/my-teams");
   const gotoCreateTeam = () => navigate("/create-team");
   const gotoEditProfile = () => navigate("/edit-profile");
-  const gotoDiscussion = (discussionId) =>
-    navigate(`/discussion/${discussionId}`);
+  const gotoDiscussion = (discussionId) => navigate(`/discussion/${discussionId}`);
 
   return {
-    gotoDashboard,
-    gotoDumpCSV,
-    gotoAskQuestion,
     gotoHomePage,
+    gotoAskQuestion,
     gotoProblemPage,
     gotoBrowseTeams,
     gotoMyTeam,

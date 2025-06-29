@@ -73,10 +73,6 @@ export default function MyTeam() {
     queryFn: () => getTeamteamLogs(teamId),
   });
 
-  // console.log(notice);
-  // console.log(teamLogs);
-  // console.log(team);
-
   const isLeader = user.id == team?.leaderId;
 
   const editNoticeMutation = useMutation({
@@ -131,7 +127,6 @@ export default function MyTeam() {
   const leaveMutation = useMutation({
     mutationFn: ({ teamId, reason }) => leaveTeam(teamId, reason),
     onSuccess: () => {
-      // alert('You have left the team successfully')
       gotoHomePage();
     },
     onError: () => alert("Failed to leave team"),
@@ -188,13 +183,12 @@ export default function MyTeam() {
     leaveMutation.mutate({ teamId, reason: leaveReason });
   }
 
-  if (teamLoading)
-    return (
-      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-        Loading...
-      </div>
-    );
+  if (teamLoading) return (
+    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+      Loading...
+    </div>
+  );
 
   const isMember = team?.members?.some((member) => member.userId === user.id);
   if (!isMember) gotoHomePage();

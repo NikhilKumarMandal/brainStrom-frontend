@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getTeamById } from "@/http/api";
 import { useAuthStore } from "@/store/store";
+import useNavigation from "@/utils/navigation";
 
 async function getTeamDetails(teamId) {
   const { data } = await getTeamById(teamId);
@@ -20,6 +21,7 @@ export default function TeamNoticeBoard() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user } = useAuthStore();
   const { teamId } = useParams();
+  const { gotoHomePage } = useNavigation();
 
   const { data: team, isLoading: teamLoading } = useQuery({
     queryKey: [teamId],
@@ -31,13 +33,15 @@ export default function TeamNoticeBoard() {
     setIsProfileOpen(true);
   };
 
-  if (teamLoading)
-    return (
-      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-        Loading...
-      </div>
-    );
+  if (teamLoading) return (
+    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+      Loading...
+    </div>
+  );
+
+  const isMember = team?.members?.some((member) => member.userId === user.id);
+  if (!isMember) gotoHomePage();
 
   const currentUser = team.members.find((member) => member.user.id === user.id);
   const isLeader = user.id === team?.leaderId;
@@ -46,7 +50,11 @@ export default function TeamNoticeBoard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <NoticeHeader currentUser={currentUser} teamName={team?.name} />
+      <NoticeHeader
+        currentUser={currentUser}
+        teamName={team?.name}
+        teamId={teamId}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
