@@ -50,7 +50,7 @@ function EachQuestion({ q, i, questionsLength }) {
     >
       {/* Left Side: Title + Discussion count */}
       <div>
-        <div className="font-medium text-gray-300 text-white">{q.title}</div>
+        <div className="font-medium">{q.title}</div>
         <div className="text-sm text-gray-400">
           {q._count.discussions} answers
         </div>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { createTeam } from "../http/api";
-import CourseSelector from "../components/CourseSelector";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/store/store";
@@ -13,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateTeam() {
   const [teamName, setTeamName] = useState("");
@@ -23,7 +24,9 @@ export default function CreateTeam() {
   const [showErrors, setShowErrors] = useState(false);
   const [openLimitModal, setOpenLimitModal] = useState(false);
   const { user } = useAuthStore();
-  const courses = user.enrolledCourses.map((c) => c.course.name);
+  const courses = user?.enrolledCourses?.map((c) => c?.course?.name);
+
+  const naviate = useNavigate();
 
   useEffect(() => {
     if (courses.length === 1) {
@@ -43,6 +46,8 @@ export default function CreateTeam() {
       setSkills([]);
       setNewSkill("");
       setCourse("");
+      toast("Team create successfully");
+      naviate("/my-teams");
     },
     onError: () => {
       alert("Failed to create team");
