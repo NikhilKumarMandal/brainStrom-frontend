@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Select,
   SelectContent,
@@ -11,14 +10,8 @@ import { Filter } from "lucide-react";
 export const QuestionFilters = ({
   courses,
   selectedCourse,
-  pinFilter,
-  onFilter,
+  onCourseChange,
 }) => {
-  const handleCourseChange = (value) => {
-    const courseValue = value === "all-courses" ? "" : value;
-    onFilter(courseValue, pinFilter);
-  };
-
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6 flex flex-col lg:flex-row lg:items-center gap-6">
       <div className="flex items-center gap-2 text-gray-700">
@@ -33,15 +26,17 @@ export const QuestionFilters = ({
           </label>
           <Select
             value={selectedCourse || "all-courses"}
-            onValueChange={handleCourseChange}
+            onValueChange={(value) =>
+              onCourseChange(value === "all-courses" ? "" : value)
+            }
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="All Courses" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all-courses">All Courses</SelectItem>
-              {courses.map((course, index) => (
-                <SelectItem key={index} value={course}>
+              {courses.map((course, idx) => (
+                <SelectItem key={idx} value={course}>
                   {course}
                 </SelectItem>
               ))}
