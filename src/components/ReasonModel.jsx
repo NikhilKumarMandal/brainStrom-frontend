@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export function ReasonModal({
   title,
@@ -21,7 +22,7 @@ export function ReasonModal({
 }) {
   const handleConfirm = () => {
     if (!reason.trim()) {
-      alert("Please enter a reason.");
+      toast.error("Please enter a reason.");
       return;
     }
 

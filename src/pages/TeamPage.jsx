@@ -42,10 +42,10 @@ export default function TeamPage() {
   const isMember = team?.members?.some((member) => member.userId === user.id);
   if (!isMember) gotoHomePage();
 
-  const currentUser = team.members.find((member) => member.user.id === user.id);
+  const currentUser = team?.members?.find((member) => member.user.id === user.id);
   const isLeader = user.id === team?.leaderId;
   const coLeader =
-    team.members.find((member) => member.role === "CO_LEADER") || null;
+    team?.members?.find((member) => member.role === "CO_LEADER") || null;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -60,18 +60,19 @@ export default function TeamPage() {
           <NoticeBoard
             teamId={teamId}
             hasPermission={isLeader || coLeader?.user.id === user.id}
-            members={team.members}
+            members={team?.members}
           />
           <LeaderActions
             isLeader={isLeader}
             userRole={currentUser.role}
             teamId={teamId}
+            totalMembers={team?.members?.length}
           />
         </div>
 
         <div className="space-y-6">
           <TeamMembers
-            members={team.members}
+            members={team?.members}
             isLeader={isLeader}
             currentUserId={currentUser.id}
             onMemberClick={handleMemberClick}

@@ -21,7 +21,7 @@ const LIMIT = 5;
 function BrowseTeams() {
   const { user } = useAuthStore();
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   const [queryParams, setQueryParams] = useState({
     limit: LIMIT,
     page: 1,
@@ -37,7 +37,7 @@ function BrowseTeams() {
       return res.data.data.length;
     },
   });
-  
+
 
   const enrolledCourseCount = user?.enrolledCourses?.length || 0;
   const canJoinMoreTeams = myTeamsCount < enrolledCourseCount;
@@ -164,7 +164,12 @@ function BrowseTeams() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {teams?.map((team) => (
-                <TeamCard key={team?.id} team={team} canJoin={canJoinMoreTeams} />
+                <TeamCard
+                  key={team?.id}
+                  team={team}
+                  canJoin={canJoinMoreTeams}
+                  userCourses={user?.enrolledCourses}
+                />
               ))}
             </div>
           </>

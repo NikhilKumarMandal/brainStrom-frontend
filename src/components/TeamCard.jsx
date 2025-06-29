@@ -21,12 +21,15 @@ export default function TeamCard({
   onClick,
   showRequestButton = true,
   canJoin = true,
+  userCourses = [],
 }) {
   const { user } = useAuthStore();
   const teamId = team?.id;
   const [showDialog, setShowDialog] = useState(false);
   const [description, setDescription] = useState("");
   const [isRequested, setIsRequested] = useState(false);
+  const enrolledCourseNames = userCourses.map((c) => c.course?.name);
+  const isEnrolled = enrolledCourseNames.includes(team?.course?.name);
 
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ teamId, description }) => {
@@ -115,14 +118,16 @@ export default function TeamCard({
               e.stopPropagation();
               setShowDialog(true);
             }}
-            disabled={isRequested || !canJoin}
+            disabled={isRequested || !canJoin || !isEnrolled}
             className="w-full bg-primary text-white font-medium transition-colors"
           >
-            {canJoin
-              ? isRequested
-                ? "Already Requested"
-                : "Request to join"
-              : "Max Teams Reached"}
+            {!isEnrolled
+              ? "Not Enrolled in this Course"
+              : !canJoin
+                ? "Max Teams Reached"
+                : isRequested
+                  ? "Already Requested"
+                  : "Request to join"}
           </Button>
         </CardFooter>
       )}

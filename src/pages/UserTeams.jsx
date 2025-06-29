@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import useNavigation from "../utils/navigation";
 import { Button } from "@/components/ui/button";
 import TeamCard from "@/components/TeamCard";
+import { useAuthStore } from "@/store/store";
+import { toast } from "sonner";
 
 async function getMyAllTeams() {
   const { data } = await getMyTeams().then((res) => res.data);
@@ -12,6 +14,7 @@ async function getMyAllTeams() {
 
 export default function UserTeams() {
   const { gotoMyTeam, gotoCreateTeam } = useNavigation();
+  const { user } = useAuthStore();
 
   const { data: myTeams, isLoading } = useQuery({
     queryKey: ["myTeams"],
@@ -21,7 +24,6 @@ export default function UserTeams() {
   if (isLoading) return (
     <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
       <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-
     </div>
   );
 
@@ -29,7 +31,11 @@ export default function UserTeams() {
     <div className="p-6 w-full">
       <h1 className="text-3xl font-bold mb-6 justify-between flex items-center">
         {"My Teams : "}
-        <Button onClick={() => gotoCreateTeam()}>Create Team</Button>
+        <Button onClick={() =>
+          user.enrolledCourses.length <= myTeams.length
+            ? toast.error("You can't be in teams more than enrolled courses")
+            : gotoCreateTeam()
+        }>Create Team</Button>
       </h1>
       {myTeams.length === 0 ? (
         <div className="text-gray-500 italic text-xl text-center flex items-center justify-center h-[50vh] select-none">

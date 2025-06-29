@@ -40,7 +40,7 @@ export default function CreateTeam() {
       return data;
     },
     onSuccess: () => {
-      alert("Team created!");
+      toast.success("Team created!");
       setTeamName("");
       setDescription("");
       setSkills([]);
