@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Teamcards from "../components/Teamcards";
+import TeamCard from "../components/TeamCard";
 import { useAuthStore } from "@/store/store";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { getAllTeam } from "@/http/api";
@@ -149,7 +149,7 @@ function BrowseTeams() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {teams?.map((team) => (
-                <Teamcards key={team?.id} team={team} />
+                <TeamCard key={team?.id} team={team} />
               ))}
             </div>
           </>

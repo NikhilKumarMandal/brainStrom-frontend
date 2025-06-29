@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { CircleX, X } from "lucide-react";
+import { X } from "lucide-react";
 import useNavigation from "@/utils/navigation";
 
 export default function CreateTeam() {

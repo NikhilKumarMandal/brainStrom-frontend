@@ -71,7 +71,7 @@ export default function ProfilePage({ isMe = false }) {
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header Card */}
         <Card className="overflow-hidden pt-0">
-          <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+          <div className="h-32 bg-gradient-to-b from-gray-300 to-white"></div>
           <CardContent className="relative pb-6">
             <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-6">
               <Avatar className="h-24 w-24 border-4 border-white shadow-lg -mt-12 mb-4 sm:mb-0">

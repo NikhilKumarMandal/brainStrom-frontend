@@ -14,7 +14,6 @@ import { useAuthStore } from "../store/store";
 const LIMIT = 10;
 
 const HomePage = () => {
-  const [selectedCourse, setSelectedCourse] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { gotoDiscussion } = useNavigation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,7 +32,6 @@ const HomePage = () => {
         prev.set("course", onlyCourse);
         return prev;
       });
-      setSelectedCourse(onlyCourse);
     }
   }, [user, searchParams]);
 

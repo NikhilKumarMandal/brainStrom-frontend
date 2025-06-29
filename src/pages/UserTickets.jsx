@@ -9,11 +9,6 @@ import React, { useState } from 'react'
 
 const LIMIT = 10
 
-// async function getUserTickets() {
-//   const { data } = await getUserTicket().then((res) => res.data);
-//   return data;
-// }
-
 export default function UserTickets() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { gotoDiscussion } = useNavigation();
@@ -21,17 +16,6 @@ export default function UserTickets() {
     limit: LIMIT,
     page: 1,
   });
-
-
-  // const {
-  //   data: ticktes,
-  //   isLoading: userTicketsLoading,
-  //   refetch
-  // } = useQuery({
-  //   queryKey: ["userTickets"],
-  //   queryFn: getUserTickets,
-  // });
-
 
   const {
     data: questions,
@@ -54,7 +38,7 @@ export default function UserTickets() {
   });
 
   if (userTicketsLoading) return null;
-  const ticktes = questions?.data;
+  const tickets = questions?.data;
   const totalPages = questions?.data?.totalPages;
 
   return (
@@ -79,8 +63,8 @@ export default function UserTickets() {
 
         {/* Questions List */}
         <div className="space-y-4">
-          {ticktes?.length > 0 ? (
-            ticktes?.map((question) => (
+          {tickets?.length > 0 ? (
+            tickets?.map((question) => (
               <QuestionsCard
                 key={question.id}
                 question={question}

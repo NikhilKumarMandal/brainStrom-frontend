@@ -3,7 +3,7 @@ import { getMyTeams } from "../http/api";
 import { useQuery } from "@tanstack/react-query";
 import useNavigation from "../utils/navigation";
 import { Button } from "@/components/ui/button";
-import Teamcards from "@/components/Teamcards";
+import TeamCard from "@/components/TeamCard";
 
 async function getMyAllTeams() {
   const { data } = await getMyTeams().then((res) => res.data);
@@ -40,7 +40,7 @@ export default function UserTeams() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {myTeams.map((team) => (
-            <Teamcards
+            <TeamCard
               key={team.team.id}
               team={team.team}
               role={team.role}

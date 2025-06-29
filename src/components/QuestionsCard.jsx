@@ -3,15 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Pin, User, Calendar } from "lucide-react";
+import { presiceTime } from "@/utils/formateTime";
 
 export const QuestionsCard = ({ question, gotoDiscussion }) => {
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };  
 
   return (
     <Card className="p-6 hover:shadow-md transition-all duration-200 border border-gray-200 bg-white">
@@ -39,7 +33,7 @@ export const QuestionsCard = ({ question, gotoDiscussion }) => {
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>{formatDate(question?.createdAt)}</span>
+              <span>{presiceTime(question?.createdAt)}</span>
             </div>
           </div>
 

@@ -35,7 +35,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // 🔥 Added
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const { data: notice, isLoading: noticeLoading } = useQuery({
     queryKey: [teamId, "notice"],
@@ -61,7 +61,6 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
       setIsEditing(false);
     },
     onError: (error) => {
-      console.error("Mutation failed:", error);
       toast.error(`Failed to update notice: ${error.message}`);
     },
   });
