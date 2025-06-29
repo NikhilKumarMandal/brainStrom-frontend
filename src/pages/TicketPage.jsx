@@ -42,7 +42,7 @@ const TicketPage = () => {
     let filtered = questions;
 
     if (course) {
-      filtered = filtered.filter((q) => q.courseName === course);
+      filtered = filtered.filter((q) => q.courses === course);
     }
 
     if (pin === "pinned") {
@@ -64,6 +64,8 @@ const TicketPage = () => {
       </div>
     );
   }
+
+  console.log(questions);
 
   return (
     <div className="min-h-screen p-6">

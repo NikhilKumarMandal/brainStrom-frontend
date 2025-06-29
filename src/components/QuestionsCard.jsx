@@ -18,25 +18,28 @@ export const QuestionsCard = ({ question, gotoDiscussion }) => {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div className="flex-1 space-y-3">
           <div className="flex items-start gap-3">
-            {question.isPinned && (
+            {question?.isPinned && (
               <Pin
                 className="w-4 h-4 text-orange-500 mt-1 flex-shrink-0"
                 fill="currentColor"
               />
             )}
-            <h3 className="text-lg font-semibold text-gray-900 hover:text-blue-600 cursor-pointer transition-colors">
-              {question.title}
+            <h3
+              onClick={() => gotoDiscussion(question?.id)}
+              className="text-lg font-semibold text-gray-900 hover:text-blue-600 cursor-pointer transition-colors"
+            >
+              {question?.title}
             </h3>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
               <User className="w-4 h-4" />
-              <span>{question.user.name}</span>
+              <span>{question?.user?.name}</span>
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>{formatDate(question.createdAt)}</span>
+              <span>{formatDate(question?.createdAt)}</span>
             </div>
           </div>
 
@@ -45,7 +48,7 @@ export const QuestionsCard = ({ question, gotoDiscussion }) => {
               variant="outline"
               className="bg-blue-50 text-blue-700 border-blue-200"
             >
-              {question.courses}
+              {question?.courses}
             </Badge>
           </div>
         </div>
@@ -54,26 +57,26 @@ export const QuestionsCard = ({ question, gotoDiscussion }) => {
           <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
             <MessageCircle className="w-4 h-4 text-gray-600" />
             <span className="font-medium text-gray-900">
-              {question._count.discussions}
+              {question?._count?.discussions}
             </span>
             <span className="text-sm text-gray-600">
-              {question._count.discussions === 1 ? "Answer" : "Answers"}
+              {question?._count?.discussions === 1 ? "Answer" : "Answers"}
             </span>
           </div>
 
           <Badge
-            variant={question.isOpen ? "default" : "secondary"}
+            variant={question?.status === "OPEN" ? "default" : "secondary"}
             className={
-              question.isOpen
+              question?.status === "OPEN"
                 ? "bg-green-100 text-green-800 border-green-200 hover:bg-green-200"
                 : "bg-gray-100 text-gray-800 border-gray-200"
             }
           >
-            {question.isOpen ? "Open" : "Closed"}
+            {question?.status === "OPEN" ? "Open" : "Closed"}
           </Badge>
 
           <Button
-            onClick={() => gotoDiscussion(question.id)}
+            onClick={() => gotoDiscussion(question?.id)}
             variant="outline"
             size="sm"
             className="hover:bg-blue-50 hover:border-blue-300"
