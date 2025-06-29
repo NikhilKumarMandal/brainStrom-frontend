@@ -28,6 +28,21 @@ export const createTicket = (formData) =>
 
 export const getAllTicket = () => api.get("/ticket/getAllTicket");
 
+export const AllTickets = (filters) => {
+  const params = new URLSearchParams();
+
+  if (filters.queryParams) {
+    const qp = new URLSearchParams(filters.queryParams);
+    qp.forEach((value, key) => {
+      if (value) params.append(key, value);
+    });
+  }
+
+  if (filters.course) params.append("course", filters.course);
+
+  return api.get(`/ticket/getAllTicket?${params.toString()}`);
+};
+
 export const getTicketById = (id) => api.get(`/ticket/getTicket/${id}`);
 
 export const createDiscussion = (formData) =>
