@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, ChevronRight, ChevronLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -10,23 +10,44 @@ import {
 } from "@/components/ui/select";
 import { Teamcards } from "../components/Teamcards";
 import { useAuthStore } from "@/store/store";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { getAllTeam } from "@/http/api";
+import { useSearchParams } from "react-router-dom";
+import debounce from "lodash.debounce";
+import { Button } from "@/components/ui/button";
 
-async function getTeams() {
-  const { data } = await getAllTeam().then((res) => res.data);
-  return data;
-}
+const LIMIT = 5;
 
 function BrowsesTeams() {
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("All Courses");
   const { user } = useAuthStore();
-  const courses = user.enrolledCourses.map((c) => c.course.name);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [queryParams, setQueryParams] = useState({
+    limit: LIMIT,
+    page: 1,
+  });
+
+  const courses1 = user?.enrolledCourses?.map((c) => c?.course.name);
+  const course = searchParams.get("course") || "";
+  const q = searchParams.get("q") || "";
 
   const { data: allTeamData, isLoading: isTeamsLoading } = useQuery({
-    queryKey: ["team"],
-    queryFn: getTeams,
+    queryKey: ["team", queryParams, q, course],
+    queryFn: () => {
+      const filteredParams = Object.fromEntries(
+        Object.entries(queryParams).filter((item) => !!item[1])
+      );
+
+      const queryString = new URLSearchParams(filteredParams).toString();
+      const filters = {
+        queryParams: queryString,
+        q,
+        course,
+      };
+
+      return getAllTeam(filters).then((res) => res.data);
+    },
+    placeholderData: keepPreviousData,
   });
 
   if (isTeamsLoading) {
@@ -38,25 +59,12 @@ function BrowsesTeams() {
     );
   }
 
-  const filteredTeams = allTeamData.filter((team) => {
-    const matchesSearch =
-      team.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      team.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      team.skills.some((skill) =>
-        skill.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
-    const matchesCourse =
-      selectedCourse === "All Courses" || team.course === selectedCourse;
-
-    return matchesSearch && matchesCourse;
-  });
-
+  const teams = allTeamData?.data?.teams;
+  const totalPages = allTeamData?.data?.totalPages || 1;
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+    <>
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-semibold text-gray-900 mb-3">
               Browse Teams
@@ -66,27 +74,46 @@ function BrowsesTeams() {
             </p>
           </div>
 
-          {/* Search and Filter */}
           <div className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+            {/* Search Input */}
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 placeholder="Search teams, skills, or keywords..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={debounce((e) => {
+                  setSearchParams((prev) => {
+                    prev.set("q", e.target.value);
+                    return prev;
+                  });
+                  setQueryParams((prev) => ({ ...prev, page: 1 }));
+                }, 1000)}
                 className="pl-10 h-11 border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
+            {/* Course Select */}
             <div className="flex items-center gap-2 sm:w-auto w-full">
               <Filter className="text-gray-400 h-4 w-4" />
-              <Select value={selectedCourse} onValueChange={setSelectedCourse}>
+              <Select
+                onValueChange={(value) => {
+                  setSelectedCourse(value === "all" ? "All Courses" : value);
+                  setSearchParams((prev) => {
+                    if (value === "all") {
+                      prev.delete("course");
+                    } else {
+                      prev.set("course", value);
+                    }
+                    return prev;
+                  });
+                  setQueryParams((prev) => ({ ...prev, page: 1 }));
+                }}
+              >
                 <SelectTrigger className="w-full sm:w-[180px] h-11 border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                   <SelectValue placeholder="Select course" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="All Courses">All Courses</SelectItem>
-                  {courses.map((course) => (
+                  <SelectItem value="all">All Courses</SelectItem>
+                  {courses1?.map((course) => (
                     <SelectItem key={course} value={course}>
                       {course}
                     </SelectItem>
@@ -100,7 +127,7 @@ function BrowsesTeams() {
 
       {/* Teams Grid */}
       <div className="max-w-6xl mx-auto px-6 py-8">
-        {filteredTeams.length === 0 ? (
+        {teams?.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Search className="h-8 w-8 text-gray-400" />
@@ -116,20 +143,49 @@ function BrowsesTeams() {
           <>
             <div className="mb-6">
               <p className="text-gray-600 text-sm">
-                {filteredTeams.length} team
-                {filteredTeams.length !== 1 ? "s" : ""} found
+                {teams?.length} team{teams?.length !== 1 ? "s" : ""} found
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredTeams.map((team) => (
+              {teams.map((team) => (
                 <Teamcards key={team.id} team={team} />
               ))}
             </div>
           </>
         )}
       </div>
-    </div>
+
+      <div className="flex justify-center items-center gap-4 pt-6">
+        <Button
+          size="icon"
+          variant="outline"
+          disabled={queryParams.page === 1}
+          onClick={() =>
+            setQueryParams((prev) => ({ ...prev, page: prev.page - 1 }))
+          }
+          className="bg-[#1f1f1f] border border-gray-600 text-gray-300 hover:bg-[#333] hover:text-white rounded-full p-3 transition-all duration-200"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </Button>
+
+        <span className="px-4 py-2 rounded-full bg-primary text-white font-medium shadow-md text-sm">
+          Page {queryParams.page} of {totalPages}
+        </span>
+
+        <Button
+          size="icon"
+          variant="outline"
+          disabled={queryParams.page === totalPages}
+          onClick={() =>
+            setQueryParams((prev) => ({ ...prev, page: prev.page + 1 }))
+          }
+          className="bg-[#1f1f1f] border border-gray-600 text-gray-300 hover:bg-[#333] hover:text-white rounded-full p-3 transition-all duration-200"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </Button>
+      </div>
+    </>
   );
 }
 

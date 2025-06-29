@@ -21,19 +21,13 @@ function DiscussionPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { discussionId } = useParams();
 
-  const {
-    data: questionData,
-    isLoading: ticketLoading,
-  } = useQuery({
+  const { data: questionData, isLoading: ticketLoading } = useQuery({
     queryKey: ["ticket", discussionId],
     queryFn: () => getQuestion(discussionId),
     enabled: !!discussionId,
   });
 
-  const {
-    data: discussions,
-    isLoading: discussionLoading,
-  } = useQuery({
+  const { data: discussions, isLoading: discussionLoading } = useQuery({
     queryKey: ["topDiscussion", discussionId],
     queryFn: () => getDiscussions(discussionId),
     enabled: !!discussionId,

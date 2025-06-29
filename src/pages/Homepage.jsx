@@ -17,7 +17,6 @@ export default function HomePage() {
         setSortBy={setSortBy}
       />
 
-      {/* Scrollable QuestionList container */}
       <div className="flex-1 overflow-y-auto">
         <QuestionList filter={filter} sortBy={sortBy} />
       </div>

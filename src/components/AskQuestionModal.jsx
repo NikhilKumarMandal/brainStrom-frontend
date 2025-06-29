@@ -127,7 +127,8 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
             <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
-            <Button type="submit"
+            <Button
+              type="submit"
               disabled={!title || !description || !selectedCourse}
             >
               {isPending ? "Submitting..." : "Submit Question"}

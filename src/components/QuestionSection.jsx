@@ -4,7 +4,13 @@ import { MessageSquare } from "lucide-react";
 import { timeAgo } from "@/utils/formateTime";
 import RichTextEditor from "./RichTextEditor";
 import { Badge } from "./ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -52,11 +58,14 @@ const QuestionSection = ({ question }) => {
             <span className="mx-2">•</span>
             <Badge
               variant={question?.status === "OPEN" ? "default" : "secondary"}
-              className={`cursor-pointer ${question?.status === "OPEN"
-                ? "bg-green-100 text-green-800 border-green-200 hover:bg-green-200"
-                : "bg-gray-100 text-gray-800 border-gray-200"
-                }`}
-              onClick={() => isAuthor && question.status === "OPEN" && setShowDialog(true)}
+              className={`cursor-pointer ${
+                question?.status === "OPEN"
+                  ? "bg-green-100 text-green-800 border-green-200 hover:bg-green-200"
+                  : "bg-gray-100 text-gray-800 border-gray-200"
+              }`}
+              onClick={() =>
+                isAuthor && question.status === "OPEN" && setShowDialog(true)
+              }
             >
               {question?.status === "OPEN" ? "Open" : "Closed"}
             </Badge>
