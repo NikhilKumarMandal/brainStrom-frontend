@@ -47,7 +47,7 @@ export const QuestionsCard = ({ question, gotoDiscussion }) => {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4">
+        <div className="flex flex-row items-center gap-4">
           <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
             <MessageCircle className="w-4 h-4 text-gray-600" />
             <span className="font-medium text-gray-900">

@@ -20,6 +20,7 @@ export default function TeamCard({
   team,
   onClick,
   showRequestButton = true,
+  canJoin = true,
 }) {
   const { user } = useAuthStore();
   const teamId = team?.id;
@@ -114,10 +115,14 @@ export default function TeamCard({
               e.stopPropagation();
               setShowDialog(true);
             }}
-            disabled={isRequested}
+            disabled={isRequested || !canJoin}
             className="w-full bg-primary text-white font-medium transition-colors"
           >
-            {isRequested ? "Already Requested" : "Request to join"}
+            {canJoin
+              ? isRequested
+                ? "Already Requested"
+                : "Request to join"
+              : "Max Teams Reached"}
           </Button>
         </CardFooter>
       )}
