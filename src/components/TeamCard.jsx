@@ -22,12 +22,12 @@ export default function TeamCard({
   showRequestButton = true,
   canJoin = true,
   userCourses = [],
+  isRequested,
+  setIsRequested
 }) {
-  const { user } = useAuthStore();
   const teamId = team?.id;
   const [showDialog, setShowDialog] = useState(false);
   const [description, setDescription] = useState("");
-  const [isRequested, setIsRequested] = useState(false);
   const enrolledCourseNames = userCourses.map((c) => c.course?.name);
   const isEnrolled = enrolledCourseNames.includes(team?.course?.name);
 
@@ -37,6 +37,7 @@ export default function TeamCard({
       return data;
     },
     onSuccess: () => {
+      setIsRequested(true);
       toast.success("Submitted");
     },
     onError: () => {
@@ -53,13 +54,6 @@ export default function TeamCard({
     setShowDialog(false);
     setDescription("");
   };
-
-  useEffect(() => {
-    if (!user?.joinRequestLockAt) return;
-    const now = Date.now();
-    const diff = now - new Date(user.joinRequestLockAt).getTime();
-    if (diff < 10 * 60 * 1000) setIsRequested(true);
-  }, [user]);
 
   return (
     <Card
@@ -126,7 +120,7 @@ export default function TeamCard({
               : !canJoin
                 ? "Max Teams Reached"
                 : isRequested
-                  ? "Already Requested"
+                  ? "Already requested in a team"
                   : "Request to join"}
           </Button>
         </CardFooter>

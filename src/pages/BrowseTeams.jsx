@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, Filter, ChevronRight, ChevronLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +21,15 @@ const LIMIT = 5;
 function BrowseTeams() {
   const { user } = useAuthStore();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isRequested, setIsRequested] = useState(false);
+
+  useEffect(() => {
+    if (!user?.joinRequestLockAt) return;
+    const now = Date.now();
+    const diff = now - new Date(user.joinRequestLockAt).getTime();
+    if (diff < 10 * 60 * 1000) setIsRequested(true);
+  }, [user]);
+
 
   const [queryParams, setQueryParams] = useState({
     limit: LIMIT,
@@ -28,24 +37,23 @@ function BrowseTeams() {
   });
 
   const {
-    data: myTeamsCount,
+    data: myTeams,
     isLoading: isMyTeamsLoading,
   } = useQuery({
     queryKey: ["my-teams"],
     queryFn: async () => {
       const res = await getMyTeams();
-      return res.data.data.length;
+      return res.data.data;
     },
   });
 
-
   const enrolledCourseCount = user?.enrolledCourses?.length || 0;
-  const canJoinMoreTeams = myTeamsCount < enrolledCourseCount;
+  const canJoinMoreTeams = myTeams?.length < enrolledCourseCount;
   const courses1 = user?.enrolledCourses?.map((c) => c?.course.name);
   const course = searchParams.get("course") || "";
   const q = searchParams.get("q") || "";
 
-  const { data: allTeamData, isLoading: isTeamsLoading } = useQuery({
+  const { data: allTeamData, isLoading: isTeamsLoading, } = useQuery({
     queryKey: ["team", queryParams, q, course],
     queryFn: () => {
       const filteredParams = Object.fromEntries(
@@ -169,6 +177,8 @@ function BrowseTeams() {
                   team={team}
                   canJoin={canJoinMoreTeams}
                   userCourses={user?.enrolledCourses}
+                  isRequested={isRequested}
+                  setIsRequested={setIsRequested}
                 />
               ))}
             </div>
