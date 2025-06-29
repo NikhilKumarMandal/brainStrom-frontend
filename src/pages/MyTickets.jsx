@@ -55,9 +55,7 @@ export default function MyTickets() {
 
   if (userTicketsLoading) return null;
   const ticktes = questions?.data;
-  const totalPages = questions?.data?.length;
-
-  console.log("questions", questions);
+  const totalPages = questions?.data?.totalPages;
 
   return (
     <div>

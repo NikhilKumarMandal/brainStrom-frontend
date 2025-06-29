@@ -32,14 +32,14 @@ export const router = createBrowserRouter([
             path: "/",
             element: <TicketPage />,
           },
-          {
-            path: "ask-questions",
-            element: <AskQuestion />,
-          },
-          {
-            path: "problem/:id",
-            element: <ProblemPage />,
-          },
+          // {
+          //   path: "ask-questions",
+          //   element: <AskQuestion />,
+          // },
+          // {
+          //   path: "problem/:id",
+          //   element: <ProblemPage />,
+          // },
           // {
           //   path: "profile/:userId",
           //   element: <UserProfile />,
@@ -48,10 +48,10 @@ export const router = createBrowserRouter([
             path: "browse-teams",
             element: <BrowsesTeams />,
           },
-          {
-            path: "my-teams/:teamId",
-            element: <MyTeam />,
-          },
+          // {
+          //   path: "my-teams/:teamId",
+          //   element: <MyTeam />,
+          // },
           {
             path: "my-teams",
             element: <MyTeams />,
@@ -77,11 +77,11 @@ export const router = createBrowserRouter([
             element: <DiscussionPage />,
           },
           {
-            path: "/noticeBoard/:teamId",
+            path: "/team/:teamId",
             element: <TeamNoticeBoard />,
           },
           {
-            path: "/my-tickets",
+            path: "/my-questions",
             element: <MyTickets />
           }
         ],

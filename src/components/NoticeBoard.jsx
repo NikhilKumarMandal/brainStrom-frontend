@@ -79,16 +79,15 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
     return (
       <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
         <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-        Loading...
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      <Card className="bg-white border-2 border-gray-200 shadow-lg p-0">
-        <CardHeader className="bg-gray-100 border-b rounded-t-lg pt-4">
-          <div className="flex items-center justify-between">
+      <Card className="bg-white border-2 border-gray-200 shadow-lg p-0 gap-0">
+        <CardHeader className="bg-gray-100 border-b rounded-t-lg py-4">
+          <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <MessageSquare className="h-5 w-5 text-blue-600" />
               <CardTitle className="text-lg">Current Notice</CardTitle>
@@ -102,7 +101,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                 >
                   <Edit3 className="h-4 w-4" />
                 </Button>
-                {/* 🔥 Wrapped delete button in a Dialog */}
+                
                 <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
                   <Button
                     size="sm"
@@ -139,7 +138,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
           </div>
         </CardHeader>
 
-        <CardContent className="p-8 bg-white min-h-[300px] rounded-b-lg">
+        <CardContent className={`p-8 pt-4 bg-white min-h-[100px] h-auto rounded-b-lg ${isEditing ? "" : "max-h-[400px]"} `}>
           {(hasPermission && isEditing) ? (
             <div className="space-y-6">
               <div>
@@ -181,7 +180,9 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
               <h2 className="text-2xl font-semibold text-gray-900 leading-tight">
                 {notice?.title}
               </h2>
-              <RichTextEditor content={notice?.content} readOnly />
+              <div className="h-[250px] overflow-y-auto">
+                <RichTextEditor content={notice?.content} readOnly />
+              </div>
               <div className="flex items-center gap-4 pt-4 border-t">
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">

@@ -35,7 +35,6 @@ export default function ProblemPage() {
     return (
       <div className="flex flex-col w-full items-center justify-center text-gray-400 mt-10 gap-3">
         <div className="w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-        <p className="text-lg">Loading...</p>
       </div>
     );
   }

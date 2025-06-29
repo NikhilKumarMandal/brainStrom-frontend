@@ -5,21 +5,22 @@ export default function useNavigation() {
 
 
   const gotoHomePage = () => navigate("/");
-  const gotoAskQuestion = () => navigate("/ask-questions");
-  const gotoProblemPage = (problemId) => navigate(`/problem/${problemId}`);
+  // const gotoAskQuestion = () => navigate("/ask-questions");
+  // const gotoProblemPage = (problemId) => navigate(`/problem/${problemId}`);
   const gotoBrowseTeams = () => navigate("/browse-teams");
-  const gotoMyTeam = (teamId) => navigate(`/my-teams/${teamId}`);
+  const gotoMyTeam = (teamId) => navigate(`/team/${teamId}`);
   const gotoUserProfile = (userId) => navigate(`/profile/${userId}`);
   const gotoSelfProfile = () => navigate("/profile/me");
   const gotoMyTeams = () => navigate("/my-teams");
   const gotoCreateTeam = () => navigate("/create-team");
   const gotoEditProfile = () => navigate("/edit-profile");
   const gotoDiscussion = (discussionId) => navigate(`/discussion/${discussionId}`);
+  const gotoMyTickets = () => navigate("/my-questions");
 
   return {
     gotoHomePage,
-    gotoAskQuestion,
-    gotoProblemPage,
+    // gotoAskQuestion,
+    // gotoProblemPage,
     gotoBrowseTeams,
     gotoMyTeam,
     gotoUserProfile,
@@ -28,5 +29,6 @@ export default function useNavigation() {
     gotoCreateTeam,
     gotoEditProfile,
     gotoDiscussion,
+    gotoMyTickets,
   };
 }

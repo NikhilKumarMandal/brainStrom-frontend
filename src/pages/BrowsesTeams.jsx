@@ -54,7 +54,7 @@ function BrowsesTeams() {
     return (
       <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
         <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-        Loading...
+
       </div>
     );
   }
@@ -148,8 +148,8 @@ function BrowsesTeams() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {teams.map((team) => (
-                <Teamcards key={team.id} team={team} />
+              {teams?.map((team) => (
+                <Teamcards key={team?.id} team={team} />
               ))}
             </div>
           </>

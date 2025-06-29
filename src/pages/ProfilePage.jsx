@@ -60,13 +60,11 @@ export default function ProfilePage({ isMe = false }) {
     })
     .filter(Boolean);
 
-  if (userLoading || logsLoading)
-    return (
-      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-        Loading...
-      </div>
-    );
+  if (userLoading || logsLoading) return (
+    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
 
   return (
     <div className="p-4">
@@ -78,11 +76,11 @@ export default function ProfilePage({ isMe = false }) {
             <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-6">
               <Avatar className="h-24 w-24 border-4 border-white shadow-lg -mt-12 mb-4 sm:mb-0">
                 <AvatarImage
-                  src={user.avatar || "/placeholder.svg"}
-                  alt={user.name}
+                  src={user?.avatar || "/placeholder.svg"}
+                  alt={user?.name}
                 />
                 <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                  {user.name
+                  {user?.name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
@@ -92,12 +90,12 @@ export default function ProfilePage({ isMe = false }) {
               <div className="flex-1 space-y-2">
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900">
-                    {user.name}
+                    {user?.name}
                   </h1>
                   <div className="flex items-center space-x-4 text-gray-600 mt-2">
                     <div className="flex items-center space-x-1">
                       <Mail className="h-4 w-4" />
-                      <span className="text-sm">{user.email}</span>
+                      <span className="text-sm">{user?.email}</span>
                     </div>
                   </div>
                 </div>
@@ -147,7 +145,7 @@ export default function ProfilePage({ isMe = false }) {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {user.skills.map((skill) => (
+                {user?.skills.map((skill) => (
                   <Badge
                     key={skill}
                     variant="secondary"

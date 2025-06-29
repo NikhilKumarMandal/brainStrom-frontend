@@ -44,13 +44,14 @@ export function JoinRequestsModal({
                     </AvatarFallback>
                   </Avatar>
                   <div className="text-sm font-medium">
-                    <span
+                    <Button
+                      variant={"link"}
                       onClick={() => gotoUserProfile(req.user.id)}
-                      className="hover:underline cursor-pointer"
+                      className={"pl-0"}
                     >
-                      {req.user.name}
-                    </span>
-                    <span className="text-gray-400 ml-2 pointer-events-none select-none">
+                      {req?.user?.name}
+                    </Button>
+                    <span className="text-gray-400">
                       {timeAgo(req.requestedAt)}
                     </span>
                     <div className="text-gray-400">
