@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -129,7 +128,7 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
             </Button>
             <Button
               type="submit"
-              disabled={!title || !description || !selectedCourse}
+              disabled={!title || !description || !selectedCourse || isPending}
             >
               {isPending ? "Submitting..." : "Submit Question"}
             </Button>

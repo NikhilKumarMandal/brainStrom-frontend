@@ -15,7 +15,6 @@ const LIMIT = 10;
 
 const TicketPage = () => {
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [pinFilter, setPinFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { gotoDiscussion } = useNavigation();
   const [searchParams, setSearchParams] = useSearchParams();

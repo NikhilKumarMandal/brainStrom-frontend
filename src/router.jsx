@@ -17,6 +17,7 @@ import ProfilePage from "./pages/ProfilePage";
 import DiscussionPage from "./pages/DiscussionPage";
 import TeamNoticeBoard from "./pages/TeamNoticeBoard";
 import LoginPage from "./pages/LoginPage";
+import MyTickets from "./pages/MyTickets";
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
             path: "/noticeBoard/:teamId",
             element: <TeamNoticeBoard />,
           },
+          {
+            path: "/my-tickets",
+            element: <MyTickets />
+          }
         ],
       },
       {
