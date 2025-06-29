@@ -9,23 +9,26 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, BookOpen } from "lucide-react";
+import { useAuthStore } from "@/store/store";
+import { ReasonModal } from "./ReasonModel";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { requestJoinTeam } from "@/http/api";
-import { useAuthStore } from "@/store/store";
 import { useEffect, useState } from "react";
-import { ReasonModal } from "./ReasonModel";
 
-export const Teamcards = ({ team }) => {
+export default function Teamcards({
+  team,
+  onClick,
+  showRequestButton = true,
+}) {
   const { user } = useAuthStore();
-  const teamId = team.id;
+  const teamId = team?.id;
   const [showDialog, setShowDialog] = useState(false);
   const [description, setDescription] = useState("");
   const [isRequested, setIsRequested] = useState(false);
 
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ teamId, description }) => {
-      console.log(teamId, description);
       const { data } = await requestJoinTeam(teamId, description);
       return data;
     },
@@ -39,10 +42,9 @@ export const Teamcards = ({ team }) => {
 
   const handleSendRequest = () => {
     if (description.trim() === "") {
-      setShowWarningDialog(true);
+      toast.error("Please enter a reason");
       return;
     }
-
     mutate({ teamId, description });
     setShowDialog(false);
     setDescription("");
@@ -56,15 +58,18 @@ export const Teamcards = ({ team }) => {
   }, [user]);
 
   return (
-    <Card className="h-full flex flex-col hover:shadow-lg transition-all duration-200 border-gray-200 bg-white">
+    <Card
+      onClick={onClick}
+      className="h-full flex flex-col hover:shadow-lg transition-all duration-200 border-gray-200 bg-white cursor-pointer"
+    >
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between mb-3">
           <CardTitle className="text-lg font-semibold text-gray-900 leading-tight">
-            {team.name}
+            {team?.name}
           </CardTitle>
           <div className="flex items-center gap-1 text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
             <Users className="h-3 w-3" />
-            <span>{team._count.members}</span>
+            <span>{team?._count?.members}</span>
           </div>
         </div>
 
@@ -74,12 +79,12 @@ export const Teamcards = ({ team }) => {
             variant="secondary"
             className="text-xs bg-blue-50 text-blue-700 border-blue-200"
           >
-            {team.course.name}
+            {team?.course?.name}
           </Badge>
         </div>
 
         <CardDescription className="text-gray-600 text-sm leading-relaxed line-clamp-3">
-          {team.description}
+          {team?.description}
         </CardDescription>
       </CardHeader>
 
@@ -89,7 +94,7 @@ export const Teamcards = ({ team }) => {
             Skills
           </h4>
           <div className="flex flex-wrap gap-1">
-            {team.skills.map((skill, index) => (
+            {team?.skills.map((skill, index) => (
               <Badge
                 key={index}
                 variant="outline"
@@ -102,15 +107,20 @@ export const Teamcards = ({ team }) => {
         </div>
       </CardContent>
 
-      <CardFooter className="pt-4">
-        <Button
-          onClick={() => setShowDialog(true)}
-          disabled={isRequested}
-          className="w-full bg-primary text-white font-medium transition-colors"
-        >
-          {isRequested ? "Already Requested" : "Request to join"}
-        </Button>
-      </CardFooter>
+      {showRequestButton && (
+        <CardFooter className="pt-4">
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowDialog(true);
+            }}
+            disabled={isRequested}
+            className="w-full bg-primary text-white font-medium transition-colors"
+          >
+            {isRequested ? "Already Requested" : "Request to join"}
+          </Button>
+        </CardFooter>
+      )}
 
       <ReasonModal
         title={"Request to join team"}

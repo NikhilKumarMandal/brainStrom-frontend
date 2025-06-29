@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { IoIosCloseCircleOutline } from "react-icons/io";
 import { createTeam } from "../http/api";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,10 +12,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CircleX } from "lucide-react";
+import useNavigation from "@/utils/navigation";
 
 export default function CreateTeam() {
   const [teamName, setTeamName] = useState("");
@@ -24,12 +23,11 @@ export default function CreateTeam() {
   const [newSkill, setNewSkill] = useState("");
   const [skills, setSkills] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [showErrors, setShowErrors] = useState(false);
   const [openLimitModal, setOpenLimitModal] = useState(false);
   const { user } = useAuthStore();
   const courses = user?.enrolledCourses?.map((c) => c?.course?.name);
 
-  const naviate = useNavigate();
+  const { gotoMyTeams } = useNavigation();
 
   useEffect(() => {
     if (courses.length === 1) {
@@ -49,11 +47,11 @@ export default function CreateTeam() {
       setSkills([]);
       setNewSkill("");
       setCourse("");
-      toast("Team create successfully");
-      naviate("/my-teams");
+      toast.success("Team create successfully");
+      gotoMyTeams()
     },
     onError: () => {
-      alert("Failed to create team");
+      toast.error("Failed to create team");
     },
   });
 
@@ -76,10 +74,9 @@ export default function CreateTeam() {
 
   const handleCreate = (e) => {
     e.preventDefault();
-    setShowErrors(true);
 
     if (!teamName || !description || !selectedCourse) {
-      alert("Team name, description, and course are required.");
+      toast.info("All fields are required.");
       return;
     }
 
@@ -90,7 +87,6 @@ export default function CreateTeam() {
       skills,
     };
 
-    console.log("Submitting:", teamData);
     mutate(teamData);
   };
 

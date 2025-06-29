@@ -1,10 +1,9 @@
 import React from "react";
 import { getMyTeams } from "../http/api";
 import { useQuery } from "@tanstack/react-query";
-import TeamCard from "../components/TeamCard";
 import useNavigation from "../utils/navigation";
-import { useAuthStore } from "../store/store";
 import { Button } from "@/components/ui/button";
+import Teamcards from "@/components/Teamcards";
 
 async function getMyAllTeams() {
   const { data } = await getMyTeams().then((res) => res.data);
@@ -19,14 +18,13 @@ export default function MyTeams() {
     queryFn: getMyAllTeams,
   });
 
-  if (isLoading)
-    return (
-      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-        Loading...
-      </div>
-    );
-
+  if (isLoading) return (
+    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+      Loading...
+    </div>
+  );
+  
   return (
     <div className="p-6 w-full">
       <h1 className="text-3xl font-bold mb-6 justify-between flex items-center">
@@ -42,11 +40,12 @@ export default function MyTeams() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {myTeams.map((team) => (
-            <TeamCard
+            <Teamcards
               key={team.team.id}
               team={team.team}
               role={team.role}
               onClick={() => gotoMyTeam(team.team.id)}
+              showRequestButton={false}
             />
           ))}
         </div>

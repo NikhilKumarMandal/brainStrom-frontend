@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Teamcards } from "../components/Teamcards";
+import Teamcards from "../components/Teamcards";
 import { useAuthStore } from "@/store/store";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { getAllTeam } from "@/http/api";
