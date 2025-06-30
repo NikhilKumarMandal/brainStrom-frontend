@@ -20,7 +20,14 @@ const DiscussionItem = ({ discussion }) => {
     mutationFn: ({ id, type }) => vote(id, type),
     onSuccess: () =>
       queryClient.invalidateQueries(["discussions", discussion.ticketId]),
-    onError: () => toast.error("Failed to vote"),
+    onError: () => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const handleVote = (type) => {

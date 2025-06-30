@@ -9,13 +9,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "../http/api";
 import { useMutation } from "@tanstack/react-query";
-import {
-  Compass,
-  Home,
-  Menu,
-  Package2,
-  Users,
-} from "lucide-react";
+import { Compass, Home, Menu, Package2, Users } from "lucide-react";
 import { Link, Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
 import useNavigation from "@/utils/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -149,6 +143,7 @@ export default function Dashboard() {
                   <AvatarImage
                     src={user?.avatar || "/placeholder.svg"}
                     alt={user?.name}
+                    referrerPolicy="no-referrer"
                   />
                   <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-blue-500 to-purple-600 text-white">
                     {user?.name

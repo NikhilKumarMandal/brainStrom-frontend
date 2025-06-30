@@ -19,10 +19,9 @@ function AddAnswerModel({ isOpen, onClose, id }) {
   const queryClient = useQueryClient();
 
   const handleSubmit = () => {
-
     if (!hasMinWords(answer, 10)) {
       toast.error("Answer should be at least 10 words long.");
-      return;      
+      return;
     }
 
     mutate({ ticketId: id, content: answer });
@@ -37,7 +36,12 @@ function AddAnswerModel({ isOpen, onClose, id }) {
       onClose();
     },
     onError: () => {
-      toast.warning("Failed to submit answer");
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
     },
   });
 

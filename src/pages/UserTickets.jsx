@@ -58,7 +58,7 @@ export default function UserTickets() {
           {tickets?.length > 0 ? (
             tickets?.map((question) => (
               <QuestionsCard
-                key={question.id}
+                key={question?.id}
                 question={question}
                 gotoDiscussion={gotoDiscussion}
               />
@@ -90,7 +90,7 @@ export default function UserTickets() {
           </Button>
 
           <span className="px-4 py-2 rounded-full bg-primary text-white font-medium shadow-md text-sm">
-            Page {queryParams.page} of {totalPages}
+            Page {queryParams?.page} of {totalPages}
           </span>
 
           <Button

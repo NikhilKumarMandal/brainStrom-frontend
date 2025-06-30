@@ -40,7 +40,12 @@ export default function TeamCard({
       toast.success("Submitted");
     },
     onError: () => {
-      toast.error("Failed to submit");
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
     },
   });
 
