@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import useNavigation from "@/utils/navigation";
+import { hasMinWords } from "@/utils/formateString";
 
 export default function CreateTeam() {
   const [teamName, setTeamName] = useState("");
@@ -76,6 +77,21 @@ export default function CreateTeam() {
 
     if (!teamName || !description || !selectedCourse) {
       toast.info("All fields are required.");
+      return;
+    }
+
+    if (!hasMinWords(teamName, 3)) {
+      toast.error("Team name should be at least 3 words long.");
+      return;
+    }
+
+    if (!hasMinWords(description, 10)) {
+      toast.error("Description should be at least 10 words long.");
+      return;
+    }
+
+    if (skills.length === 0) {
+      toast.error("You must add at least one skill.");
       return;
     }
 
@@ -148,7 +164,8 @@ export default function CreateTeam() {
             {skills.map((skill, i) => (
               <Badge
                 key={skill}
-                className="bg-primary text-white flex items-center gap-2 p-2 text-sm"
+                variant="outline"
+                className="text-md gap-2 border-gray-200 text-gray-600 px-2 py-0"
               >
                 {skill}
                 <button onClick={() => removeSkill(skill)}>
