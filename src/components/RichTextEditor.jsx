@@ -145,7 +145,7 @@ export default function RichTextEditor({
       {/* Editor Content */}
       <div
         className={`flex-1 overflow-y-auto ${padding} text-gray-800 leading-relaxed ${
-          readOnly ? "" : "min-h-[200px]"
+          readOnly ? "" : "min-h-[200px] max-h-[350px]"
         }`}
       >
         <EditorContent

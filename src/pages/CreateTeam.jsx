@@ -41,12 +41,10 @@ export default function CreateTeam() {
       return data;
     },
     onSuccess: () => {
-      toast.success("Team created!");
       setTeamName("");
       setDescription("");
       setSkills([]);
       setNewSkill("");
-      setCourse("");
       toast.success("Team create successfully");
       gotoMyTeams();
     },
@@ -165,7 +163,7 @@ export default function CreateTeam() {
               <Badge
                 key={skill}
                 variant="outline"
-                className="text-md gap-2 border-gray-200 text-gray-600 px-2 py-0"
+                className="text-md gap-2 border-gray-200 text-gray-600 px-2 pt-0"
               >
                 {skill}
                 <button onClick={() => removeSkill(skill)}>

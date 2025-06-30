@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Shield, Trash2, UserPlus } from "lucide-react";
+import { Shield, Trash2, UserPlus } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { disbandTeam, getTeamRequests, respondRequest } from "@/http/api";
@@ -8,6 +8,7 @@ import { JoinRequestsModal } from "./JoinReqestModel";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ReasonModal } from "./ReasonModel";
+import { hasMinWords } from "@/utils/formateString";
 
 export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   if (userRole !== "LEADER") return null;
@@ -52,6 +53,10 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   };
 
   const handleDisband = () => {
+    if (!hasMinWords(disbandReason, 5)) {
+      toast.error("Reason should be at least 5 words long.");
+      return;      
+    }
     disbandMutation({ teamId, reason: disbandReason });
   };
 
@@ -67,10 +72,6 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
         <div className="flex flex-wrap gap-2">
           {isLeader && (
             <>
-              <Button variant="outline" size="sm">
-                <Users className="h-4 w-4 mr-2" />
-                Manage Team
-              </Button>
               <Button
                 variant="outline"
                 size="sm"
