@@ -9,12 +9,11 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users, BookOpen } from "lucide-react";
-import { useAuthStore } from "@/store/store";
 import { ReasonModal } from "./ReasonModel";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { requestJoinTeam } from "@/http/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function TeamCard({
   team,

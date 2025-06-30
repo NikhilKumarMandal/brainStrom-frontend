@@ -28,7 +28,7 @@ const fetchUserLogs = async (id) => (await getUserHistory(id)).data.data;
 export default function ProfilePage({ isMe = false }) {
   const { user: authUser } = useAuthStore();
   const { userId: paramId } = useParams();
-  const userId = isMe ? authUser.id : paramId;
+  const userId = isMe ? authUser?.id : paramId;
   const { gotoEditProfile } = useNavigation();
   const [visibleLogsCount, setVisibleLogsCount] = useState(5);
 
@@ -60,12 +60,14 @@ export default function ProfilePage({ isMe = false }) {
     })
     .filter(Boolean);
 
-  if (userLoading || logsLoading)
-    return (
-      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+  if (userLoading || logsLoading) return (
+    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+
+  // console.log(user);
+  
 
   return (
     <div className="p-4">

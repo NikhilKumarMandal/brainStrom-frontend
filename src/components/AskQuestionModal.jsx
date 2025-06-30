@@ -21,6 +21,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createTicket } from "@/http/api";
 import RichTextEditor from "./RichTextEditor";
 import { toast } from "sonner";
+import { hasMinWords } from "@/utils/formateString";
 
 export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
   const [title, setTitle] = useState("");
@@ -58,7 +59,21 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Handle form submission
+    if (!title || !description || !selectedCourse) {
+      toast.error("Please fill in all fields before submitting.");
+      return;
+    }
+
+    if (!hasMinWords(title, 3)) {
+      toast.error("Title should be at least 3 words long.");
+      return;
+    }
+
+    if (!hasMinWords(description, 10)) {
+      toast.error("Description should be at least 10 words long.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
@@ -127,8 +142,9 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
               Cancel
             </Button>
             <Button
-              type="submit"
-              disabled={!title || !description || !selectedCourse || isPending}
+              type="button"
+              onClick={handleSubmit}
+              disabled={isPending}
             >
               {isPending ? "Submitting..." : "Submit Question"}
             </Button>

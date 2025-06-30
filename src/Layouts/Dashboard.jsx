@@ -10,16 +10,15 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "../http/api";
 import { useMutation } from "@tanstack/react-query";
 import {
-  CircleUser,
   Compass,
   Home,
   Menu,
-  Package,
   Package2,
   Users,
 } from "lucide-react";
 import { Link, Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
 import useNavigation from "@/utils/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Dashboard() {
   const { user, logout: logoutUserFromStore } = useAuthStore();
@@ -146,7 +145,19 @@ export default function Dashboard() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
+                <Avatar className="h-10 w-10 border-3 border-white shadow-lg">
+                  <AvatarImage
+                    src={user?.avatar || "/placeholder.svg"}
+                    alt={user?.name}
+                  />
+                  <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+                    {user?.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+                {/* <CircleUser className="h-5 w-5" /> */}
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
@@ -176,7 +187,8 @@ export default function Dashboard() {
                   onClick={() => {
                     logoutMutate();
                   }}
-                  variant={"link"}
+                  variant={"destructive"}
+                  className={"w-full"}
                 >
                   Logout
                 </Button>

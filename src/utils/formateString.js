@@ -6,12 +6,6 @@ export function formateString(string = "") {
     .join(" ");
 }
 
-function getUsernameById(members, userId, localUserId, leaderId) {
-  if (userId === leaderId) {
-    return "Leader";
-  } else if (userId === localUserId) {
-    return "You";
-  }
-  const member = members.find((m) => m.userId === userId);
-  return member?.user?.name ?? "Unknown User";
-}
+export const hasMinWords = (value, min) => {
+  return value.trim().split(/\s+/).length >= min;
+};
