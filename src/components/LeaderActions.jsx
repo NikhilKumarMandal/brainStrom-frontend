@@ -9,7 +9,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ReasonModal } from "./ReasonModel";
 
-export function LeaderActions({ isLeader, userRole, teamId }) {
+export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   if (userRole !== "LEADER") return null;
 
   const [showRequestModal, setShowRequestModal] = useState(false);
@@ -92,7 +92,14 @@ export function LeaderActions({ isLeader, userRole, teamId }) {
               <Button
                 variant="destructive"
                 size="sm"
-                onClick={() => setShowDisbandModal(true)}
+                onClick={() => {
+                  if (totalMembers !== 1) {
+                    toast.error("Remove all members to disband team");
+                    return
+                  } else {
+                    setShowDisbandModal(true)
+                  }
+                }}
               >
                 <Trash2 className="h-4 w-4 mr-2" />
                 Disband Team

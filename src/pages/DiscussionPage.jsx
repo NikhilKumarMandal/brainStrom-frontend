@@ -33,13 +33,13 @@ function DiscussionPage() {
     enabled: !!discussionId,
   });
 
-  if (ticketLoading || discussionLoading)
-    return (
-      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-        Loading...
-      </div>
-    );
+  if (ticketLoading || discussionLoading) return (
+    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+
+  const sortedDiscussions = [...(discussions || [])].sort((a, b) => b.upvotes - a.upvotes);
 
   return (
     <>
@@ -58,10 +58,9 @@ function DiscussionPage() {
               Add Your Answer
             </Button>
           </div>
-
           <div className="space-y-4">
-            {discussions.map((discussion) => (
-              <DiscussionItem key={question?.id} discussion={discussion} />
+            {sortedDiscussions.map((discussion) => (
+              <DiscussionItem key={discussion?.id} discussion={discussion} />
             ))}
           </div>
         </div>

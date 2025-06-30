@@ -36,8 +36,6 @@ function Root() {
     staleTime: Infinity,
   });
 
-  // console.log(data);
-
   useEffect(() => {
     if (data) {
       setUser(data?.data);

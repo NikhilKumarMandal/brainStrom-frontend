@@ -9,11 +9,15 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "../http/api";
 import { useMutation } from "@tanstack/react-query";
-import { CircleUser, Home, Menu, Package, Package2 } from "lucide-react";
+import { CircleUser, Compass, Home, Menu, Package, Package2, Users } from "lucide-react";
 import { Link, Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
+import useNavigation from "@/utils/navigation";
+
+
 export default function Dashboard() {
   const { user, logout: logoutUserFromStore } = useAuthStore();
   const location = useLocation();
+  const { gotoMyTickets, gotoSelfProfile } = useNavigation();
 
   const { mutate: logoutMutate } = useMutation({
     mutationKey: ["logout"],
@@ -48,9 +52,7 @@ export default function Dashboard() {
               <NavLink
                 to="/"
                 className={({ isActive }) => {
-                  return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                    isActive && "bg-muted"
-                  }`;
+                  return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${isActive && "bg-muted"}`;
                 }}
               >
                 <Home className="h-4 w-4" />
@@ -58,39 +60,23 @@ export default function Dashboard() {
               </NavLink>
 
               <NavLink
-                to="/dump-csv"
+                to="/my-teams"
                 className={({ isActive }) => {
-                  return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                    isActive && "bg-muted"
-                  }`;
+                  return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${isActive && "bg-muted"}`;
                 }}
               >
-                <Package className="h-4 w-4" />
-                Dump Csv{" "}
+                <Users className="h-4 w-4" />
+                My Teams{" "}
               </NavLink>
 
               <NavLink
-                to="/send-mail"
+                to="/browse-teams"
                 className={({ isActive }) => {
-                  return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                    isActive && "bg-muted"
-                  }`;
+                  return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${isActive && "bg-muted"}`;
                 }}
               >
-                <Package className="h-4 w-4" />
-                Send Mail{" "}
-              </NavLink>
-
-              <NavLink
-                to="/control"
-                className={({ isActive }) => {
-                  return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                    isActive && "bg-muted"
-                  }`;
-                }}
-              >
-                <Package className="h-4 w-4" />
-                Control{" "}
+                <Compass className="h-4 w-4" />
+                Browse Teams{" "}
               </NavLink>
             </nav>
           </div>
@@ -121,46 +107,29 @@ export default function Dashboard() {
                 <NavLink
                   to="/"
                   className={({ isActive }) => {
-                    return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                      isActive && "bg-muted"
-                    }`;
+                    return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${isActive && "bg-muted"}`;
                   }}
                 >
                   <Home className="h-4 w-4" />
                   Home
                 </NavLink>
                 <NavLink
-                  to="/dump-csv"
+                  to="/my-teams"
                   className={({ isActive }) => {
-                    return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                      isActive && "bg-muted"
-                    }`;
+                    return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${isActive && "bg-muted"}`;
                   }}
                 >
-                  <Package className="h-4 w-4" />
-                  Dump Csv{" "}
+                  <Users className="h-4 w-4" />
+                  My Teams{" "}
                 </NavLink>
                 <NavLink
-                  to="/send-mail"
+                  to="/browse-teams"
                   className={({ isActive }) => {
-                    return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                      isActive && "bg-muted"
-                    }`;
+                    return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${isActive && "bg-muted"}`;
                   }}
                 >
-                  <Package className="h-4 w-4" />
-                  Send Mail{" "}
-                </NavLink>
-                <NavLink
-                  to="/control"
-                  className={({ isActive }) => {
-                    return `flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                      isActive && "bg-muted"
-                    }`;
-                  }}
-                >
-                  <Package className="h-4 w-4" />
-                  Control{" "}
+                  <Compass className="h-4 w-4" />
+                  Browse Teams{" "}
                 </NavLink>
               </nav>
               <div className="mt-auto"></div>
@@ -175,6 +144,26 @@ export default function Dashboard() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem>
+                <Button
+                  onClick={() => {
+                    gotoSelfProfile();
+                  }}
+                  variant={"link"}
+                >
+                  Profile
+                </Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button
+                  onClick={() => {
+                    gotoMyTickets();
+                  }}
+                  variant={"link"}
+                >
+                  My Asked Questions
+                </Button>
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <Button
                   onClick={() => {

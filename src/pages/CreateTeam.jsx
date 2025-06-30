@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { IoIosCloseCircleOutline } from "react-icons/io";
 import { createTeam } from "../http/api";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,7 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
+import useNavigation from "@/utils/navigation";
 
 export default function CreateTeam() {
   const [teamName, setTeamName] = useState("");
@@ -21,12 +22,11 @@ export default function CreateTeam() {
   const [newSkill, setNewSkill] = useState("");
   const [skills, setSkills] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
-  const [showErrors, setShowErrors] = useState(false);
   const [openLimitModal, setOpenLimitModal] = useState(false);
   const { user } = useAuthStore();
   const courses = user?.enrolledCourses?.map((c) => c?.course?.name);
 
-  const naviate = useNavigate();
+  const { gotoMyTeams } = useNavigation();
 
   useEffect(() => {
     if (courses.length === 1) {
@@ -40,17 +40,17 @@ export default function CreateTeam() {
       return data;
     },
     onSuccess: () => {
-      alert("Team created!");
+      toast.success("Team created!");
       setTeamName("");
       setDescription("");
       setSkills([]);
       setNewSkill("");
       setCourse("");
-      toast("Team create successfully");
-      naviate("/my-teams");
+      toast.success("Team create successfully");
+      gotoMyTeams()
     },
     onError: () => {
-      alert("Failed to create team");
+      toast.error("Failed to create team");
     },
   });
 
@@ -73,10 +73,9 @@ export default function CreateTeam() {
 
   const handleCreate = (e) => {
     e.preventDefault();
-    setShowErrors(true);
 
     if (!teamName || !description || !selectedCourse) {
-      alert("Team name, description, and course are required.");
+      toast.info("All fields are required.");
       return;
     }
 
@@ -87,7 +86,6 @@ export default function CreateTeam() {
       skills,
     };
 
-    console.log("Submitting:", teamData);
     mutate(teamData);
   };
 
@@ -148,18 +146,15 @@ export default function CreateTeam() {
 
           <div className="flex flex-wrap gap-2">
             {skills.map((skill, i) => (
-              <span
-                key={i}
-                className="text-xs bg-gray-700 text-gray-300 pl-3 py-1 rounded flex items-center justify-between gap-2"
+              <Badge
+                key={skill}
+                className="bg-primary text-white flex items-center gap-2 p-2 text-sm"
               >
                 {skill}
-                <button
-                  onClick={() => removeSkill(skill)}
-                  className="text-red-400 text-lg p-1 bg-transparent focus:outline-none border-none hover:scale-110"
-                >
-                  <IoIosCloseCircleOutline className="text-xl" />
+                <button onClick={() => removeSkill(skill)}>
+                  <X className="h-3 w-3" />
                 </button>
-              </span>
+              </Badge>
             ))}
           </div>
         </div>

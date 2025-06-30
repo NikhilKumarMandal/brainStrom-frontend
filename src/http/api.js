@@ -60,6 +60,25 @@ export const getTopDiscussion = (id) =>
 export const updateStatus = (ticketId, status) =>
   api.patch(`/ticket/updateStatus/${ticketId}`, { status });
 
+// export const getUserTicket = () =>
+//   api.get("/ticket/getUserTicket");
+
+
+export const getUserTicket = (filters) => {
+  const params = new URLSearchParams();
+
+  if (filters.queryParams) {
+    const qp = new URLSearchParams(filters.queryParams);
+    qp.forEach((value, key) => {
+      if (value) params.append(key, value);
+    });
+  }
+
+  return api.get(`/ticket/getUserTicket?${params.toString()}`);
+}
+
+
+
 // vote service
 export const vote = (id, type) => api.post(`/vote/${id}`, { type });
 

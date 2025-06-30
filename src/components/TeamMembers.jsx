@@ -26,34 +26,34 @@ export function TeamMembers({
         <CardDescription>
           {members.length} team member{members.length !== 1 ? "s" : ""}
           {isLeader && (
-            <span className="ml-2 text-xs">(Click avatars to manage)</span>
+            <span className="ml-1 text-xs">(Click avatars to manage)</span>
           )}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[200px]">
+        <ScrollArea className="h-auto">
           <div className="space-y-3 p-1">
             {members.map((member) => (
-              <div key={member.id} className="flex items-center gap-3">
+              <div key={member?.id} className="flex items-center gap-3">
                 <div className="relative">
                   <Avatar
                     className={`h-10 w-10 ${
-                      isLeader && member.id !== currentUserId
+                      isLeader && member?.id !== currentUserId
                         ? "cursor-pointer hover:ring-2 hover:ring-blue-500"
                         : ""
                     }`}
                     onClick={() =>
                       isLeader &&
-                      member.id !== currentUserId &&
+                      member?.id !== currentUserId &&
                       onMemberClick(member)
                     }
                   >
                     <AvatarImage
-                      src={member.user.avatar || "/placeholder.svg"}
-                      alt={member.user.name}
+                      src={member?.user?.avatar || "/placeholder.svg"}
+                      alt={member?.user?.name}
                     />
                     <AvatarFallback>
-                      {member.user.name
+                      {member?.user?.name
                         .split(" ")
                         .map((n) => n[0])
                         .join("")}
@@ -63,17 +63,17 @@ export function TeamMembers({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium text-gray-900 truncate">
-                      {member.user.name}
+                      {member?.user?.name}
                     </p>
-                    {member.role === "LEADER" && (
+                    {member?.role === "LEADER" && (
                       <Crown className="h-3 w-3 text-yellow-600" />
                     )}
-                    {member.role === "CO_LEADER" && (
+                    {member?.role === "CO_LEADER" && (
                       <Star className="h-3 w-3 text-blue-600" />
                     )}
                   </div>
                   <p className="text-xs text-gray-500">
-                    {formateString(member.role)}
+                    {formateString(member?.role)}
                   </p>
                 </div>
               </div>
