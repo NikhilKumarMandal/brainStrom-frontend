@@ -57,8 +57,10 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
     onSuccess: async () => {
       await queryClient.invalidateQueries([teamId, "notice"]);
       await queryClient.refetchQueries([teamId, "notice"]);
-      toast.success("Notice updated successfully");
       setIsEditing(false);
+      toast.success("Notice updated successfully");
+      setEditTitle("");
+      setEditContent("");
     },
     onError: (error) => {
       toast.error(`Failed to update notice: ${error.message}`);
