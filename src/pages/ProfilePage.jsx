@@ -7,7 +7,7 @@ import { useAuthStore } from "@/store/store";
 import { formateString } from "@/utils/formateString";
 import { timeAgo } from "@/utils/formateTime";
 import useNavigation from "@/utils/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Github,
   Linkedin,
@@ -31,16 +31,22 @@ export default function ProfilePage({ isMe = false }) {
   const userId = isMe ? authUser?.id : paramId;
   const { gotoEditProfile } = useNavigation();
   const [visibleLogsCount, setVisibleLogsCount] = useState(5);
-
+  const queryClient = useQueryClient();
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["user", userId],
     queryFn: () => (isMe ? Promise.resolve(authUser) : fetchUserById(userId)),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user"]);
+    },
     enabled: !!userId,
   });
 
   const { data: userLogs, isLoading: logsLoading } = useQuery({
     queryKey: ["userLogs", userId],
     queryFn: () => fetchUserLogs(userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["user"]);
+    },
     enabled: !!userId,
   });
 
