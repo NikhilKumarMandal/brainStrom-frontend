@@ -20,7 +20,7 @@ import {
   MessageSquareX,
 } from "lucide-react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const fetchUserById = async (id) => (await getUserById(id)).data.data;
 const fetchUserLogs = async (id) => (await getUserHistory(id)).data.data;
@@ -60,14 +60,14 @@ export default function ProfilePage({ isMe = false }) {
     })
     .filter(Boolean);
 
-  if (userLoading || logsLoading) return (
-    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-    </div>
-  );
+  if (userLoading || logsLoading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
 
   // console.log(user);
-  
 
   return (
     <div className="p-4">
@@ -104,24 +104,24 @@ export default function ProfilePage({ isMe = false }) {
                 </div>
 
                 <div className="flex space-x-2 pt-2">
-                  {formattedSocialLinks.map((link) => {
+                  {formattedSocialLinks?.map((link) => {
                     const IconComponent = link.icon;
                     return (
                       <Button
-                        key={link.platform}
+                        key={link?.platform}
                         variant="outline"
                         size="sm"
                         className="h-9 w-9 p-0 hover:bg-gray-100"
                         asChild
                       >
-                        <a
-                          href={link.url}
+                        <Link
+                          to={link?.url}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           <IconComponent className="h-4 w-4" />
-                          <span className="sr-only">{link.platform}</span>
-                        </a>
+                          <span className="sr-only">{link?.platform}</span>
+                        </Link>
                       </Button>
                     );
                   })}
@@ -148,7 +148,7 @@ export default function ProfilePage({ isMe = false }) {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
-                {user?.skills.map((skill) => (
+                {user?.skills?.map((skill) => (
                   <Badge
                     key={skill}
                     variant="secondary"
@@ -184,25 +184,25 @@ export default function ProfilePage({ isMe = false }) {
                           <h3 className="text-lg font-semibold text-gray-900">
                             {formateString(item.action)}
                           </h3>
-                          {item.timestamp && (
+                          {item?.timestamp && (
                             <span className="text-sm text-gray-500 font-medium">
-                              {timeAgo(item.timestamp)}
+                              {timeAgo(item?.timestamp)}
                             </span>
                           )}
                         </div>
-                        {item.teamName && (
+                        {item?.teamName && (
                           <p className="text-sm font-medium text-gray-600 mb-1">
-                            Team: {item.teamName}
+                            Team: {item?.teamName}
                           </p>
                         )}
-                        {item.reason && (
+                        {item?.reason && (
                           <p className="text-sm text-gray-700">
-                            Reason: {item.reason}
+                            Reason: {item?.reason}
                           </p>
                         )}
                       </div>
                     </div>
-                    {index < visibleLogs.length - 1 && (
+                    {index < visibleLogs?.length - 1 && (
                       <div className="absolute left-5 top-10 h-6 w-px bg-gray-200"></div>
                     )}
                   </div>

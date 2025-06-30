@@ -111,7 +111,14 @@ const ProfileEditor = () => {
       setInitialSkills(skills);
       queryClient.invalidateQueries(["user"]);
     },
-    onError: () => toast.error("Failed to update skills."),
+    onError: () => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const saveLinksMutation = useMutation({
@@ -120,7 +127,14 @@ const ProfileEditor = () => {
       toast.success("Social links updated.");
       queryClient.invalidateQueries(["user"]);
     },
-    onError: () => toast.error("Failed to update social links."),
+    onError: () => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const deleteLinkMutation = useMutation({
@@ -131,7 +145,14 @@ const ProfileEditor = () => {
       toast.success("Removed unused links.");
       queryClient.invalidateQueries(["user"]);
     },
-    onError: () => toast.error("Failed to remove some links."),
+    onError: () => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const addSocialLink = () => {
@@ -193,26 +214,26 @@ const ProfileEditor = () => {
   };
 
   const handleSaveAll = () => {
-    const skillsToAdd = skills.filter((s) => !initialSkills.includes(s));
-    const skillsToRemove = initialSkills.filter((s) => !skills.includes(s));
+    const skillsToAdd = skills?.filter((s) => !initialSkills.includes(s));
+    const skillsToRemove = initialSkills?.filter((s) => !skills.includes(s));
 
     if (skillsToAdd.length || skillsToRemove.length) {
       mutation.mutate({ skillsToAdd, skillsToRemove });
     }
 
     const linksObject = {};
-    socialLinks.forEach(({ platform, url }) => {
+    socialLinks?.forEach(({ platform, url }) => {
       const field = platformFieldMap[platform];
       if (field && url?.trim()) {
-        linksObject[field] = url.trim();
+        linksObject[field] = url?.trim();
       }
     });
 
-    if (Object.keys(linksObject).length) {
+    if (Object.keys(linksObject)?.length) {
       saveLinksMutation.mutate(linksObject);
     }
 
-    if (linksToRemove.length > 0) {
+    if (linksToRemove?.length > 0) {
       deleteLinkMutation.mutate(linksToRemove);
       setLinksToRemove([]);
     }
@@ -230,10 +251,10 @@ const ProfileEditor = () => {
         </RouterLink>
         <Button
           onClick={handleSaveAll}
-          disabled={mutation.isPending || saveLinksMutation.isPending}
+          disabled={mutation?.isPending || saveLinksMutation?.isPending}
           className="bg-primary"
         >
-          {mutation.isPending || saveLinksMutation.isPending ? (
+          {mutation?.isPending || saveLinksMutation?.isPending ? (
             "Saving..."
           ) : (
             <>
@@ -252,7 +273,7 @@ const ProfileEditor = () => {
         </div>
         <div className="flex items-center justify-between mb-4">
           <p className="text-gray-400">Search skills, tools, roles</p>
-          <span className="text-gray-500 text-sm">{skills.length}/10</span>
+          <span className="text-gray-500 text-sm">{skills?.length}/10</span>
         </div>
 
         <div className="flex flex-wrap gap-2 mb-6">
@@ -276,13 +297,13 @@ const ProfileEditor = () => {
             onChange={(e) => setNewSkill(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && addCustomSkill()}
           />
-          <Button onClick={addCustomSkill} disabled={skills.length >= 10}>
+          <Button onClick={addCustomSkill} disabled={skills?.length >= 10}>
             <Plus className="h-4 w-4" />
           </Button>
         </div>
         <h3 className="text-gray-400 mb-3">Suggested Skills</h3>
         <div className="flex flex-wrap gap-2">
-          {suggestedSkills.map((skill) => (
+          {suggestedSkills?.map((skill) => (
             <button
               key={skill}
               onClick={() => addSkill(skill)}
@@ -302,24 +323,24 @@ const ProfileEditor = () => {
           <h2 className="text-xl font-semibold">SOCIAL LINKS</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {socialLinks.map((link) => (
+          {socialLinks?.map((link) => (
             <div
               key={link.platform}
               className="bg-gray-800 border border-gray-600 rounded-lg p-4 flex items-center justify-between"
             >
               <div>
-                <p className="text-white font-medium">{link.platform}</p>
+                <p className="text-white font-medium">{link?.platform}</p>
                 <a
-                  href={link.url}
+                  href={link?.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-blue-400 underline break-all"
                 >
-                  {link.url}
+                  {link?.url}
                 </a>
               </div>
               <button
-                onClick={() => removeSocialLink(link.platform)}
+                onClick={() => removeSocialLink(link?.platform)}
                 className="text-gray-400 hover:text-red-400 p-1"
               >
                 <X className="h-4 w-4" />
@@ -330,18 +351,18 @@ const ProfileEditor = () => {
         <div className="flex gap-2 mb-6">
           <select
             className="px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white"
-            value={newLink.platform}
+            value={newLink?.platform}
             onChange={(e) =>
               setNewLink({ ...newLink, platform: e.target.value })
             }
           >
-            {socialPlatforms.map((p) => (
-              <option key={p.platform}>{p.platform}</option>
+            {socialPlatforms?.map((p) => (
+              <option key={p?.platform}>{p?.platform}</option>
             ))}
           </select>
           <Input
             placeholder="Enter username or full URL..."
-            value={newLink.username}
+            value={newLink?.username}
             onChange={(e) =>
               setNewLink({ ...newLink, username: e.target.value })
             }

@@ -20,7 +20,14 @@ export default function TeamHeader({ currentUser, teamName, teamId }) {
       gotoHomePage();
       toast.success("Left team successfully");
     },
-    onError: () => toast.error("Failed to leave team"),
+    onError: () => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const getRoleIcon = (role) => {

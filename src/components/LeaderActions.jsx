@@ -35,7 +35,14 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
       }
       toast.success("Request responded successfully");
     },
-    onError: () => toast.error("Failed to respond to request"),
+    onError: () => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const { mutate: disbandMutation, isLoading: disbandLoading } = useMutation({

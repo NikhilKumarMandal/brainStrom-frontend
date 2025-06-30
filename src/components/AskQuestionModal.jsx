@@ -52,7 +52,12 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
       onClose();
     },
     onError: () => {
-      toast.error("Failed to submit ticket");
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
     },
   });
 
@@ -141,11 +146,7 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
             <Button type="button" variant="outline" onClick={handleClose}>
               Cancel
             </Button>
-            <Button
-              type="button"
-              onClick={handleSubmit}
-              disabled={isPending}
-            >
+            <Button type="button" onClick={handleSubmit} disabled={isPending}>
               {isPending ? "Submitting..." : "Submit Question"}
             </Button>
           </DialogFooter>
