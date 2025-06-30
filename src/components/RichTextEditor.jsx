@@ -4,7 +4,14 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import CodeBlock from "@tiptap/extension-code-block";
-import { Bold, Code2, Italic, UnderlineIcon } from "lucide-react";
+import Link from "@tiptap/extension-link";
+import {
+  Bold,
+  Code2,
+  Italic,
+  Underline as UnderlineIcon,
+  Link as LinkIcon,
+} from "lucide-react";
 import { Button } from "./ui/button";
 
 export default function RichTextEditor({
@@ -22,6 +29,15 @@ export default function RichTextEditor({
         HTMLAttributes: { class: "custom-code-block" },
       }),
       Underline,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        HTMLAttributes: {
+          target: "_blank",
+          rel: "noopener noreferrer",
+          class: "text-blue-600 underline hover:text-blue-800",
+        },
+      }),
       !readOnly &&
         Placeholder.configure({
           placeholder: placeholder,
@@ -50,6 +66,37 @@ export default function RichTextEditor({
         return editor.chain().focus().toggleItalic().run();
       case "underline":
         return editor.chain().focus().toggleUnderline().run();
+      case "link": {
+        const isActive = editor.isActive("link");
+        if (isActive) {
+          editor.chain().focus().unsetLink().run();
+        } else {
+          const selection = editor.state.doc.textBetween(
+            editor.state.selection.from,
+            editor.state.selection.to,
+            " "
+          ).trim();
+
+          const isValidURL = (text) => {
+            try {
+              new URL(text);
+              return true;
+            } catch {
+              return false;
+            }
+          };
+
+          if (isValidURL(selection)) {
+            editor
+              .chain()
+              .focus()
+              .extendMarkRange("link")
+              .setLink({ href: selection })
+              .run();
+          }
+        }
+        return;
+      }
       default:
         return;
     }
@@ -72,6 +119,7 @@ export default function RichTextEditor({
             ["bold", Bold],
             ["italic", Italic],
             ["underline", UnderlineIcon],
+            ["link", LinkIcon],
           ].map(([type, Icon], i) => (
             <Button
               key={i}
@@ -81,7 +129,11 @@ export default function RichTextEditor({
             >
               <Icon
                 strokeWidth={2.5}
-                className={iconColor(editor.isActive(type))}
+                className={iconColor(
+                  type === "link"
+                    ? editor.isActive("link")
+                    : editor.isActive(type)
+                )}
               />
             </Button>
           ))}
@@ -90,7 +142,9 @@ export default function RichTextEditor({
 
       {/* Editor Content */}
       <div
-        className={`flex-1 overflow-y-auto ${padding}  text-gray-800 leading-relaxed ${readOnly ? "" : "min-h-[200px]"} `}
+        className={`flex-1 overflow-y-auto ${padding} text-gray-800 leading-relaxed ${
+          readOnly ? "" : "min-h-[200px]"
+        }`}
       >
         <EditorContent
           editor={editor}
