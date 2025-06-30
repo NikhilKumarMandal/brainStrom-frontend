@@ -33,16 +33,19 @@ export default function TeamPage() {
     setIsProfileOpen(true);
   };
 
-  if (teamLoading) return (
-    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-    </div>
-  );
+  if (teamLoading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
 
   const isMember = team?.members?.some((member) => member.userId === user.id);
   if (!isMember) gotoHomePage();
 
-  const currentUser = team?.members?.find((member) => member.user.id === user.id);
+  const currentUser = team?.members?.find(
+    (member) => member.user.id === user.id
+  );
   const isLeader = user.id === team?.leaderId;
   const coLeader =
     team?.members?.find((member) => member.role === "CO_LEADER") || null;

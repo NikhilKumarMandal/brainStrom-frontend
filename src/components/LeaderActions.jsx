@@ -95,9 +95,9 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
                 onClick={() => {
                   if (totalMembers !== 1) {
                     toast.error("Remove all members to disband team");
-                    return
+                    return;
                   } else {
-                    setShowDisbandModal(true)
+                    setShowDisbandModal(true);
                   }
                 }}
               >

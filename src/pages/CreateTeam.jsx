@@ -47,7 +47,7 @@ export default function CreateTeam() {
       setNewSkill("");
       setCourse("");
       toast.success("Team create successfully");
-      gotoMyTeams()
+      gotoMyTeams();
     },
     onError: () => {
       toast.error("Failed to create team");

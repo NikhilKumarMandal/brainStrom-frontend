@@ -16,7 +16,7 @@ export function JoinRequestsModal({
   handleRequest,
 }) {
   const { gotoUserProfile } = useNavigation();
-  
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-md">

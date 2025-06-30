@@ -4,13 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Edit3,
-  Trash2,
-  MessageSquare,
-  Clock,
-  Eye
-} from "lucide-react";
+import { Edit3, Trash2, MessageSquare, Clock, Eye } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -102,8 +96,11 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                 >
                   <Edit3 className="h-4 w-4" />
                 </Button>
-                
-                <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+
+                <Dialog
+                  open={showDeleteConfirm}
+                  onOpenChange={setShowDeleteConfirm}
+                >
                   <Button
                     size="sm"
                     onClick={() => setShowDeleteConfirm(true)}
@@ -115,11 +112,15 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                     <DialogHeader>
                       <DialogTitle>Delete Notice</DialogTitle>
                       <DialogDescription>
-                        Are you sure you want to delete this notice? This action cannot be undone.
+                        Are you sure you want to delete this notice? This action
+                        cannot be undone.
                       </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                      <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowDeleteConfirm(false)}
+                      >
                         Cancel
                       </Button>
                       <Button
@@ -139,11 +140,15 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
           </div>
         </CardHeader>
 
-        <CardContent className={`p-8 pt-4 bg-white min-h-[100px] h-auto rounded-b-lg ${isEditing ? "" : "max-h-[400px]"} `}>
-          {(hasPermission && isEditing) ? (
+        <CardContent
+          className={`p-8 pt-4 bg-white min-h-[100px] h-auto rounded-b-lg ${isEditing ? "" : "max-h-[400px]"} `}
+        >
+          {hasPermission && isEditing ? (
             <div className="space-y-6">
               <div>
-                <Label htmlFor="title" className={"pl-2 pb-2"}>Title</Label>
+                <Label htmlFor="title" className={"pl-2 pb-2"}>
+                  Title
+                </Label>
                 <Input
                   id="title"
                   value={editTitle}
@@ -152,7 +157,9 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                 />
               </div>
               <div>
-                <Label htmlFor="content" className={"pl-2 pb-2"}>Content</Label>
+                <Label htmlFor="content" className={"pl-2 pb-2"}>
+                  Content
+                </Label>
                 <RichTextEditor
                   content={editContent}
                   onChange={setEditContent}

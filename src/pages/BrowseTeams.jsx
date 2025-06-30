@@ -30,16 +30,12 @@ function BrowseTeams() {
     if (diff < 10 * 60 * 1000) setIsRequested(true);
   }, [user]);
 
-
   const [queryParams, setQueryParams] = useState({
     limit: LIMIT,
     page: 1,
   });
 
-  const {
-    data: myTeams,
-    isLoading: isMyTeamsLoading,
-  } = useQuery({
+  const { data: myTeams, isLoading: isMyTeamsLoading } = useQuery({
     queryKey: ["my-teams"],
     queryFn: async () => {
       const res = await getMyTeams();
@@ -53,7 +49,7 @@ function BrowseTeams() {
   const course = searchParams.get("course") || "";
   const q = searchParams.get("q") || "";
 
-  const { data: allTeamData, isLoading: isTeamsLoading, } = useQuery({
+  const { data: allTeamData, isLoading: isTeamsLoading } = useQuery({
     queryKey: ["team", queryParams, q, course],
     queryFn: () => {
       const filteredParams = Object.fromEntries(

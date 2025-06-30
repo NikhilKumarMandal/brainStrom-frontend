@@ -63,21 +63,8 @@ export const updateStatus = (ticketId, status) =>
 // export const getUserTicket = () =>
 //   api.get("/ticket/getUserTicket");
 
-
-export const getUserTicket = (filters) => {
-  const params = new URLSearchParams();
-
-  if (filters.queryParams) {
-    const qp = new URLSearchParams(filters.queryParams);
-    qp.forEach((value, key) => {
-      if (value) params.append(key, value);
-    });
-  }
-
-  return api.get(`/ticket/getUserTicket?${params.toString()}`);
-}
-
-
+export const getUserTicket = (page, limit) =>
+  api.get(`/ticket/getUserTicket?page=${page}&limit=${limit}`);
 
 // vote service
 export const vote = (id, type) => api.post(`/vote/${id}`, { type });

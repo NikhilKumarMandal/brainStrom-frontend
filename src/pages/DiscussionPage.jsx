@@ -33,13 +33,16 @@ function DiscussionPage() {
     enabled: !!discussionId,
   });
 
-  if (ticketLoading || discussionLoading) return (
-    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-    </div>
-  );
+  if (ticketLoading || discussionLoading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
 
-  const sortedDiscussions = [...(discussions || [])].sort((a, b) => b.upvotes - a.upvotes);
+  const sortedDiscussions = [...(discussions || [])].sort(
+    (a, b) => b.upvotes - a.upvotes
+  );
 
   return (
     <>

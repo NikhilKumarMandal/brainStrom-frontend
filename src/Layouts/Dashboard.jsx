@@ -9,10 +9,17 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { logout } from "../http/api";
 import { useMutation } from "@tanstack/react-query";
-import { CircleUser, Compass, Home, Menu, Package, Package2, Users } from "lucide-react";
+import {
+  CircleUser,
+  Compass,
+  Home,
+  Menu,
+  Package,
+  Package2,
+  Users,
+} from "lucide-react";
 import { Link, Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
 import useNavigation from "@/utils/navigation";
-
 
 export default function Dashboard() {
   const { user, logout: logoutUserFromStore } = useAuthStore();
