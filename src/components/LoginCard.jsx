@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GoogleLogin } from "@react-oauth/google";
-import { login, logout, self } from "../http/api";
+import { login, self } from "../http/api";
 import { toast } from "sonner";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../store/store";
@@ -11,7 +11,7 @@ const loginUser = async (token) => {
 };
 
 const getSelf = async () => {
-  const { data } = await self().then((res) => res.data);
+  const { data } = await self();
   return data;
 };
 function LoginCard() {
@@ -36,7 +36,16 @@ function LoginCard() {
     mutationFn: loginUser,
     onSuccess: async () => {
       const selfDataPromise = await refetch();
-      setUser(selfDataPromise.data);
+      console.log(selfDataPromise?.data);
+      setUser(selfDataPromise?.data?.data);
+    },
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
     },
   });
   return (
@@ -53,7 +62,6 @@ function LoginCard() {
           <div className="flex justify-center">
             <GoogleLogin
               onSuccess={handleLoginSuccess}
-              onError={() => toast.error("Google Login failed!")}
               theme="filled_black"
               size="large"
               text="continue_with"

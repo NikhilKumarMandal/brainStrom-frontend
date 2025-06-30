@@ -47,7 +47,14 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
       setChangeRoleReason("");
       onClose();
     },
-    onError: () => toast.error("Failed to change Role."),
+    onError: () => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const kickMutation = useMutation({

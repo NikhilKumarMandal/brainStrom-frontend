@@ -48,8 +48,13 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
       setIsEditing(false);
       toast.success("Notice updated successfully");
     },
-    onError: () => {
-      toast.error("Failed to update notice");
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
     },
   });
 
@@ -59,7 +64,14 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
       await queryClient.invalidateQueries([teamId, "notice"]);
       toast.success("Notice deleted");
     },
-    onError: () => toast.error("Failed to delete notice"),
+    onError: () => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const handleSave = () => {

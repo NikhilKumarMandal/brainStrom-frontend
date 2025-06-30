@@ -34,7 +34,7 @@ export default function UserTeams() {
         {"My Teams : "}
         <Button
           onClick={() =>
-            user.enrolledCourses.length <= myTeams.length
+            user?.enrolledCourses?.length <= myTeams?.length
               ? toast.error("You can't be in teams more than enrolled courses")
               : gotoCreateTeam()
           }
@@ -50,12 +50,12 @@ export default function UserTeams() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {myTeams.map((team) => (
+          {myTeams?.map((team) => (
             <TeamCard
-              key={team.team.id}
-              team={team.team}
-              role={team.role}
-              onClick={() => gotoMyTeam(team.team.id)}
+              key={team?.team?.id}
+              team={team?.team}
+              role={team?.role}
+              onClick={() => gotoMyTeam(team?.team?.id)}
               showRequestButton={false}
             />
           ))}

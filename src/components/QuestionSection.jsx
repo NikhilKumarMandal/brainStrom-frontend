@@ -32,7 +32,12 @@ const QuestionSection = ({ question }) => {
       setShowDialog(false);
     },
     onError: () => {
-      toast.error("Failed to update status.");
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
       setShowDialog(false);
     },
   });

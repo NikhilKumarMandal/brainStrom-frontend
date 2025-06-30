@@ -49,7 +49,12 @@ export default function CreateTeam() {
       gotoMyTeams();
     },
     onError: () => {
-      toast.error("Failed to create team");
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
     },
   });
 
@@ -88,7 +93,7 @@ export default function CreateTeam() {
       return;
     }
 
-    if (skills.length === 0) {
+    if (skills?.length === 0) {
       toast.error("You must add at least one skill.");
       return;
     }
@@ -124,7 +129,7 @@ export default function CreateTeam() {
             <SelectValue placeholder="Select a course" />
           </SelectTrigger>
           <SelectContent>
-            {courses.map((course) => (
+            {courses?.map((course) => (
               <SelectItem key={course} value={course}>
                 {course}
               </SelectItem>
@@ -159,7 +164,7 @@ export default function CreateTeam() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {skills.map((skill, i) => (
+            {skills?.map((skill, i) => (
               <Badge
                 key={skill}
                 variant="outline"

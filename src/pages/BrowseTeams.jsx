@@ -76,7 +76,7 @@ function BrowseTeams() {
     );
   }
 
-  const teams = allTeamData?.data.teams.filter(
+  const teams = allTeamData?.data?.teams?.filter(
     (team) => team.leaderId !== user.id
   );
   const totalPages = allTeamData?.data?.totalPages || 1;
