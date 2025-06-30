@@ -9,6 +9,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { hasMinWords } from "@/utils/formateString";
 
 export function ReasonModal({
   title,
@@ -22,7 +23,12 @@ export function ReasonModal({
 }) {
   const handleConfirm = () => {
     if (!reason.trim()) {
-      toast.error("Please enter a reason.");
+      toast.error("Reason is required.");
+      return;
+    }
+
+    if (!hasMinWords(reason, 5)) {
+      toast.error("Reason should be at least 5 words long.");
       return;
     }
 

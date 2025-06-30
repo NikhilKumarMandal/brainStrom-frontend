@@ -18,6 +18,7 @@ import { deleteNotice, editNotice, getNotice } from "@/http/api";
 import RichTextEditor from "./RichTextEditor";
 import { toast } from "sonner";
 import { timeAgo } from "@/utils/formateTime";
+import { hasMinWords } from "@/utils/formateString";
 
 async function getNoticeboard(teamId) {
   const { data } = await getNotice(teamId);
@@ -38,13 +39,6 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
 
   const author = members.find((member) => member.user.id === notice?.createdBy);
 
-  useEffect(() => {
-    if (notice) {
-      setEditTitle(notice.title || "");
-      setEditContent(notice.content || "");
-    }
-  }, [notice]);
-
   const editNoticeMutation = useMutation({
     mutationFn: ({ teamId, title, content }) =>
       editNotice(teamId, title, content),
@@ -53,8 +47,6 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
       await queryClient.refetchQueries([teamId, "notice"]);
       setIsEditing(false);
       toast.success("Notice updated successfully");
-      setEditTitle("");
-      setEditContent("");
     },
     onError: (error) => {
       const message =
@@ -81,6 +73,30 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
       toast.error(message);
     },
   });
+
+  const handleSave = () => {
+
+    if (!editTitle || !editContent) {
+      toast.error("All fields are required.");
+      return;
+    }
+
+    if (!hasMinWords(editTitle, 5)) {
+      toast.error("Title should be at least 5 words long.");
+      return;
+    }
+
+    if (!hasMinWords(editContent, 10)) {
+      toast.error("Description should be at least 10 words long.");
+      return;
+    }
+
+    editNoticeMutation.mutate({
+      teamId,
+      title: editTitle,
+      content: editContent
+    });
+  };
 
   if (noticeLoading) {
     return (
@@ -124,8 +140,8 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                     <DialogHeader>
                       <DialogTitle>Delete Notice</DialogTitle>
                       <DialogDescription>
-                        Are you sure you want to delete this notice? This action
-                        cannot be undone.
+                        Are you sure you want to delete this notice?
+                        This action cannot be undone.
                       </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
@@ -166,6 +182,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
                   className="text-xl font-semibold"
+                  placeholder="Title"
                 />
               </div>
               <div>
@@ -179,13 +196,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
               </div>
               <div className="flex gap-2">
                 <Button
-                  onClick={() =>
-                    editNoticeMutation.mutate({
-                      teamId,
-                      title: editTitle,
-                      content: editContent,
-                    })
-                  }
+                  onClick={handleSave}
                   disabled={editNoticeMutation.isPending}
                 >
                   {editNoticeMutation.isPending ? "Saving..." : "Save Notice"}
