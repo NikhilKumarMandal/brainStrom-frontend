@@ -1,13 +1,13 @@
-import { AskQuestionModal } from '@/components/AskQuestionModal';
-import { QuestionsCard } from '@/components/QuestionsCard';
-import { Button } from '@/components/ui/button';
-import { getUserTicket } from '@/http/api'
-import useNavigation from '@/utils/navigation';
-import { useQuery } from '@tanstack/react-query';
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
-import React, { useState } from 'react'
+import { AskQuestionModal } from "@/components/AskQuestionModal";
+import { QuestionsCard } from "@/components/QuestionsCard";
+import { Button } from "@/components/ui/button";
+import { getUserTicket } from "@/http/api";
+import useNavigation from "@/utils/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import React, { useState } from "react";
 
-const LIMIT = 10
+const LIMIT = 10;
 
 export default function UserTickets() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,22 +23,15 @@ export default function UserTickets() {
     refetch,
   } = useQuery({
     queryKey: ["tickets", queryParams],
-    queryFn: () => {
-      const filteredParams = Object.fromEntries(
-        Object.entries(queryParams).filter((item) => !!item[1])
+    queryFn: async () => {
+      return await getUserTicket(queryParams.page, queryParams.limit).then(
+        (res) => res.data
       );
-
-      const queryString = new URLSearchParams(filteredParams).toString();
-      const filters = {
-        queryParams: queryString,
-      };
-
-      return getUserTicket(filters).then((res) => res.data);
     },
   });
 
   if (userTicketsLoading) return null;
-  const tickets = questions?.data;
+  const tickets = questions?.data?.tickets;
   const totalPages = questions?.data?.totalPages;
 
   return (
@@ -59,7 +52,6 @@ export default function UserTickets() {
             Ask Question
           </Button>
         </div>
-
 
         {/* Questions List */}
         <div className="space-y-4">
@@ -113,7 +105,6 @@ export default function UserTickets() {
             <ChevronRight className="h-5 w-5" />
           </Button>
         </div>
-
       </div>
 
       {/* Ask Question Modal */}
@@ -122,7 +113,6 @@ export default function UserTickets() {
         onClose={() => setIsModalOpen(false)}
         refetchQuestions={refetch}
       />
-
     </div>
-  )
+  );
 }

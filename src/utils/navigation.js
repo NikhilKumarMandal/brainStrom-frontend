@@ -11,7 +11,8 @@ export default function useNavigation() {
   const gotoMyTeams = () => navigate("/my-teams");
   const gotoCreateTeam = () => navigate("/create-team");
   const gotoEditProfile = () => navigate("/edit-profile");
-  const gotoDiscussion = (discussionId) => navigate(`/discussion/${discussionId}`);
+  const gotoDiscussion = (discussionId) =>
+    navigate(`/discussion/${discussionId}`);
   const gotoMyTickets = () => navigate("/my-questions");
 
   return {

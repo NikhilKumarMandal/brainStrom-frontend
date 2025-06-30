@@ -71,11 +71,13 @@ export default function RichTextEditor({
         if (isActive) {
           editor.chain().focus().unsetLink().run();
         } else {
-          const selection = editor.state.doc.textBetween(
-            editor.state.selection.from,
-            editor.state.selection.to,
-            " "
-          ).trim();
+          const selection = editor.state.doc
+            .textBetween(
+              editor.state.selection.from,
+              editor.state.selection.to,
+              " "
+            )
+            .trim();
 
           const isValidURL = (text) => {
             try {

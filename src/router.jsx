@@ -76,8 +76,8 @@ export const router = createBrowserRouter([
           },
           {
             path: "/my-questions",
-            element: <UserTickets />
-          }
+            element: <UserTickets />,
+          },
         ],
       },
       {

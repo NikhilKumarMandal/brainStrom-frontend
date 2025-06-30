@@ -6,7 +6,6 @@ import { MessageCircle, Pin, User, Calendar } from "lucide-react";
 import { presiceTime } from "@/utils/formateTime";
 
 export const QuestionsCard = ({ question, gotoDiscussion }) => {
-
   return (
     <Card className="p-6 hover:shadow-md transition-all duration-200 border border-gray-200 bg-white">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">

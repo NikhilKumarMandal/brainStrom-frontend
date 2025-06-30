@@ -21,21 +21,26 @@ export default function UserTeams() {
     queryFn: getMyAllTeams,
   });
 
-  if (isLoading) return (
-    <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-      <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-    </div>
-  );
+  if (isLoading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
+        <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
 
   return (
     <div className="p-6 w-full">
       <h1 className="text-3xl font-bold mb-6 justify-between flex items-center">
         {"My Teams : "}
-        <Button onClick={() =>
-          user.enrolledCourses.length <= myTeams.length
-            ? toast.error("You can't be in teams more than enrolled courses")
-            : gotoCreateTeam()
-        }>Create Team</Button>
+        <Button
+          onClick={() =>
+            user.enrolledCourses.length <= myTeams.length
+              ? toast.error("You can't be in teams more than enrolled courses")
+              : gotoCreateTeam()
+          }
+        >
+          Create Team
+        </Button>
       </h1>
       {myTeams.length === 0 ? (
         <div className="text-gray-500 italic text-xl text-center flex items-center justify-center h-[50vh] select-none">

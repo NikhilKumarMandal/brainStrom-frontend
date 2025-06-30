@@ -10,7 +10,6 @@ import { useMutation } from "@tanstack/react-query";
 import { leaveTeam } from "@/http/api";
 
 export default function TeamHeader({ currentUser, teamName, teamId }) {
-
   const [reason, setReason] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const { gotoHomePage } = useNavigation();
@@ -52,27 +51,28 @@ export default function TeamHeader({ currentUser, teamName, teamId }) {
         <h1 className="text-3xl font-bold text-gray-900">{teamName}</h1>
         <div className="flex self-end gap-2 mb-1">
           {getRoleIcon(currentUser.role)}
-          <Badge className={`${getRoleBadgeColor(currentUser.role)} capitalize`}>
+          <Badge
+            className={`${getRoleBadgeColor(currentUser.role)} capitalize`}
+          >
             {formateString(currentUser.role)}
           </Badge>
         </div>
       </div>
 
-      {currentUser.role !== "LEADER" &&
-        <Button
-          variant="destructive"
-          onClick={() => setIsOpen(true)}
-        >
+      {currentUser.role !== "LEADER" && (
+        <Button variant="destructive" onClick={() => setIsOpen(true)}>
           Leave Team
         </Button>
-      }
+      )}
 
       <ReasonModal
         title={"Leave Team"}
         description={"Reason for leaving the team"}
         open={isOpen}
         onOpenChange={(val) => setIsOpen(val)}
-        onConfirm={(leaveReason) => leaveMutation.mutate({ teamId, reason: leaveReason })}
+        onConfirm={(leaveReason) =>
+          leaveMutation.mutate({ teamId, reason: leaveReason })
+        }
         reason={reason}
         setReason={setReason}
         isPending={leaveMutation.isPending}

@@ -65,7 +65,6 @@ const HomePage = () => {
     return (
       <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
         <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-
       </div>
     );
   }

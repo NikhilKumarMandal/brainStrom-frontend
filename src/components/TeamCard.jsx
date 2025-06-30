@@ -23,7 +23,7 @@ export default function TeamCard({
   canJoin = true,
   userCourses = [],
   isRequested,
-  setIsRequested
+  setIsRequested,
 }) {
   const teamId = team?.id;
   const [showDialog, setShowDialog] = useState(false);
@@ -138,4 +138,4 @@ export default function TeamCard({
       />
     </Card>
   );
-};
+}
