@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +18,6 @@ import { deleteNotice, editNotice, getNotice } from "@/http/api";
 import RichTextEditor from "./RichTextEditor";
 import { toast } from "sonner";
 import { timeAgo } from "@/utils/formateTime";
-import { hasMinWords } from "@/utils/formateString";
 
 async function getNoticeboard(teamId) {
   const { data } = await getNotice(teamId);
@@ -78,16 +77,6 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
 
     if (!editTitle || !editContent) {
       toast.error("All fields are required.");
-      return;
-    }
-
-    if (!hasMinWords(editTitle, 5)) {
-      toast.error("Title should be at least 5 words long.");
-      return;
-    }
-
-    if (!hasMinWords(editContent, 10)) {
-      toast.error("Description should be at least 10 words long.");
       return;
     }
 

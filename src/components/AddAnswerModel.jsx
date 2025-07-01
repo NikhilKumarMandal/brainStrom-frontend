@@ -12,18 +12,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createDiscussion } from "@/http/api";
 import { toast } from "sonner";
 import RichTextEditor from "./RichTextEditor";
-import { hasMinWords } from "@/utils/formateString";
 
 function AddAnswerModel({ isOpen, onClose, id }) {
   const [answer, setAnswer] = useState("");
   const queryClient = useQueryClient();
 
   const handleSubmit = () => {
-    if (!hasMinWords(answer, 10)) {
-      toast.error("Answer should be at least 10 words long.");
-      return;
-    }
-
     mutate({ ticketId: id, content: answer });
   };
 

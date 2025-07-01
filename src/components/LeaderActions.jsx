@@ -8,7 +8,6 @@ import { JoinRequestsModal } from "./JoinReqestModel";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ReasonModal } from "./ReasonModel";
-import { hasMinWords } from "@/utils/formateString";
 
 export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   if (userRole !== "LEADER") return null;
@@ -60,10 +59,6 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   };
 
   const handleDisband = () => {
-    if (!hasMinWords(disbandReason, 5)) {
-      toast.error("Reason should be at least 5 words long.");
-      return;      
-    }
     disbandMutation({ teamId, reason: disbandReason });
   };
 
