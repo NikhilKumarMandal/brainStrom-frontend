@@ -36,7 +36,7 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
       }
       toast.success("Request responded successfully");
     },
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||
@@ -52,7 +52,14 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
       toast.success("Team disbanded successfully");
       window.location.href = "/";
     },
-    onError: () => toast.error("Failed to disband team"),
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const handleRequest = (requestId, accept) => {
@@ -62,7 +69,7 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   const handleDisband = () => {
     if (!hasMinWords(disbandReason, 5)) {
       toast.error("Reason should be at least 5 words long.");
-      return;      
+      return;
     }
     disbandMutation({ teamId, reason: disbandReason });
   };

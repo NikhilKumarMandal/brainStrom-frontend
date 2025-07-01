@@ -35,10 +35,7 @@ const HomePage = () => {
     }
   }, [user, searchParams]);
 
-  const {
-    data: questions,
-    refetch,
-  } = useQuery({
+  const { data: questions, refetch } = useQuery({
     queryKey: ["tickets", queryParams, course],
     queryFn: () => {
       const filteredParams = Object.fromEntries(

@@ -48,10 +48,9 @@ export default function CreateTeam() {
       toast.success("Team create successfully");
       gotoMyTeams();
     },
-    onError: () => {
+    onError: (error) => {
       const message =
-        error?.response?.data?.errors?.[0]?.message ||
-        "Something went wrong";
+        error?.response?.data?.errors?.[0]?.message || "Something went wrong";
 
       toast.error(message);
     },
