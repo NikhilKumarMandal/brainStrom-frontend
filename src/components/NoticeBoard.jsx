@@ -81,16 +81,6 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
       return;
     }
 
-    if (!hasMinWords(editTitle, 5)) {
-      toast.error("Title should be at least 5 words long.");
-      return;
-    }
-
-    if (!hasMinWords(editContent, 10)) {
-      toast.error("Description should be at least 10 words long.");
-      return;
-    }
-
     editNoticeMutation.mutate({
       teamId,
       title: editTitle,
