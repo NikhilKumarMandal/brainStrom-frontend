@@ -47,7 +47,7 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
       setChangeRoleReason("");
       onClose();
     },
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||
@@ -66,7 +66,14 @@ export function MemberProfile({ member, isOpen, onClose, teamId, coLeader }) {
       toast.success("Member kicked successfully!");
       onClose();
     },
-    onError: () => toast.error("Failed to kick member."),
+    onError: (error) => {
+      const message =
+        error?.response?.data?.errors?.[0]?.message ||
+        error?.response?.data?.errors?.[0]?.msg ||
+        "Something went wrong";
+
+      toast.error(message);
+    },
   });
 
   const targetRole = member.role === "CO_LEADER" ? "MEMBER" : "CO_LEADER";

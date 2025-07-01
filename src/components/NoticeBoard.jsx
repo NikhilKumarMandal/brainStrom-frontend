@@ -64,7 +64,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
       await queryClient.invalidateQueries([teamId, "notice"]);
       toast.success("Notice deleted");
     },
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||
@@ -75,7 +75,6 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
   });
 
   const handleSave = () => {
-
     if (!editTitle || !editContent) {
       toast.error("All fields are required.");
       return;
@@ -84,7 +83,7 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
     editNoticeMutation.mutate({
       teamId,
       title: editTitle,
-      content: editContent
+      content: editContent,
     });
   };
 
@@ -130,8 +129,8 @@ export function NoticeBoard({ teamId, hasPermission, members }) {
                     <DialogHeader>
                       <DialogTitle>Delete Notice</DialogTitle>
                       <DialogDescription>
-                        Are you sure you want to delete this notice?
-                        This action cannot be undone.
+                        Are you sure you want to delete this notice? This action
+                        cannot be undone.
                       </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>

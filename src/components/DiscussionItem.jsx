@@ -20,7 +20,7 @@ const DiscussionItem = ({ discussion }) => {
     mutationFn: ({ id, type }) => vote(id, type),
     onSuccess: () =>
       queryClient.invalidateQueries(["discussions", discussion.ticketId]),
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||

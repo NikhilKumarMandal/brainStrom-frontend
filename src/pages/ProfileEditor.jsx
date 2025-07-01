@@ -111,7 +111,7 @@ const ProfileEditor = () => {
       setInitialSkills(skills);
       queryClient.invalidateQueries(["user"]);
     },
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||
@@ -127,7 +127,7 @@ const ProfileEditor = () => {
       toast.success("Social links updated.");
       queryClient.invalidateQueries(["user"]);
     },
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||
@@ -145,7 +145,7 @@ const ProfileEditor = () => {
       toast.success("Removed unused links.");
       queryClient.invalidateQueries(["user"]);
     },
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||

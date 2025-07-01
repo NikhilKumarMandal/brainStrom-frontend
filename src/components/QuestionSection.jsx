@@ -31,7 +31,7 @@ const QuestionSection = ({ question }) => {
       queryClient.invalidateQueries(["question", questionId]);
       setShowDialog(false);
     },
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||

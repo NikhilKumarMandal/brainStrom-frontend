@@ -51,7 +51,7 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
       refetchQuestions();
       onClose();
     },
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||

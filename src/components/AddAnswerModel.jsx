@@ -13,7 +13,6 @@ import { createDiscussion } from "@/http/api";
 import { toast } from "sonner";
 import RichTextEditor from "./RichTextEditor";
 
-
 function AddAnswerModel({ isOpen, onClose, id }) {
   const [answer, setAnswer] = useState("");
   const queryClient = useQueryClient();
@@ -30,7 +29,7 @@ function AddAnswerModel({ isOpen, onClose, id }) {
       toast.success("Answer submitted successfully");
       onClose();
     },
-    onError: () => {
+    onError: (error) => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
         error?.response?.data?.errors?.[0]?.msg ||
