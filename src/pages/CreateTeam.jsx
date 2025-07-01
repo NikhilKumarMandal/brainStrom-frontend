@@ -51,7 +51,6 @@ export default function CreateTeam() {
     onError: () => {
       const message =
         error?.response?.data?.errors?.[0]?.message ||
-        error?.response?.data?.errors?.[0]?.msg ||
         "Something went wrong";
 
       toast.error(message);
