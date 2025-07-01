@@ -69,15 +69,15 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
       return;
     }
 
-    if (!hasMinWords(title, 3)) {
-      toast.error("Title should be at least 3 words long.");
-      return;
-    }
+    // if (!hasMinWords(title, 1)) {
+    //   toast.error("Title should be at least 1 words long.");
+    //   return;
+    // }
 
-    if (!hasMinWords(description, 10)) {
-      toast.error("Description should be at least 10 words long.");
-      return;
-    }
+    // if (!hasMinWords(description, 5)) {
+    //   toast.error("Description should be at least 5 words long.");
+    //   return;
+    // }
 
     const formData = new FormData();
     formData.append("title", title);

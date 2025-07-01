@@ -83,15 +83,15 @@ export default function CreateTeam() {
       return;
     }
 
-    if (!hasMinWords(teamName, 3)) {
-      toast.error("Team name should be at least 3 words long.");
-      return;
-    }
+    // if (!hasMinWords(teamName, 1)) {
+    //   toast.error("Team name should be at least 1 words long.");
+    //   return;
+    // }
 
-    if (!hasMinWords(description, 10)) {
-      toast.error("Description should be at least 10 words long.");
-      return;
-    }
+    // if (!hasMinWords(description, 5)) {
+    //   toast.error("Description should be at least 5 words long.");
+    //   return;
+    // }
 
     if (skills?.length === 0) {
       toast.error("You must add at least one skill.");
