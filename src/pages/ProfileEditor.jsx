@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Plus, X, Save, ArrowLeft, Tag, Link2 } from "lucide-react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link, Link as RouterLink } from "react-router-dom";
 import { toast } from "sonner";
 import {
   deleteProfileLink,
@@ -307,7 +307,7 @@ const ProfileEditor = () => {
             <button
               key={skill}
               onClick={() => addSkill(skill)}
-              className="bg-gray-800 border border-gray-600 text-white px-3 py-1.5 rounded-full flex items-center gap-2"
+              className="bg-primary border border-gray-600 text-white px-3 py-1.5 rounded-full flex items-center gap-2"
             >
               {skill}
               <Plus className="h-3 w-3 text-green-400" />
@@ -326,18 +326,18 @@ const ProfileEditor = () => {
           {socialLinks?.map((link) => (
             <div
               key={link.platform}
-              className="bg-gray-800 border border-gray-600 rounded-lg p-4 flex items-center justify-between"
+              className="bg-primary border border-gray-600 rounded-lg p-4 flex items-center justify-between"
             >
               <div>
                 <p className="text-white font-medium">{link?.platform}</p>
-                <a
-                  href={link?.url}
+                <Link
+                  to={link?.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-blue-400 underline break-all"
                 >
                   {link?.url}
-                </a>
+                </Link>
               </div>
               <button
                 onClick={() => removeSocialLink(link?.platform)}
@@ -350,7 +350,7 @@ const ProfileEditor = () => {
         </div>
         <div className="flex gap-2 mb-6">
           <select
-            className="px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white"
+            className="px-3 py-2 bg-primary border border-gray-600 rounded-md text-white"
             value={newLink?.platform}
             onChange={(e) =>
               setNewLink({ ...newLink, platform: e.target.value })
@@ -361,7 +361,7 @@ const ProfileEditor = () => {
             ))}
           </select>
           <Input
-            placeholder="Enter username or full URL..."
+            placeholder="Enter username"
             value={newLink?.username}
             onChange={(e) =>
               setNewLink({ ...newLink, username: e.target.value })
