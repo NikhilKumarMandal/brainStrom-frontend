@@ -25,6 +25,7 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
       return res.data.data;
     },
     enabled: !!teamId && isLeader,
+    refetchInterval: 10000, 
   });
 
   const { mutate: respondMutation } = useMutation({
