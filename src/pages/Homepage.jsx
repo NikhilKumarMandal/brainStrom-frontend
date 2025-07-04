@@ -35,7 +35,11 @@ const HomePage = () => {
     }
   }, [user, searchParams, setSearchParams]);
 
-  const { data: questionsData, isLoading, refetch } = useQuery({
+  const {
+    data: questionsData,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["tickets", queryParams, course],
     queryFn: () => {
       const filteredParams = Object.fromEntries(
@@ -56,7 +60,7 @@ const HomePage = () => {
   const totalPages = questionsData?.data?.totalPages || 1;
 
   return (
-<div className="min-h-screen p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
@@ -106,7 +110,9 @@ const HomePage = () => {
             ))
           ) : (
             <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-              <div className="text-gray-400 text-lg mb-2">No questions found</div>
+              <div className="text-gray-400 text-lg mb-2">
+                No questions found
+              </div>
               <div className="text-gray-500">
                 Try adjusting your filters or ask a new question
               </div>
