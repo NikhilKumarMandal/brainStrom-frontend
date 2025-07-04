@@ -37,7 +37,7 @@ export default function TeamCard({
     },
     onSuccess: () => {
       setIsRequested(true);
-      toast.success("Submitted");
+      toast("Submitted");
     },
     onError: (error) => {
       const message =
