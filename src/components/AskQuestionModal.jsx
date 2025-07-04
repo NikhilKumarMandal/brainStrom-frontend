@@ -21,7 +21,6 @@ import { useMutation } from "@tanstack/react-query";
 import { createTicket } from "@/http/api";
 import RichTextEditor from "./RichTextEditor";
 import { toast } from "sonner";
-import { hasMinWords } from "@/utils/formateString";
 
 export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
   const [title, setTitle] = useState("");
@@ -68,16 +67,6 @@ export const AskQuestionModal = ({ isOpen, onClose, refetchQuestions }) => {
       toast.error("Please fill in all fields before submitting.");
       return;
     }
-
-    // if (!hasMinWords(title, 1)) {
-    //   toast.error("Title should be at least 1 words long.");
-    //   return;
-    // }
-
-    // if (!hasMinWords(description, 5)) {
-    //   toast.error("Description should be at least 5 words long.");
-    //   return;
-    // }
 
     const formData = new FormData();
     formData.append("title", title);

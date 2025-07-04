@@ -8,7 +8,7 @@ import { JoinRequestsModal } from "./JoinReqestModel";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ReasonModal } from "./ReasonModel";
-import { hasMinWords } from "@/utils/formateString";
+
 import { useNavigate } from "react-router-dom";
 
 export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
@@ -18,7 +18,7 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   const [disbandReason, setDisbandReason] = useState("");
   const [showDisbandModal, setShowDisbandModal] = useState(false);
   const queryClient = useQueryClient();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { data: joinRequests = [], refetch: refetchRequests } = useQuery({
     queryKey: ["joinRequests", teamId],
     queryFn: async () => {
@@ -26,7 +26,7 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
       return res.data.data;
     },
     enabled: !!teamId && isLeader,
-    refetchInterval: 10000, 
+    refetchInterval: 10000,
   });
 
   const { mutate: respondMutation } = useMutation({
@@ -52,7 +52,7 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
     mutationFn: ({ teamId, reason }) => disbandTeam(teamId, reason),
     onSuccess: () => {
       toast.success("Team disbanded successfully");
-      navigate("/")
+      navigate("/");
     },
     onError: (error) => {
       const message =
@@ -69,10 +69,6 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   };
 
   const handleDisband = () => {
-    if (!hasMinWords(disbandReason, 5)) {
-      toast.error("Reason should be at least 5 words long.");
-      return;
-    }
     disbandMutation({ teamId, reason: disbandReason });
   };
 

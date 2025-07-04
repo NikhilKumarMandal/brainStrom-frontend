@@ -18,7 +18,6 @@ import { deleteNotice, editNotice, getNotice } from "@/http/api";
 import RichTextEditor from "./RichTextEditor";
 import { toast } from "sonner";
 import { timeAgo } from "@/utils/formateTime";
-import { hasMinWords } from "@/utils/formateString";
 
 async function getNoticeboard(teamId) {
   const { data } = await getNotice(teamId);

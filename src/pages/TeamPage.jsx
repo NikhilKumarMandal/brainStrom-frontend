@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NoticeBoard } from "../components/NoticeBoard";
 import { LeaderActions } from "../components/LeaderActions";
 import { TeamMembers } from "../components/TeamMembers";
@@ -14,7 +14,7 @@ import TeamHeader from "@/components/TeamHeader";
 async function getTeamDetails(teamId) {
   const { data } = await getTeamById(teamId);
   return data.data;
-};
+}
 
 const SkeletonBox = ({ className = "" }) => (
   <div className={`bg-gray-200 animate-pulse rounded-md ${className}`} />
@@ -73,45 +73,45 @@ export default function TeamPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-    <TeamHeader
-      currentUser={currentUser}
-      teamName={team?.name}
-      teamId={teamId}
-    />
+      <TeamHeader
+        currentUser={currentUser}
+        teamName={team?.name}
+        teamId={teamId}
+      />
 
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div className="lg:col-span-2 space-y-4">
-        <NoticeBoard
-          teamId={teamId}
-          hasPermission={isLeader || coLeader?.user?.id === user?.id}
-          members={team?.members}
-        />
-        <LeaderActions
-          isLeader={isLeader}
-          userRole={currentUser?.role}
-          teamId={teamId}
-          totalMembers={team?.members?.length}
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-4">
+          <NoticeBoard
+            teamId={teamId}
+            hasPermission={isLeader || coLeader?.user?.id === user?.id}
+            members={team?.members}
+          />
+          <LeaderActions
+            isLeader={isLeader}
+            userRole={currentUser?.role}
+            teamId={teamId}
+            totalMembers={team?.members?.length}
+          />
+        </div>
+
+        <div className="space-y-6">
+          <TeamMembers
+            members={team?.members}
+            isLeader={isLeader}
+            currentUserId={currentUser?.id}
+            onMemberClick={handleMemberClick}
+          />
+          <ActivityLog teamId={teamId} />
+        </div>
       </div>
 
-      <div className="space-y-6">
-        <TeamMembers
-          members={team?.members}
-          isLeader={isLeader}
-          currentUserId={currentUser?.id}
-          onMemberClick={handleMemberClick}
-        />
-        <ActivityLog teamId={teamId} />
-      </div>
+      <MemberProfile
+        member={selectedMember}
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
+        teamId={teamId}
+        coLeader={coLeader}
+      />
     </div>
-
-    <MemberProfile
-      member={selectedMember}
-      isOpen={isProfileOpen}
-      onClose={() => setIsProfileOpen(false)}
-      teamId={teamId}
-      coLeader={coLeader}
-    />
-  </div>
   );
 }
