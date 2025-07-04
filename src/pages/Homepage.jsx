@@ -33,13 +33,13 @@ const HomePage = () => {
         return prev;
       });
     }
-  }, [user, searchParams]);
+  }, [user, searchParams, setSearchParams]);
 
-  const { data: questions, refetch } = useQuery({
+  const { data: questionsData, isLoading, refetch } = useQuery({
     queryKey: ["tickets", queryParams, course],
     queryFn: () => {
       const filteredParams = Object.fromEntries(
-        Object.entries(queryParams).filter((item) => !!item[1])
+        Object.entries(queryParams).filter(([, val]) => !!val)
       );
 
       const queryString = new URLSearchParams(filteredParams).toString();
@@ -52,10 +52,8 @@ const HomePage = () => {
     },
   });
 
-  const ticktes = questions?.data?.tickets;
-  const totalPages = questions?.data?.totalPages;
-
-  const courses = Array.from(new Set(ticktes?.map((q) => q.courses)));
+  const tickets = questionsData?.data?.tickets || [];
+  const totalPages = questionsData?.data?.totalPages || 1;
 
   // if (isQuestionsLoading) {
   //   return (
@@ -66,7 +64,7 @@ const HomePage = () => {
   // }
 
   return (
-    <div className="min-h-screen p-6">
+<div className="min-h-screen p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
@@ -87,7 +85,7 @@ const HomePage = () => {
 
         {/* Filters */}
         <QuestionFilters
-          courses={courses}
+          courses={user?.enrolledCourses?.map((c) => c.course.name)}
           selectedCourse={course}
           onCourseChange={(value) => {
             if (value) {
@@ -101,26 +99,67 @@ const HomePage = () => {
         />
 
         {/* Questions List */}
-        <div className="space-y-4">
-          {ticktes?.length > 0 ? (
-            ticktes?.map((question) => (
+        <div className="space-y-4 mt-6">
+          {isLoading ? (
+            <div className="flex justify-center py-12">
+              <div className="w-12 h-12 border-4 border-gray-400 border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : tickets?.length > 0 ? (
+            tickets?.map((question) => (
               <QuestionsCard
-                key={question.id}
+                key={question?.id}
                 question={question}
                 gotoDiscussion={gotoDiscussion}
               />
             ))
           ) : (
             <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-              <div className="text-gray-400 text-lg mb-2">
-                No questions found
-              </div>
+              <div className="text-gray-400 text-lg mb-2">No questions found</div>
               <div className="text-gray-500">
                 Try adjusting your filters or ask a new question
               </div>
             </div>
           )}
         </div>
+
+        {/* Pagination */}
+        {tickets?.length > 0 && (
+          <div className="flex justify-center items-center gap-4 pt-8">
+            <Button
+              size="icon"
+              variant="outline"
+              disabled={queryParams.page === 1}
+              onClick={() =>
+                setQueryParams((prev) => ({
+                  ...prev,
+                  page: prev.page - 1,
+                }))
+              }
+              className="rounded-full p-3"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+
+            <span className="px-4 py-2 rounded-full bg-primary text-white font-medium shadow-md text-sm">
+              Page {queryParams?.page} of {totalPages}
+            </span>
+
+            <Button
+              size="icon"
+              variant="outline"
+              disabled={queryParams.page === totalPages}
+              onClick={() =>
+                setQueryParams((prev) => ({
+                  ...prev,
+                  page: prev.page + 1,
+                }))
+              }
+              className="rounded-full p-3"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Ask Question Modal */}
@@ -129,37 +168,6 @@ const HomePage = () => {
         onClose={() => setIsModalOpen(false)}
         refetchQuestions={refetch}
       />
-
-      {/* Pagination */}
-      <div className="flex justify-center items-center gap-4 pt-6">
-        <Button
-          size="icon"
-          variant="outline"
-          disabled={queryParams.page === 1}
-          onClick={() =>
-            setQueryParams((prev) => ({ ...prev, page: prev.page - 1 }))
-          }
-          className="rounded-full p-3"
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </Button>
-
-        <span className="px-4 py-2 rounded-full bg-primary text-white font-medium shadow-md text-sm">
-          Page {queryParams.page} of {totalPages}
-        </span>
-
-        <Button
-          size="icon"
-          variant="outline"
-          disabled={queryParams.page === totalPages}
-          onClick={() =>
-            setQueryParams((prev) => ({ ...prev, page: prev.page + 1 }))
-          }
-          className="rounded-full p-3"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </Button>
-      </div>
     </div>
   );
 };

@@ -29,7 +29,7 @@ export default function UserTeams() {
   //   );
 
   const enrolledCount = user?.enrolledCourses?.length || 0;
-  const canCreateTeam = myTeams.length < enrolledCount;
+  const canCreateTeam = myTeams?.length < enrolledCount;
 
 
   return (
