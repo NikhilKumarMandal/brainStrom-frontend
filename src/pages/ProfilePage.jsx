@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
+
 
 const fetchUserById = async (id) => (await getUserById(id)).data.data;
 const fetchUserLogs = async (id) => (await getUserHistory(id)).data.data;
