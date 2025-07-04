@@ -68,6 +68,11 @@ function BrowseTeams() {
     placeholderData: keepPreviousData,
   });
 
+  const teams = allTeamData?.data?.teams?.filter(
+    (team) => team.leaderId !== user.id
+  );
+  const totalPages = allTeamData?.data?.totalPages || 1;
+
   // if (isTeamsLoading || isMyTeamsLoading) {
   //   return (
   //     <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
@@ -76,10 +81,10 @@ function BrowseTeams() {
   //   );
   // }
 
-  const teams = allTeamData?.data?.teams?.filter(
-    (team) => team.leaderId !== user.id
-  );
-  const totalPages = allTeamData?.data?.totalPages || 1;
+  // const teams = allTeamData?.data?.teams?.filter(
+  //   (team) => team.leaderId !== user.id
+  // );
+  // const totalPages = allTeamData?.data?.totalPages || 1;
 
   return (
     <>
