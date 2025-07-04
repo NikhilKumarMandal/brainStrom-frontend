@@ -9,6 +9,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ReasonModal } from "./ReasonModel";
 import { hasMinWords } from "@/utils/formateString";
+import { useNavigate } from "react-router-dom";
 
 export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   if (userRole !== "LEADER") return null;
@@ -17,7 +18,7 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
   const [disbandReason, setDisbandReason] = useState("");
   const [showDisbandModal, setShowDisbandModal] = useState(false);
   const queryClient = useQueryClient();
-
+  const navigate = useNavigate()
   const { data: joinRequests = [], refetch: refetchRequests } = useQuery({
     queryKey: ["joinRequests", teamId],
     queryFn: async () => {
@@ -51,7 +52,7 @@ export function LeaderActions({ isLeader, userRole, teamId, totalMembers }) {
     mutationFn: ({ teamId, reason }) => disbandTeam(teamId, reason),
     onSuccess: () => {
       toast.success("Team disbanded successfully");
-      window.location.href = "/";
+      navigate("/")
     },
     onError: (error) => {
       const message =
