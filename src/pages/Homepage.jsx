@@ -55,14 +55,6 @@ const HomePage = () => {
   const tickets = questionsData?.data?.tickets || [];
   const totalPages = questionsData?.data?.totalPages || 1;
 
-  // if (isQuestionsLoading) {
-  //   return (
-  //     <div className="flex flex-col items-center justify-center gap-2 text-xl text-black m-auto h-screen">
-  //       <div className="w-16 h-16 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-  //     </div>
-  //   );
-  // }
-
   return (
 <div className="min-h-screen p-6">
       <div className="max-w-6xl mx-auto">
