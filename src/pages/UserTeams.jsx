@@ -16,7 +16,7 @@ export default function UserTeams() {
   const { gotoMyTeam, gotoCreateTeam } = useNavigation();
   const { user } = useAuthStore();
 
-  const { data: myTeams, isLoading } = useQuery({
+  const { data: myTeams = [], isLoading } = useQuery({
     queryKey: ["myTeams"],
     queryFn: getMyAllTeams,
   });
